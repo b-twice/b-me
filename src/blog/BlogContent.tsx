@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme: Theme) => {
       paddingBottom: theme.spacing(1),
     },
     title: {
-      fontWeight: theme.typography.fontWeightLight,
+      fontWeight: theme.typography.fontWeightLight as number,
       "&h3": {
         borderBottom: "none",
       },

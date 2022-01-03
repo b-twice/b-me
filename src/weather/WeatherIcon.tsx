@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme: Theme) => {
       fontFamily:
         "apple color emoji,segoe ui emoji,noto color emoji,android emoji,emojisymbols,emojione mozilla,twemoji mozilla,segoe ui symbol",
       fontStyle: "normal",
-      fontWeight: theme.typography.fontWeightRegular,
+      fontWeight: theme.typography.fontWeightRegular as number,
     },
     small: {
       fontSize: theme.typography.h6.fontSize,

@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     label: {
       display: "inline-block",
-      fontWeight: theme.typography.fontWeightMedium,
+      fontWeight: theme.typography.fontWeightMedium as number,
     },
     description: {
       display: "inline-block",

@@ -63,7 +63,6 @@ function RecipeView() {
     product: FoodProduct,
     obj: { [key: string]: any }
   ): Promise<FormSchema<ListObjectEntity>> => {
-    console.log(obj);
     return Promise.all([
       FoodQuantityTypeApi.get(product.foodQuantityTypeId!),
       FoodUnitApi.get(product.foodUnitId!),

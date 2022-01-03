@@ -37,7 +37,8 @@ function MealPlans() {
       config.pageNumber + 1,
       config.rowsPerPage,
       config.filter.name,
-      config.filter.user.map((b) => b.id as number)
+      config.filter.user.map((b) => b.id as number),
+      config.filter.recipe.map((b) => b.id as number)
     ).then((result) => setPage(result as PaginatedResult));
   }, [config]);
 

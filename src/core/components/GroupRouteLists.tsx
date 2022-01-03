@@ -17,7 +17,7 @@ import { BlogContext } from "../../blog/BlogContext";
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     listTitle: {
-      fontWeight: theme.typography.fontWeightBold,
+      fontWeight: theme.typography.fontWeightBold as number,
     },
   });
 });

@@ -131,22 +131,18 @@ function Main() {
                 path="/food/products"
                 component={FoodProducts}
               />
-              <PrivateRoute
+              <Route
                 exact
                 path="/food/recipes/:recipeId"
                 component={RecipeView}
               />
-              <PrivateRoute exact path="/food/recipes" component={RecipeList} />
-              <PrivateRoute
+              <Route exact path="/food/recipes" component={RecipeList} />
+              <Route
                 exact
                 path="/food/mealPlans/:mealPlanId"
                 component={MealPlanView}
               />
-              <PrivateRoute
-                exact
-                path="/food/mealPlans"
-                component={MealPlans}
-              ></PrivateRoute>
+              <Route exact path="/food/mealPlans" component={MealPlans}></Route>
               <PrivateRoute exact path="/food/admin" component={FoodAdmin} />
 
               <Route exact path="/login" component={Login} />

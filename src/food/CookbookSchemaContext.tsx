@@ -41,7 +41,7 @@ function CookbookSchemaContextProvider({
       value: string | number | undefined
     ) => ({ ...obj, label: label, value: value } as FormOptionType);
     Promise.all([CookbookAuthorApi.getAll()])
-      .then(([users, categories, cookbooks]) => {
+      .then(([users]) => {
         setAuthors(users.map((r) => setOption(r, r.name as string, r.id)));
       })
       .catch((err) => {

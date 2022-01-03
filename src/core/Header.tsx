@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme: Theme) => {
       flex: 1,
     },
     listTitle: {
-      fontWeight: theme.typography.fontWeightBold,
+      fontWeight: theme.typography.fontWeightBold as number,
     },
     listIcon: {
       color: "inherit",
@@ -172,37 +172,24 @@ function Header({ history }: RouteComponentProps) {
             nested={true}
           />
         )}
-        {!authContext.authenticated && (
-          <AppLink to="/reading/books" exact={true} onClick={handleDrawerClose}>
-            <ListItem button>
-              <ListItemText
-                primary="Reading List"
-                classes={{ primary: classes.listTitle }}
-              />
-            </ListItem>
-          </AppLink>
-        )}
-        {authContext.authenticated && (
-          <GroupRouteList
-            title="Reading"
-            onClick={handleDrawerClose}
-            history={history}
-            items={[{ path: "/reading/books", title: "Books" }]}
-            nested={true}
-          />
-        )}
-        {authContext.authenticated && (
-          <GroupRouteList
-            title="Food"
-            onClick={handleDrawerClose}
-            history={history}
-            items={[
-              { path: "/food/mealPlans", title: "Meal Plans" },
-              { path: "/food/recipes", title: "Recipes" },
-            ]}
-            nested={true}
-          />
-        )}
+        <GroupRouteList
+          title="Food"
+          onClick={handleDrawerClose}
+          history={history}
+          items={[
+            { path: "/food/mealPlans", title: "Meal Plans" },
+            { path: "/food/recipes", title: "Recipes" },
+          ]}
+          nested={true}
+        />
+        <AppLink to="/reading/books" exact={true} onClick={handleDrawerClose}>
+          <ListItem button>
+            <ListItemText
+              primary="Reading List"
+              classes={{ primary: classes.listTitle }}
+            />
+          </ListItem>
+        </AppLink>
       </List>
     </Fragment>
   );

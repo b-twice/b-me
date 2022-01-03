@@ -7,8 +7,8 @@ import {
   NumberFieldSchema,
 } from "../core/components/forms/SchemaForm";
 import FormOptionType from "../core/components/forms/FormOptionType";
-import { MealPlan, User } from "../common/client";
-import { MealPlanApi } from "../common/client/FoodApi";
+import { MealPlan, Recipe, User } from "../common/client";
+import { MealPlanApi, RecipeApi } from "../common/client/FoodApi";
 import EditSchemaContextProps from "../core/components/forms/EditSchemaContextProps.interface";
 import { Omit } from "@material-ui/types";
 import getLookupName from "../core/components/forms/lookups/getLookupName";
@@ -17,6 +17,7 @@ import { UserApi } from "../common/client/AdminApi";
 
 export interface MealPlanFilter extends Omit<MealPlan, "user"> {
   user: User[];
+  recipe: Recipe[];
 }
 
 export interface MealPlansTableConfig
@@ -36,15 +37,17 @@ function MealPlanSchemaContextProvider({
   children: JSX.Element;
 }) {
   const [users, setUsers] = useState<FormOptionType[]>([]);
+  const [recipes, setRecipes] = useState<FormOptionType[]>([]);
   useEffect(() => {
     const setOption = (
       obj: any,
       label: string,
       value: string | number | undefined
     ) => ({ ...obj, label: label, value: value } as FormOptionType);
-    Promise.all([UserApi.getUsers()])
-      .then(([users]) => {
+    Promise.all([UserApi.getUsers(), RecipeApi.getAll()])
+      .then(([users, recipes]) => {
         setUsers(users.map((r) => setOption(r, r.name as string, r.id)));
+        setRecipes(recipes.map((r) => setOption(r, r.name as string, r.id)));
       })
       .catch((err) => {
         // TODO - error handling for user
@@ -96,10 +99,18 @@ function MealPlanSchemaContextProvider({
         required: false,
         getVal: getLookupName,
       } as MultiSelectFieldSchema,
+      recipe: {
+        title: "Recipe",
+        type: "multiselect",
+        options: recipes,
+        required: false,
+        getVal: getLookupName,
+      } as MultiSelectFieldSchema,
     },
     object: {
       name: "",
       user: [],
+      recipe: [],
     } as MealPlanFilter,
     type: "FILTER",
     save: (o: MealPlan) => Promise.resolve(null), // Bypass saving, and apply the filter higher up in a get request
