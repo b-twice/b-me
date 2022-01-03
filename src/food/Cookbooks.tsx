@@ -5,39 +5,38 @@ import SchemaTable, {
   SchemaTableConfig,
   schemaTableConfig,
 } from "../core/components/tables/SchemaTable";
-import { BookAuthorApi } from "../common/client/BookApi";
+import { CookbookApi } from "../common/client/FoodApi";
 import { FormSchema } from "../core/components/forms/SchemaForm";
 import { ObjectEntity } from "../core/components/forms/ObjectEntityType";
 import {
-  BookAuthorSchemaContextProvider,
-  BookAuthorSchemaContext,
-} from "./BookAuthorSchemaContext";
-import { BookAuthor } from "../common/client";
-import { LookupEntityFilter } from "../core/components/forms/lookups/LookupEntity.interface";
+  CookbookSchemaContextProvider,
+  CookbookSchemaContext,
+  CookbookFilter,
+} from "./CookbookSchemaContext";
+import { Cookbook } from "../common/client";
 
-function BookAuthors() {
-  const schemaContext = useContext(BookAuthorSchemaContext);
+function Cookbooks() {
+  const schemaContext = useContext(CookbookSchemaContext);
 
-  const [filterSchema, setFilterSchema] = useState<
-    FormSchema<LookupEntityFilter>
-  >(() => schemaContext.get({ type: "FILTER" }));
+  const [filterSchema, setFilterSchema] = useState<FormSchema<CookbookFilter>>(
+    () => schemaContext.get({ type: "FILTER" })
+  );
   const [page, setPage] = React.useState<PaginatedResult>({
     items: [],
     count: 0,
   } as PaginatedResult);
   const [config, setConfig] = React.useState<SchemaTableConfig>({
     ...schemaTableConfig,
-    sort: "name_asc",
-    orderBy: "name",
-    order: "asc",
+    filter: schemaContext.get<CookbookFilter>({ type: "FILTER" }).object,
   });
 
   useEffect(() => {
-    BookAuthorApi.getAuthorsPage(
+    CookbookApi.getPage(
       config.sort,
       config.pageNumber + 1,
       config.rowsPerPage,
-      config.filter.name
+      config.filter.name,
+      config.filter.cookbookAuthor
     ).then((result) => setPage(result as PaginatedResult));
   }, [config]);
 
@@ -45,15 +44,14 @@ function BookAuthors() {
     obj !== undefined
       ? (schemaContext.get({
           type: "EDIT",
-          obj: obj as BookAuthor,
+          obj: obj as Cookbook,
         }) as FormSchema<ObjectEntity>)
       : (schemaContext.get({ type: "ADD" }) as FormSchema<ObjectEntity>);
-  const handleDeleteEntity = (obj: ObjectEntity) =>
-    BookAuthorApi.deleteAuthor(obj.id);
+  const handleDeleteEntity = (obj: ObjectEntity) => CookbookApi.delete(obj.id);
   const handleOnPage = (pageConfig: SchemaTableConfig) => setConfig(pageConfig);
   const handleOnFilter = (obj: ObjectEntity) => {
-    setConfig({ ...config, pageNumber: 0, filter: obj as LookupEntityFilter });
-    setFilterSchema({ ...filterSchema, object: obj as LookupEntityFilter });
+    setConfig({ ...config, pageNumber: 0, filter: obj as CookbookFilter });
+    setFilterSchema({ ...filterSchema, object: obj as CookbookFilter });
   };
 
   return (
@@ -66,10 +64,10 @@ function BookAuthors() {
         page={page}
         onPage={handleOnPage}
         config={config}
-        title="Book Authors"
+        title="Cookbooks"
       />
     </Fragment>
   );
 }
 
-export default withProvider(BookAuthors, BookAuthorSchemaContextProvider);
+export default withProvider(Cookbooks, CookbookSchemaContextProvider);

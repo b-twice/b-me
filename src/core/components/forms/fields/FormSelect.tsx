@@ -64,14 +64,18 @@ export default function FormSelect({
   };
 
   useEffect(() => {
-    if (obj !== undefined) {
+    if (obj !== undefined && obj !== null) {
+      let label = obj[labelProperty];
+      if (label === undefined) {
+        label = options.find((o) => o.value === obj[valueProperty])?.label;
+      }
       setOption({
         ...obj,
         value: obj[valueProperty],
-        label: obj[labelProperty],
+        label: label,
       } as FormOptionType);
     }
-  }, [obj, valueProperty, labelProperty]);
+  }, [obj, valueProperty, labelProperty, options]);
 
   function handleChange(selected: any): void {
     selected = selected as FormOptionType;

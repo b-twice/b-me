@@ -16,6 +16,18 @@ import Transactions from "./finance/Transactions";
 import FinanceDashboard from "./finance/Dashboard";
 import FinanceExpenses from "./finance/Expenses";
 import BlogPosts from "./blog/BlogPosts";
+import CookbookAuthors from "./food/CookbookAuthors";
+import Supermarkets from "./food/Supermarkets";
+import FoodCategories from "./food/FoodCategories";
+import RecipeCategories from "./food/RecipeCategories";
+import FoodProducts from "./food/FoodProducts";
+import RecipeList from "./food/RecipeList";
+import Cookbooks from "./food/Cookbooks";
+import MealPlans from "./food/MealPlans";
+import FoodAdmin from "./food/FoodAdmin";
+import ReadingAdmin from "./books/ReadingAdmin";
+import MealPlanView from "./food/MealPlanView";
+import RecipeView from "./food/RecipeView";
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -70,12 +82,17 @@ function Main() {
               <Route exact path="/reading/books" component={Books} />
               <PrivateRoute
                 exact
+                path="/reading/admin"
+                component={ReadingAdmin}
+              />
+              <PrivateRoute
+                exact
                 path="/reading/authors"
                 component={BookAuthors}
               />
               <PrivateRoute
                 exact
-                path="/readin/categories"
+                path="/reading/categories"
                 component={BookCategories}
               />
               <PrivateRoute
@@ -83,6 +100,54 @@ function Main() {
                 path="/reading/statuses"
                 component={BookStatuses}
               />
+
+              <PrivateRoute
+                exact
+                path="/food/cookbookAuthors"
+                component={CookbookAuthors}
+              />
+              <PrivateRoute
+                exact
+                path="/food/cookbooks"
+                component={Cookbooks}
+              />
+              <PrivateRoute
+                exact
+                path="/food/supermarkets"
+                component={Supermarkets}
+              />
+              <PrivateRoute
+                exact
+                path="/food/productCategories"
+                component={FoodCategories}
+              />
+              <PrivateRoute
+                exact
+                path="/food/recipeCategories"
+                component={RecipeCategories}
+              />
+              <PrivateRoute
+                exact
+                path="/food/products"
+                component={FoodProducts}
+              />
+              <PrivateRoute
+                exact
+                path="/food/recipes/:recipeId"
+                component={RecipeView}
+              />
+              <PrivateRoute exact path="/food/recipes" component={RecipeList} />
+              <PrivateRoute
+                exact
+                path="/food/mealPlans/:mealPlanId"
+                component={MealPlanView}
+              />
+              <PrivateRoute
+                exact
+                path="/food/mealPlans"
+                component={MealPlans}
+              ></PrivateRoute>
+              <PrivateRoute exact path="/food/admin" component={FoodAdmin} />
 
               <Route exact path="/login" component={Login} />
             </ScrollToTop>

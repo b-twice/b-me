@@ -11,7 +11,12 @@ export default function SplitTextListItem({
     <TextListItem
       content={
         <Typography {...typographyProps}>
-          <Grid container direction="row" justify="space-between" spacing={0}>
+          <Grid
+            container
+            direction="row"
+            justifyContent="space-between"
+            spacing={0}
+          >
             <Grid item>{left}</Grid>
             <Grid item>{right}</Grid>
           </Grid>

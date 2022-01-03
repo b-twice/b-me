@@ -151,7 +151,11 @@ function Header({ history }: RouteComponentProps) {
             title="Admin"
             onClick={handleDrawerClose}
             history={history}
-            items={[{ path: "/admin/content", title: "Content" }]}
+            items={[
+              { path: "/admin/content", title: "Content" },
+              { path: "/food/admin", title: "Food" },
+              { path: "/reading/admin", title: "Reading" },
+            ]}
             nested={true}
           />
         )}
@@ -183,11 +187,18 @@ function Header({ history }: RouteComponentProps) {
             title="Reading"
             onClick={handleDrawerClose}
             history={history}
+            items={[{ path: "/reading/books", title: "Books" }]}
+            nested={true}
+          />
+        )}
+        {authContext.authenticated && (
+          <GroupRouteList
+            title="Food"
+            onClick={handleDrawerClose}
+            history={history}
             items={[
-              { path: "/reading/books", title: "Books" },
-              { path: "/reading/authors", title: "Authors" },
-              { path: "/reading/categories", title: "Categories" },
-              { path: "/reading/statuses", title: "Statuses" },
+              { path: "/food/mealPlans", title: "Meal Plans" },
+              { path: "/food/recipes", title: "Recipes" },
             ]}
             nested={true}
           />

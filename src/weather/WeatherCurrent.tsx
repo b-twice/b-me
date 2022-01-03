@@ -42,12 +42,12 @@ function WeatherCurrent({ current, day }: WeatherCurrentProps) {
       <Grid
         container
         direction="row"
-        justify="space-around"
+        justifyContent="space-around"
         alignItems="center"
         spacing={1}
       >
         <Grid item className={classes.weatherIcon}>
-          <Grid container direction="row" justify="center">
+          <Grid container direction="row" justifyContent="center">
             <Grid item>
               <WeatherIcon type={current.icon!} size="large" />
             </Grid>

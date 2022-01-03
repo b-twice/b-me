@@ -1,4 +1,11 @@
 import React, { Fragment, useContext, useState, useEffect } from "react";
+import {
+  FoodProductSchemaContext,
+  FoodProductSchemaContextProvider,
+  FoodProductFilter,
+  FoodProductsTableConfig,
+} from "./FoodProductSchemaContext";
+import { FoodProduct } from "../common/client";
 import withProvider from "../core/components/withProvider";
 import SchemaTable, {
   PaginatedResult,
@@ -7,42 +14,31 @@ import SchemaTable, {
 } from "../core/components/tables/SchemaTable";
 import { FormSchema } from "../core/components/forms/SchemaForm";
 import { ObjectEntity } from "../core/components/forms/ObjectEntityType";
-import {
-  BlogPostSchemaContextProvider,
-  BlogPostSchemaContext,
-  PostsTableConfig,
-  PostFilter,
-} from "./BlogPostSchemaContext";
-import { Post } from "../common/client";
-import { LookupEntityFilter } from "../core/components/forms/lookups/LookupEntity.interface";
-import { BlogPostApi } from "../common/client/BlogPostApi";
+import { FoodProductApi } from "../common/client/FoodApi";
 
-function Posts() {
-  const schemaContext = useContext(BlogPostSchemaContext);
+function FoodProducts() {
+  const schemaContext = useContext(FoodProductSchemaContext);
 
   const [filterSchema, setFilterSchema] = useState<
-    FormSchema<LookupEntityFilter>
+    FormSchema<FoodProductFilter>
   >(() => schemaContext.get({ type: "FILTER" }));
   const [page, setPage] = React.useState<PaginatedResult>({
     items: [],
     count: 0,
   } as PaginatedResult);
-  const [config, setConfig] = React.useState<PostsTableConfig>({
+  const [config, setConfig] = React.useState<FoodProductsTableConfig>({
     ...schemaTableConfig,
-    filter: schemaContext.get<PostFilter>({ type: "FILTER" }).object,
-    sort: "date_desc",
-    orderBy: "date",
-    order: "asc",
+    filter: schemaContext.get<FoodProductFilter>({ type: "FILTER" }).object,
   });
 
   useEffect(() => {
-    BlogPostApi.getBlogPostPage(
+    FoodProductApi.getPage(
       config.sort,
       config.pageNumber + 1,
       config.rowsPerPage,
-      config.filter.title,
-      config.filter.description,
-      config.filter.postGroup.map((b) => b.id as number)
+      config.filter.name,
+      config.filter.foodCategory.map((b) => b.id as number),
+      config.filter.supermarket.map((b) => b.id as number)
     ).then((result) => setPage(result as PaginatedResult));
   }, [config]);
 
@@ -55,32 +51,32 @@ function Posts() {
     obj !== undefined
       ? (schemaContext.get({
           type: "EDIT",
-          obj: obj as Post,
+          obj: obj as FoodProduct,
         }) as FormSchema<ObjectEntity>)
       : (schemaContext.get({ type: "ADD" }) as FormSchema<ObjectEntity>);
   const handleDeleteEntity = (obj: ObjectEntity) =>
-    BlogPostApi.deleteBlogPost(obj.id);
+    FoodProductApi.delete(obj.id);
   const handleOnPage = (pageConfig: SchemaTableConfig) =>
-    setConfig(pageConfig as PostsTableConfig);
+    setConfig(pageConfig as FoodProductsTableConfig);
   const handleOnFilter = (obj: ObjectEntity) => {
-    setConfig({ ...config, pageNumber: 0, filter: obj as PostFilter });
-    setFilterSchema({ ...filterSchema, object: obj as PostFilter });
+    setConfig({ ...config, pageNumber: 0, filter: obj as FoodProductFilter });
+    setFilterSchema({ ...filterSchema, object: obj as FoodProductFilter });
   };
 
   return (
     <Fragment>
       <SchemaTable
         filterSchema={filterSchema as FormSchema<ObjectEntity>}
-        onFilter={handleOnFilter}
         getEntitySchema={handleGetEntitySchema}
         deleteEntity={handleDeleteEntity}
+        onFilter={handleOnFilter}
         page={page}
         onPage={handleOnPage}
         config={config}
-        title="Content"
+        title="Products"
       />
     </Fragment>
   );
 }
 
-export default withProvider(Posts, BlogPostSchemaContextProvider);
+export default withProvider(FoodProducts, FoodProductSchemaContextProvider);

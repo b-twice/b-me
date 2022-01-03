@@ -60,7 +60,7 @@ function Books() {
   const handleOnPage = (pageConfig: SchemaTableConfig) =>
     setConfig(pageConfig as BooksTableConfig);
   const handleOnFilter = (obj: ObjectEntity) => {
-    setConfig({ ...config, filter: obj as BookFilter });
+    setConfig({ ...config, pageNumber: 0, filter: obj as BookFilter });
     setFilterSchema({ ...filterSchema, object: obj as BookFilter });
   };
 

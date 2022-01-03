@@ -61,7 +61,7 @@ export const transactionUtility = {
     record: TransactionRecord
   ): TransactionTableRecord => {
     const item = { ...record };
-    const tags = record?.transactionRecordTag?.map(
+    const tags = record?.transactionRecordTags?.map(
       (t) =>
         ({
           ...t.tag,
@@ -71,7 +71,7 @@ export const transactionUtility = {
         } as FormOptionType)
     );
     delete item[
-      transactionUtility.propertyOfTransactionRecord("transactionRecordTag")
+      transactionUtility.propertyOfTransactionRecord("transactionRecordTags")
     ];
     return { ...item, tags: tags } as TransactionTableRecord;
   },

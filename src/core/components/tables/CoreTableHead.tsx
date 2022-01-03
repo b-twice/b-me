@@ -37,7 +37,7 @@ function CoreTableHead(props: CoreTableProps) {
           <TableCell
             key={row.id}
             align={row.numeric ? "right" : "left"}
-            padding={row.disablePadding ? "none" : "default"}
+            padding={row.disablePadding ? "none" : "normal"}
             sortDirection={orderBy === row.id ? order : false}
           >
             <TableSortLabel

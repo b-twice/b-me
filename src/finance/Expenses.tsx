@@ -137,7 +137,7 @@ function FinanceExpenses() {
   }
 
   const handleOnFilter = (obj: ObjectEntity) => {
-    setConfig({ ...config, filter: obj as any });
+    setConfig({ ...config, pageNumber: 0, filter: obj as any });
     setFilterSchema({ ...filterSchema, object: obj as any });
   };
 

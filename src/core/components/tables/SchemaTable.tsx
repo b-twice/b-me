@@ -28,7 +28,7 @@ import { ObjectEntity } from "../forms/ObjectEntityType";
 import schemaTableReducer from "./SchemaTableReducer";
 import CoreTableToolbar from "./CoreTableToolbar";
 import { LookupEntityFilter } from "../forms/lookups/LookupEntity.interface";
-import CheckIcon from "@material-ui/icons/Check";
+import SchemaTableCell from "./SchemaTableCell";
 
 export type PaginatedResult = { count: number; items: ObjectEntity[] };
 export type TableFilter = { [key: string]: any };
@@ -97,25 +97,11 @@ function SchemaTable<T extends ObjectEntity>({
 
   // table
   const [headRows, setHeadRows] = useState<HeadRow[]>([]);
-  const [schema, setEditSchema] = React.useState<FormSchema<ObjectEntity>>(() =>
+  const [schema, setEditSchema] = useState<FormSchema<ObjectEntity>>(() =>
     getEntitySchema()
   );
 
   useEffect(() => dispatch({ type: "LOAD", page: page }), [page]);
-
-  useEffect(() => {
-    const createHeadRows = () =>
-      Object.entries(schema.properties).map(
-        ([property, fieldSchema]) =>
-          ({
-            id: property,
-            numeric: false,
-            disablePadding: false,
-            label: fieldSchema.title,
-          } as HeadRow)
-      );
-    setHeadRows(createHeadRows);
-  }, [schema]);
 
   function handleChangePage(
     event: React.MouseEvent<HTMLButtonElement> | null,
@@ -145,15 +131,28 @@ function SchemaTable<T extends ObjectEntity>({
   const [appMessage, setAppMessage] = React.useState("");
 
   useEffect(() => {
-    if (authContext.authenticated)
-      setHeadRows((prevHeadRows) => [
-        ...prevHeadRows,
-        { id: "actions", numeric: false, disablePadding: false, label: "" },
-      ]);
-    else {
-      setHeadRows((prevHeadRows) => [...prevHeadRows]);
-    }
-  }, [authContext.authenticated]);
+    const createHeadRows = () => {
+      const rows = Object.entries(schema.properties).map(
+        ([property, fieldSchema]) =>
+          ({
+            id: property,
+            numeric: false,
+            disablePadding: false,
+            label: fieldSchema.title,
+          } as HeadRow)
+      );
+      if (authContext.authenticated) {
+        rows.push({
+          id: "actions",
+          numeric: false,
+          disablePadding: false,
+          label: "",
+        });
+      }
+      return rows;
+    };
+    setHeadRows(createHeadRows);
+  }, [schema, authContext.authenticated]);
 
   function handleEdit(row?: T) {
     if (row && onChange) {
@@ -230,17 +229,12 @@ function SchemaTable<T extends ObjectEntity>({
               <TableRow key={row.id}>
                 {Object.entries(schema.properties).map(
                   ([property, fieldSchema]) => (
-                    <TableCell key={property}>
-                      {fieldSchema.type === "switch" && row[property] === 1 ? (
-                        <CheckIcon />
-                      ) : (
-                        <span></span>
-                      )}
-                      {fieldSchema.type !== "switch" &&
-                        (fieldSchema.getVal
-                          ? fieldSchema.getVal(row[property])
-                          : row[property])}
-                    </TableCell>
+                    <SchemaTableCell
+                      key={property}
+                      property={property}
+                      fieldSchema={fieldSchema}
+                      row={row}
+                    />
                   )
                 )}
                 {authContext.authenticated && (
@@ -257,8 +251,8 @@ function SchemaTable<T extends ObjectEntity>({
         </Table>
         <TablePagination
           rowsPerPageOptions={[config.rowsPerPage]}
-          component="div"
           count={state.count}
+          component="div"
           rowsPerPage={config.rowsPerPage}
           page={config.pageNumber}
           backIconButtonProps={{
@@ -267,7 +261,7 @@ function SchemaTable<T extends ObjectEntity>({
           nextIconButtonProps={{
             "aria-label": "next page",
           }}
-          onChangePage={handleChangePage}
+          onPageChange={handleChangePage}
         />
       </Paper>
       <AppSnackbar message={appMessage} onClose={() => setAppMessage("")} />

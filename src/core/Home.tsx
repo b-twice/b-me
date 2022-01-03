@@ -39,7 +39,7 @@ function Home() {
         spacing={3}
         container
         className={classes.container}
-        justify="center"
+        justifyContent="center"
       >
         <Grid item>
           <WeatherCard />

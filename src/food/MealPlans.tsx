@@ -1,4 +1,11 @@
 import React, { Fragment, useContext, useState, useEffect } from "react";
+import {
+  MealPlanSchemaContext,
+  MealPlanSchemaContextProvider,
+  MealPlanFilter,
+  MealPlansTableConfig,
+} from "./MealPlanSchemaContext";
+import { MealPlan } from "../common/client";
 import withProvider from "../core/components/withProvider";
 import SchemaTable, {
   PaginatedResult,
@@ -7,42 +14,30 @@ import SchemaTable, {
 } from "../core/components/tables/SchemaTable";
 import { FormSchema } from "../core/components/forms/SchemaForm";
 import { ObjectEntity } from "../core/components/forms/ObjectEntityType";
-import {
-  BlogPostSchemaContextProvider,
-  BlogPostSchemaContext,
-  PostsTableConfig,
-  PostFilter,
-} from "./BlogPostSchemaContext";
-import { Post } from "../common/client";
-import { LookupEntityFilter } from "../core/components/forms/lookups/LookupEntity.interface";
-import { BlogPostApi } from "../common/client/BlogPostApi";
+import { MealPlanApi } from "../common/client/FoodApi";
 
-function Posts() {
-  const schemaContext = useContext(BlogPostSchemaContext);
+function MealPlans() {
+  const schemaContext = useContext(MealPlanSchemaContext);
 
-  const [filterSchema, setFilterSchema] = useState<
-    FormSchema<LookupEntityFilter>
-  >(() => schemaContext.get({ type: "FILTER" }));
+  const [filterSchema, setFilterSchema] = useState<FormSchema<MealPlanFilter>>(
+    () => schemaContext.get({ type: "FILTER" })
+  );
   const [page, setPage] = React.useState<PaginatedResult>({
     items: [],
     count: 0,
   } as PaginatedResult);
-  const [config, setConfig] = React.useState<PostsTableConfig>({
+  const [config, setConfig] = React.useState<MealPlansTableConfig>({
     ...schemaTableConfig,
-    filter: schemaContext.get<PostFilter>({ type: "FILTER" }).object,
-    sort: "date_desc",
-    orderBy: "date",
-    order: "asc",
+    filter: schemaContext.get<MealPlanFilter>({ type: "FILTER" }).object,
   });
 
   useEffect(() => {
-    BlogPostApi.getBlogPostPage(
+    MealPlanApi.getPage(
       config.sort,
       config.pageNumber + 1,
       config.rowsPerPage,
-      config.filter.title,
-      config.filter.description,
-      config.filter.postGroup.map((b) => b.id as number)
+      config.filter.name,
+      config.filter.user.map((b) => b.id as number)
     ).then((result) => setPage(result as PaginatedResult));
   }, [config]);
 
@@ -55,32 +50,31 @@ function Posts() {
     obj !== undefined
       ? (schemaContext.get({
           type: "EDIT",
-          obj: obj as Post,
+          obj: obj as MealPlan,
         }) as FormSchema<ObjectEntity>)
       : (schemaContext.get({ type: "ADD" }) as FormSchema<ObjectEntity>);
-  const handleDeleteEntity = (obj: ObjectEntity) =>
-    BlogPostApi.deleteBlogPost(obj.id);
+  const handleDeleteEntity = (obj: ObjectEntity) => MealPlanApi.delete(obj.id);
   const handleOnPage = (pageConfig: SchemaTableConfig) =>
-    setConfig(pageConfig as PostsTableConfig);
+    setConfig(pageConfig as MealPlansTableConfig);
   const handleOnFilter = (obj: ObjectEntity) => {
-    setConfig({ ...config, pageNumber: 0, filter: obj as PostFilter });
-    setFilterSchema({ ...filterSchema, object: obj as PostFilter });
+    setConfig({ ...config, pageNumber: 0, filter: obj as MealPlanFilter });
+    setFilterSchema({ ...filterSchema, object: obj as MealPlanFilter });
   };
 
   return (
     <Fragment>
       <SchemaTable
         filterSchema={filterSchema as FormSchema<ObjectEntity>}
-        onFilter={handleOnFilter}
         getEntitySchema={handleGetEntitySchema}
         deleteEntity={handleDeleteEntity}
+        onFilter={handleOnFilter}
         page={page}
         onPage={handleOnPage}
         config={config}
-        title="Content"
+        title="Meal Plans"
       />
     </Fragment>
   );
 }
 
-export default withProvider(Posts, BlogPostSchemaContextProvider);
+export default withProvider(MealPlans, MealPlanSchemaContextProvider);

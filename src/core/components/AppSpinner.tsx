@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme: Theme) => {
 export default function AppSpinner() {
   const classes = useStyles();
   return (
-    <Grid container justify="center" alignItems="center">
+    <Grid container justifyContent="center" alignItems="center">
       <CircularProgress className={classes.progress} color="secondary" />
     </Grid>
   );

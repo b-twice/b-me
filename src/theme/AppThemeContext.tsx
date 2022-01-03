@@ -1,8 +1,8 @@
 import React, { useReducer } from "react";
 import { ThemeProvider } from "@material-ui/styles";
-import { createMuiTheme, Theme } from "@material-ui/core/styles";
+import { createTheme, Theme } from "@material-ui/core/styles";
 
-const lightTheme = createMuiTheme({
+const lightTheme = createTheme({
   palette: {
     primary: {
       main: "#ffffff",
@@ -16,7 +16,7 @@ const lightTheme = createMuiTheme({
   },
 });
 
-const darkTheme = createMuiTheme({
+const darkTheme = createTheme({
   palette: {
     primary: {
       main: "#212121",

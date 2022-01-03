@@ -42,7 +42,7 @@ function SpendingModalLineItem({
       [],
       [],
       category?.id ? [category.id] : [],
-      tag?.id ? [tag.id] : [],
+      tag?.id ? [tag.id] : [0],
       [year],
       []
     ).then((result) => setItems(result?.items ? result.items : null));

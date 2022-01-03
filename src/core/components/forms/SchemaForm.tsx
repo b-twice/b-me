@@ -41,6 +41,7 @@ export interface FormSchema<T> {
 
 type FieldType =
   | "text"
+  | "number"
   | "select"
   | "multiselect"
   | "date"
@@ -65,6 +66,11 @@ export interface FieldSchema {
 
 export interface TextFieldSchema extends FieldSchema {
   type: "text";
+  path?: (o: any) => string;
+}
+
+export interface NumberFieldSchema extends FieldSchema {
+  type: "number";
 }
 
 export interface SwitchFieldSchema extends FieldSchema {
