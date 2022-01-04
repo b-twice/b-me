@@ -1,5 +1,6 @@
 import { Fragment, useContext, useEffect, useState } from "react";
 import { PostGroup } from "../common/client";
+import { RouteItem } from "../core/components/GroupRouteLists";
 import LinkList from "../core/components/lists/LinkList";
 import { BlogContext } from "./BlogContext";
 
@@ -15,8 +16,16 @@ function BlogContentList() {
     <Fragment>
       {groups.map((g) => (
         <LinkList
+          key={g.id}
           title={g.name!}
-          links={g.posts as { path: string; title: string }[]}
+          links={
+            blogContext
+              .findRoutesByGroup(g)
+              .map((r) => r as RouteItem)
+              .sort((a, b) =>
+                a.title! > b.title! ? 1 : a.title! < b.title! ? -1 : 0
+              ) as { path: string; title: string }[]
+          }
         />
       ))}
     </Fragment>
