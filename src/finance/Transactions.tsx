@@ -53,7 +53,7 @@ function Transactions() {
   });
 
   useEffect(() => {
-    TransactionApi.getTransactions(
+    TransactionApi.getPage(
       config.sort,
       config.pageNumber + 1,
       config.rowsPerPage,
@@ -89,7 +89,7 @@ function Transactions() {
       : (schemaContext.get({ type: "ADD" }) as FormSchema<ObjectEntity>);
 
   const handleDeleteEntity = (obj: ObjectEntity) =>
-    TransactionApi.deleteTransaction(obj.id);
+    TransactionApi.delete(obj.id);
   const handleOnPage = (pageConfig: SchemaTableConfig) =>
     setConfig(pageConfig as TransactionTableConfig);
   const handleOnFilter = (obj: ObjectEntity) => {

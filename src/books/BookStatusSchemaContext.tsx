@@ -13,8 +13,8 @@ function BookStatusSchemaContextProvider({
 }: {
   children: JSX.Element;
 }) {
-  const add = (o: BookStatus) => BookStatusApi.createStatus(o);
-  const save = (o: BookStatus) => BookStatusApi.updateStatus(o.id as number, o);
+  const add = (o: BookStatus) => BookStatusApi.create(o);
+  const save = (o: BookStatus) => BookStatusApi.update(o.id as number, o);
 
   const contextProps = {
     get: (action) => {

@@ -26,7 +26,7 @@ function BookCategories() {
   );
 
   useEffect(() => {
-    BookCategoryApi.getCategoriesPage(
+    BookCategoryApi.getPage(
       config.sort,
       config.pageNumber + 1,
       config.rowsPerPage
@@ -42,7 +42,7 @@ function BookCategories() {
       : (schemaContext.get({ type: "ADD" }) as FormSchema<ObjectEntity>);
 
   const handleDeleteEntity = (obj: ObjectEntity) =>
-    BookCategoryApi.deleteCategory(obj.id);
+    BookCategoryApi.delete(obj.id);
   const handleOnPage = (pageConfig: SchemaTableConfig) => setConfig(pageConfig);
 
   return (

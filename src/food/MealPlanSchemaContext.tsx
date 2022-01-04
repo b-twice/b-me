@@ -44,7 +44,7 @@ function MealPlanSchemaContextProvider({
       label: string,
       value: string | number | undefined
     ) => ({ ...obj, label: label, value: value } as FormOptionType);
-    Promise.all([UserApi.getUsers(), RecipeApi.getAll()])
+    Promise.all([UserApi.getAll(), RecipeApi.getAll()])
       .then(([users, recipes]) => {
         setUsers(users.map((r) => setOption(r, r.name as string, r.id)));
         setRecipes(recipes.map((r) => setOption(r, r.name as string, r.id)));

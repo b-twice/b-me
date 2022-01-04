@@ -28,7 +28,7 @@ function BookStatuses() {
   });
 
   useEffect(() => {
-    BookStatusApi.getStatusesPage(
+    BookStatusApi.getPage(
       config.sort,
       config.pageNumber + 1,
       config.rowsPerPage
@@ -43,7 +43,7 @@ function BookStatuses() {
         }) as FormSchema<ObjectEntity>)
       : (schemaContext.get({ type: "ADD" }) as FormSchema<ObjectEntity>);
   const handleDeleteEntity = (obj: ObjectEntity) =>
-    BookStatusApi.deleteStatus(obj.id);
+    BookStatusApi.delete(obj.id);
   const handleOnPage = (pageConfig: SchemaTableConfig) => setConfig(pageConfig);
 
   return (

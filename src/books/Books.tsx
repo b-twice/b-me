@@ -32,7 +32,7 @@ function Books() {
   });
 
   useEffect(() => {
-    BookApi.getBookPage(
+    BookApi.getPage(
       config.sort,
       config.pageNumber + 1,
       config.rowsPerPage,
@@ -56,7 +56,7 @@ function Books() {
           obj: obj as Book,
         }) as FormSchema<ObjectEntity>)
       : (schemaContext.get({ type: "ADD" }) as FormSchema<ObjectEntity>);
-  const handleDeleteEntity = (obj: ObjectEntity) => BookApi.deleteBook(obj.id);
+  const handleDeleteEntity = (obj: ObjectEntity) => BookApi.delete(obj.id);
   const handleOnPage = (pageConfig: SchemaTableConfig) =>
     setConfig(pageConfig as BooksTableConfig);
   const handleOnFilter = (obj: ObjectEntity) => {

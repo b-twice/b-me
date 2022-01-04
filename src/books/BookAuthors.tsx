@@ -33,7 +33,7 @@ function BookAuthors() {
   });
 
   useEffect(() => {
-    BookAuthorApi.getAuthorsPage(
+    BookAuthorApi.getPage(
       config.sort,
       config.pageNumber + 1,
       config.rowsPerPage,
@@ -49,7 +49,7 @@ function BookAuthors() {
         }) as FormSchema<ObjectEntity>)
       : (schemaContext.get({ type: "ADD" }) as FormSchema<ObjectEntity>);
   const handleDeleteEntity = (obj: ObjectEntity) =>
-    BookAuthorApi.deleteAuthor(obj.id);
+    BookAuthorApi.delete(obj.id);
   const handleOnPage = (pageConfig: SchemaTableConfig) => setConfig(pageConfig);
   const handleOnFilter = (obj: ObjectEntity) => {
     setConfig({ ...config, pageNumber: 0, filter: obj as LookupEntityFilter });

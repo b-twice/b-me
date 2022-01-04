@@ -9,16 +9,15 @@ import {
   List,
   ListItemText,
   ListItem,
-  ListItemIcon,
   CardActions,
   Button,
   Divider,
 } from "@material-ui/core";
 import AppLink from "../core/components/AppLink";
-import { Book } from "../common/client";
-import { BookApi } from "../common/client/BookApi";
-import BookIcon from "@material-ui/icons/Book";
+import { Recipe } from "../common/client";
 import AppSpinner from "../core/components/AppSpinner";
+import { RecipeApi } from "../common/client/FoodApi";
+import { Link } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -28,23 +27,23 @@ const useStyles = makeStyles((theme: Theme) => {
   });
 });
 
-function RecentBooksCard() {
+function RecentRecipesCard() {
   const classes = useStyles();
 
-  const [books, setBooks] = useState<Array<Book>>([]);
+  const [recipes, setRecipes] = useState<Array<Recipe>>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
 
   useEffect(() => {
-    BookApi.getAll(5)
-      .then((books) => {
-        setBooks(books);
+    RecipeApi.getRecent(5)
+      .then((recipes) => {
+        setRecipes(recipes);
         setIsLoading(false);
       })
       .catch((err) => {
-        setError(`Error fetching books: ${err.message}`);
+        setError(`Error fetching recipes: ${err.message}`);
         setIsLoading(false);
-        setBooks([]);
+        setRecipes([]);
       });
   }, []);
 
@@ -52,7 +51,7 @@ function RecentBooksCard() {
     <Card className={classes.card}>
       <CardContent>
         <Typography variant="h5" component="h2" gutterBottom>
-          Reading List
+          Recent Recipes
         </Typography>
         {isLoading ? (
           <AppSpinner />
@@ -63,17 +62,24 @@ function RecentBooksCard() {
                 {error}
               </Typography>
             )}
-            {books.map((book) => (
-              <ListItem key={book.id}>
-                {book.bookStatus && book.bookStatus.keyword === "STARTED" && (
-                  <ListItemIcon>
-                    <BookIcon color="secondary" />
-                  </ListItemIcon>
+            {recipes.map((recipe) => (
+              <ListItem key={recipe.id}>
+                {recipe.url && (
+                  <ListItemText
+                    primary={
+                      <Link color="secondary" href={recipe.url}>
+                        {recipe.name}
+                      </Link>
+                    }
+                    secondary={recipe.cookbook?.name}
+                  />
                 )}
-                <ListItemText
-                  primary={book.name}
-                  secondary={book.bookAuthor ? book.bookAuthor.name : null}
-                />
+                {!recipe.url && (
+                  <ListItemText
+                    primary={recipe.name}
+                    secondary={recipe.cookbook?.name}
+                  />
+                )}
               </ListItem>
             ))}
           </List>
@@ -81,7 +87,7 @@ function RecentBooksCard() {
       </CardContent>
       <Divider />
       <CardActions>
-        <AppLink to="/reading/books" exact={true}>
+        <AppLink to="/food/recipes" exact={true}>
           <Button size="small" color="secondary">
             View More
           </Button>
@@ -91,4 +97,4 @@ function RecentBooksCard() {
   );
 }
 
-export default RecentBooksCard;
+export default RecentRecipesCard;

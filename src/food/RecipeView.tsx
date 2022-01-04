@@ -16,6 +16,7 @@ import {
   RecipeIngredientSchemaContext,
   RecipeIngredientSchemaContextProvider,
 } from "./RecipeIngredientSchemaConext";
+import { Link } from "@material-ui/core";
 
 type RecipeIngredientEdit = RecipeIngredient & ListObjectEntity;
 
@@ -40,7 +41,6 @@ function RecipeView() {
     ({
       ...r,
       name: `${r.measurement} ${r.foodProduct?.name}`,
-      // path: `/food/recipes/${mr.recipe?.id}`,
     } as RecipeIngredientEdit);
 
   const handleDelete = (mr: RecipeIngredientEdit) =>
@@ -111,7 +111,12 @@ function RecipeView() {
   };
   return (
     <Fragment>
-      <h1>{recipe?.name}</h1>
+      {recipe?.url && (
+        <Link color="secondary" href={recipe?.url}>
+          <h1>{recipe?.name}</h1>
+        </Link>
+      )}
+      {!recipe?.url && <h1>{recipe?.name}</h1>}
       <SchemaList
         title="Ingredients"
         getEntitySchema={getEntitySchema}

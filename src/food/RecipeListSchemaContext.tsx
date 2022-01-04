@@ -59,7 +59,7 @@ function RecipeSchemaContextProvider({ children }: { children: JSX.Element }) {
       value: string | number | undefined
     ) => ({ ...obj, label: label, value: value } as FormOptionType);
     Promise.all([
-      UserApi.getUsers(),
+      UserApi.getAll(),
       RecipeCategoryApi.getAll(),
       CookbookApi.getAll(),
       FoodProductApi.getAll(),

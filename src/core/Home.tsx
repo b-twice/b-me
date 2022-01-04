@@ -8,6 +8,7 @@ import {
 } from "@material-ui/core";
 import RecentBooksCard from "../books/RecentBooksCard";
 import WeatherCard from "../weather/WeatherCard";
+import RecentRecipesCard from "../food/RecentRecipes";
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -46,6 +47,9 @@ function Home() {
         </Grid>
         <Grid item>
           <RecentBooksCard />
+        </Grid>
+        <Grid item>
+          <RecentRecipesCard />
         </Grid>
       </Grid>
     </Fragment>

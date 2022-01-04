@@ -22,10 +22,11 @@ const useStyles = makeStyles((theme: Theme) => {
 function ListItemLink(props: {
   path: string;
   name: string;
+  secondary?: string;
   onClick?(): void;
   nested?: boolean;
 }) {
-  const { path, name, onClick, nested } = props;
+  const { path, name, onClick, nested, secondary } = props;
   const classes = useStyles();
   return (
     <NavLink
@@ -36,7 +37,7 @@ function ListItemLink(props: {
       className={classes.link}
     >
       <ListItem className={clsx({ [classes.listNested]: nested })} button>
-        <ListItemText primary={name} />
+        <ListItemText primary={name} secondary={secondary} />
       </ListItem>
     </NavLink>
   );

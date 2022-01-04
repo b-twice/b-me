@@ -77,7 +77,7 @@ function WeatherCard() {
           ])
         );
       Promise.all([
-        WeatherApi.getForecast(latitude, longitude),
+        WeatherApi.get(latitude, longitude),
         process.env.NODE_ENV === "production"
           ? GeocodeApi.reverse(latitude, longitude)
           : createDevLocationPromise(),

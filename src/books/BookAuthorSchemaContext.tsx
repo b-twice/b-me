@@ -16,8 +16,8 @@ function BookAuthorSchemaContextProvider({
 }: {
   children: JSX.Element;
 }) {
-  const add = (o: BookAuthor) => BookAuthorApi.createAuthor(o);
-  const save = (o: BookAuthor) => BookAuthorApi.updateAuthor(o.id as number, o);
+  const add = (o: BookAuthor) => BookAuthorApi.create(o);
+  const save = (o: BookAuthor) => BookAuthorApi.update(o.id as number, o);
 
   const contextProps = {
     get: (action) => {

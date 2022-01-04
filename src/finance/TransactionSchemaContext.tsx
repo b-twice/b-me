@@ -121,10 +121,10 @@ function TransactionSchemaContextProvider({
       value: string | number | undefined
     ) => ({ ...obj, label: label, value: value } as FormOptionType);
     Promise.all([
-      BankApi.getBanks(),
-      TransactionCategoryApi.getTransactionCategories(),
-      UserApi.getUsers(),
-      TransactionTagApi.getTransactionTags(),
+      BankApi.getAll(),
+      TransactionCategoryApi.getAll(),
+      UserApi.getAll(),
+      TransactionTagApi.getAll(),
     ])
       .then(([banks, categories, users, tags]) => {
         setBanks(banks.map((r) => setOption(r, r.name as string, r.id)));
@@ -255,11 +255,9 @@ function TransactionSchemaContextProvider({
   } as FormSchema<TransactionFilter>;
 
   const add = (obj: TransactionTableRecord) =>
-    TransactionApi.createTransaction(
-      transactionUtility.mapToTransactionRecord(obj)
-    );
+    TransactionApi.create(transactionUtility.mapToTransactionRecord(obj));
   const save = (obj: TransactionTableRecord) =>
-    TransactionApi.updateTransaction(
+    TransactionApi.update(
       obj.id as number,
       transactionUtility.mapToTransactionRecord(obj)
     );

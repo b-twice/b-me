@@ -33,7 +33,7 @@ function SpendingModalLineItem({
   const classes = useStyles();
 
   const getSummary = () => {
-    TransactionApi.getTransactions(
+    TransactionApi.getPage(
       "date_desc",
       1,
       100,

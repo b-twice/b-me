@@ -1,5 +1,6 @@
 import React, {
   Fragment,
+  useContext,
   useEffect,
   useReducer,
   useRef,
@@ -23,6 +24,7 @@ import { ListObjectEntity } from "../forms/ObjectEntityType";
 import { FormSchema } from "../forms/SchemaForm";
 import ListItemLink from "../ListItemLink";
 import listReducer from "./ListReducer";
+import { AuthContext } from "../../Auth";
 
 interface SchemaListProps<T> {
   rows: T[];
@@ -45,6 +47,7 @@ function SchemaList<T extends ListObjectEntity>({
   rows,
   onChange,
 }: SchemaListProps<T>) {
+  const authContext = useContext(AuthContext);
   const modalRef = useRef<EditModalRef>(null);
   const [state, dispatch] = useReducer(listReducer<T>(), []);
   const [appMessage, setAppMessage] = React.useState("");
@@ -132,12 +135,16 @@ function SchemaList<T extends ListObjectEntity>({
               {o.path && <ListItemLink path={o.path} name={o.name!} />}
               {!o.path && o.name}
             </ListItemText>
-            <IconButton onClick={() => handleEdit(o)}>
-              <EditIcon color="inherit" />
-            </IconButton>
-            <IconButton onClick={() => handleDelete(o)}>
-              <DeleteIcon color="inherit" />
-            </IconButton>
+            {authContext.authenticated && (
+              <Fragment>
+                <IconButton onClick={() => handleEdit(o)}>
+                  <EditIcon color="inherit" />
+                </IconButton>
+                <IconButton onClick={() => handleDelete(o)}>
+                  <DeleteIcon color="inherit" />
+                </IconButton>
+              </Fragment>
+            )}
           </ListItem>
         ))}
       </List>
@@ -148,13 +155,16 @@ function SchemaList<T extends ListObjectEntity>({
         onSaveSuccess={handleOnEditSaveSuccess}
         onChange={handleOnFormChange}
       />
-      <Button
-        color="secondary"
-        variant="contained"
-        onClick={() => handleEdit()}
-      >
-        Add
-      </Button>
+
+      {authContext.authenticated && (
+        <Button
+          color="secondary"
+          variant="contained"
+          onClick={() => handleEdit()}
+        >
+          Add
+        </Button>
+      )}
     </Fragment>
   );
 }

@@ -13,9 +13,8 @@ function BookCategorySchemaContextProvider({
 }: {
   children: JSX.Element;
 }) {
-  const add = (o: BookCategory) => BookCategoryApi.createCategory(o);
-  const save = (o: BookCategory) =>
-    BookCategoryApi.updateCategory(o.id as number, o);
+  const add = (o: BookCategory) => BookCategoryApi.create(o);
+  const save = (o: BookCategory) => BookCategoryApi.update(o.id as number, o);
 
   const bookEditProps = {
     get: (action) => {

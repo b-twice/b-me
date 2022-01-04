@@ -54,9 +54,9 @@ function BookSchemaContextProvider({ children }: { children: JSX.Element }) {
       value: string | number | undefined
     ) => ({ ...obj, label: label, value: value } as FormOptionType);
     Promise.all([
-      BookAuthorApi.getAuthors(),
-      BookCategoryApi.getCategories(),
-      BookStatusApi.getStatuses(),
+      BookAuthorApi.getAll(),
+      BookCategoryApi.getAll(),
+      BookStatusApi.getAll(),
     ])
       .then(([authors, categories, statuses]) => {
         setAuthors(authors.map((r) => setOption(r, r.name as string, r.id)));
@@ -155,8 +155,8 @@ function BookSchemaContextProvider({ children }: { children: JSX.Element }) {
     save: (book: Book) => Promise.resolve(null), // Bypass saving, and apply the filter higher up in a get request
   } as FormSchema<BookFilter>;
 
-  const add = (book: Book) => BookApi.createBook(book);
-  const save = (book: Book) => BookApi.updateBook(book.id as number, book);
+  const add = (book: Book) => BookApi.create(book);
+  const save = (book: Book) => BookApi.update(book.id as number, book);
 
   const bookEditProps = {
     get: (action) => {
