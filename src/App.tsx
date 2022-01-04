@@ -11,7 +11,7 @@ import { AppThemeContextProvider } from "./theme/AppThemeContext";
 function App() {
   return (
     <AppThemeContextProvider>
-      <Router basename="/me">
+      <Router basename="/">
         <CssBaseline />
         <AuthProvider>
           <BlogProvider>
