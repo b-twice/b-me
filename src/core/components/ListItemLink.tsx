@@ -30,11 +30,11 @@ function ListItemLink(props: {
   const classes = useStyles();
   return (
     <NavLink
-      exact
       to={path}
       onClick={onClick}
-      activeClassName={classes.linkActive}
-      className={classes.link}
+      className={({ isActive }) =>
+        clsx(classes.link, isActive ? classes.linkActive : undefined)
+      }
     >
       <ListItem className={clsx({ [classes.listNested]: nested })} button>
         <ListItemText primary={name} secondary={secondary} />

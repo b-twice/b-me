@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import auth0, { AuthOptions } from "auth0-js";
 
-import { Route, Redirect, RouteProps } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 
 const AuthContext = React.createContext({} as AuthProps);
 
@@ -89,31 +89,19 @@ interface AuthProps {
   username: string;
 }
 
-interface PrivateRouteProps extends RouteProps {
-  component: React.ComponentType<any>;
+function RequireAuth({ children }: { children: JSX.Element }): JSX.Element {
+  const auth = useContext(AuthContext);
+  let location = useLocation();
+
+  if (!auth.authenticated) {
+    // Redirect them to the /login page, but save the current location they were
+    // trying to go to when they were redirected. This allows us to send them
+    // along to that page after they login, which is a nicer user experience
+    // than dropping them off on the home page.
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  return children;
 }
 
-function PrivateRoute(props: PrivateRouteProps): JSX.Element {
-  let { component: Component, ...rest } = props;
-
-  const authContext = useContext(AuthContext);
-  return (
-    <Route
-      {...rest}
-      render={(props) =>
-        authContext.authenticated ? (
-          <Component {...props} />
-        ) : (
-          <Redirect
-            to={{
-              pathname: "/login",
-              state: { from: props.location },
-            }}
-          />
-        )
-      }
-    />
-  );
-}
-
-export { PrivateRoute, AuthProvider, AuthContext };
+export { RequireAuth, AuthProvider, AuthContext };

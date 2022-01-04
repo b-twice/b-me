@@ -1,7 +1,6 @@
-import React, { useContext, useState, Fragment, useEffect } from "react";
+import React, { useContext, useState, Fragment } from "react";
 import { AuthContext } from "./Auth";
 
-import { withRouter, RouteComponentProps } from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import {
@@ -21,11 +20,10 @@ import {
 import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import { BlogContext } from "../blog/BlogContext";
 import AppLink from "./components/AppLink";
-import GroupRouteList, { RouteItem } from "./components/GroupRouteLists";
+import GroupRouteList from "./components/GroupRouteLists";
 import ThemeToggleButton from "./components/ThemeToggleButton";
-import { PostGroup } from "../common/client";
+import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme: Theme) => {
@@ -100,74 +98,52 @@ function ElevationScroll(props: any) {
   });
 }
 
-function Header({ history }: RouteComponentProps) {
+function Header() {
+  const navigate = useNavigate();
   const authContext = useContext(AuthContext);
-  const blogContext = useContext(BlogContext);
 
   const classes = useStyles();
   const theme = useTheme();
 
-  const logout = () => authContext.logout(() => history.push("/"));
+  const logout = () => authContext.logout(() => navigate("/"));
 
   const [open, setOpen] = useState(false);
   const handleDrawerToggle = () => setOpen(!open);
   const handleDrawerClose = () => setOpen(false);
 
-  const [groups, setGroups] = useState<PostGroup[]>([]);
-
-  useEffect(() => {
-    setGroups(blogContext.groups);
-  }, [blogContext]);
-
   const drawer = (
     <Fragment>
       <Toolbar />
       <List component="div" className={classes.contentList}>
-        <AppLink to="/" exact={true} onClick={handleDrawerClose}>
-          <ListItem button>
-            <ListItemText
-              primary="Home"
-              classes={{ primary: classes.listTitle }}
-            />
-          </ListItem>
-        </AppLink>
-        {groups.map((group) => (
-          <GroupRouteList
-            title={group.name!}
-            items={blogContext
-              .findRoutesByGroup(group)
-              .map((r) => r as RouteItem)
-              .sort((a, b) =>
-                a.title! > b.title! ? 1 : a.title! < b.title! ? -1 : 0
-              )}
-            onClick={handleDrawerClose}
-            key={group.id}
-            history={history}
-            nested={true}
-          />
-        ))}
         {authContext.authenticated && (
           <GroupRouteList
             title="Admin"
             onClick={handleDrawerClose}
-            history={history}
             items={[
-              { path: "/admin/content", title: "Content" },
-              { path: "/food/admin", title: "Food" },
-              { path: "/reading/admin", title: "Reading" },
+              { path: "admin/content", title: "Content" },
+              { path: "admin/food", title: "Food" },
+              { path: "admin/reading", title: "Reading" },
             ]}
             nested={true}
           />
         )}
+        <AppLink to="/content" onClick={handleDrawerClose}>
+          <ListItem button>
+            <ListItemText
+              primary="Content"
+              classes={{ primary: classes.listTitle }}
+            />
+          </ListItem>
+        </AppLink>
+
         {authContext.authenticated && (
           <GroupRouteList
             title="Finance"
             onClick={handleDrawerClose}
-            history={history}
             items={[
-              { path: "/finance/dashboard", title: "Dashboard" },
-              { path: "/finance/transactions", title: "Transactions" },
-              { path: "/finance/expenses", title: "Expenses" },
+              { path: "finance/dashboard", title: "Dashboard" },
+              { path: "finance/transactions", title: "Transactions" },
+              { path: "finance/expenses", title: "Expenses" },
             ]}
             nested={true}
           />
@@ -175,14 +151,13 @@ function Header({ history }: RouteComponentProps) {
         <GroupRouteList
           title="Food"
           onClick={handleDrawerClose}
-          history={history}
           items={[
             { path: "/food/mealPlans", title: "Meal Plans" },
             { path: "/food/recipes", title: "Recipes" },
           ]}
           nested={true}
         />
-        <AppLink to="/reading/books" exact={true} onClick={handleDrawerClose}>
+        <AppLink to="/reading" onClick={handleDrawerClose}>
           <ListItem button>
             <ListItemText
               primary="Reading List"
@@ -219,7 +194,7 @@ function Header({ history }: RouteComponentProps) {
                 <ExitToAppIcon />
               </IconButton>
             ) : (
-              <AppLink to="/login">
+              <AppLink to="login">
                 <IconButton color="inherit" aria-label="login">
                   <AccountCircleIcon />
                 </IconButton>
@@ -261,4 +236,4 @@ function Header({ history }: RouteComponentProps) {
   );
 }
 
-export default withRouter(Header);
+export default Header;

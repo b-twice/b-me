@@ -1,7 +1,5 @@
 import React, { useState, Fragment, useContext } from "react";
 
-import { Redirect } from "react-router-dom";
-import { RouteChildrenProps } from "react-router";
 import {
   Input,
   FormControl,
@@ -14,6 +12,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles, createStyles } from "@material-ui/styles";
 import { AuthContext } from "./Auth";
+import { Navigate, useLocation } from "react-router-dom";
 
 const useLoginStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -33,12 +32,13 @@ const useLoginStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function Login(props: RouteChildrenProps): JSX.Element {
+export default function Login(): JSX.Element {
+  const location = useLocation();
   const [username, setUsername] = useState("");
   const [pw, setPw] = useState("");
   const [error, setError] = useState(false);
   const [disabled, setDisabled] = useState(false);
-  let { from } = (props.location.state as any) || { from: { pathname: "/" } };
+  let { from } = (location.state as any) || { from: { pathname: "/" } };
   const classes = useLoginStyles();
 
   function onLogin(err: any, result: any): void {
@@ -60,7 +60,7 @@ export default function Login(props: RouteChildrenProps): JSX.Element {
   return (
     <Fragment>
       {authContext.authenticated ? (
-        <Redirect to={from} />
+        <Navigate to={from} />
       ) : (
         <Container maxWidth="sm">
           <Paper className={classes.paper}>

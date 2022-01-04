@@ -33,7 +33,7 @@ function SchemaTableCell({ property, fieldSchema, row }: SchemaTableCellProps) {
   else if (fieldSchema.type === "text" && (fieldSchema as TextFieldSchema).path)
     return (
       <TableCell>
-        <NavLink exact to={path} className={classes.link}>
+        <NavLink to={path} className={classes.link}>
           {fieldSchema.getVal
             ? fieldSchema.getVal(row[property])
             : row[property]}

@@ -1,6 +1,6 @@
-import React from "react";
 import { NavLink, NavLinkProps } from "react-router-dom";
 import { createStyles, makeStyles, Theme } from "@material-ui/core";
+import clsx from "clsx";
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -20,8 +20,9 @@ const AppLink = (props: NavLinkProps) => {
   return (
     <NavLink
       {...props}
-      activeClassName={classes.linkActive}
-      className={classes.link}
+      className={({ isActive }) =>
+        clsx(classes.link, isActive ? classes.linkActive : undefined)
+      }
     />
   );
 };

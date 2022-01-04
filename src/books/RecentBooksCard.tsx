@@ -81,7 +81,7 @@ function RecentBooksCard() {
       </CardContent>
       <Divider />
       <CardActions>
-        <AppLink to="/reading/books" exact={true}>
+        <AppLink to="/reading">
           <Button size="small" color="secondary">
             View More
           </Button>

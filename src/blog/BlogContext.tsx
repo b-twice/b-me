@@ -44,6 +44,7 @@ function BlogProvider(props: any) {
    * @param path
    */
   function findPostItemByPath(path: string): Post | undefined {
+    path = formatPostUrl(path);
     return routes.find((r) => r.path === path);
   }
   function formatPostUrl(path: string): string {

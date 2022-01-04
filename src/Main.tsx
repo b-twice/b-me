@@ -1,17 +1,15 @@
-import React from "react";
 import { makeStyles, createStyles } from "@material-ui/styles";
 import { Theme, Toolbar, Container, Box } from "@material-ui/core";
 import Header from "./core/Header";
-import { Route } from "react-router";
+import { Outlet, Route, Routes } from "react-router";
 import Home from "./core/Home";
 import BlogContentRoute from "./blog/BlogContentRoute";
 import Login from "./core/Login";
-import ScrollToTop from "./core/components/ScrollToTop";
 import Books from "./books/Books";
 import BookAuthors from "./books/BookAuthors";
 import BookCategories from "./books/BookCategories";
 import BookStatuses from "./books/BookStatuses";
-import { PrivateRoute } from "./core/Auth";
+import { RequireAuth } from "./core/Auth";
 import Transactions from "./finance/Transactions";
 import FinanceDashboard from "./finance/Dashboard";
 import FinanceExpenses from "./finance/Expenses";
@@ -28,6 +26,7 @@ import FoodAdmin from "./food/FoodAdmin";
 import ReadingAdmin from "./books/ReadingAdmin";
 import MealPlanView from "./food/MealPlanView";
 import RecipeView from "./food/RecipeView";
+import BlogContentList from "./blog/BlogContentList";
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -57,96 +56,78 @@ function Main() {
         <Toolbar />
         <Container className={classes.container}>
           <Box my={4}>
-            <ScrollToTop>
-              <Route exact path="/" component={Home} />
-              <Route exact path="/content/*" component={BlogContentRoute} />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="content" element={<Outlet />}>
+                <Route path="*" element={<BlogContentRoute />} />
+                <Route path="" element={<BlogContentList />} />
+              </Route>
 
-              <PrivateRoute exact path="/admin/content" component={BlogPosts} />
+              <Route path="content" element={<BlogPosts />} />
 
-              <PrivateRoute
-                exact
-                path="/finance/dashboard"
-                component={FinanceDashboard}
-              />
-              <PrivateRoute
-                exact
-                path="/finance/transactions"
-                component={Transactions}
-              />
-              <PrivateRoute
-                exact
-                path="/finance/expenses"
-                component={FinanceExpenses}
-              />
-
-              <Route exact path="/reading/books" component={Books} />
-              <PrivateRoute
-                exact
-                path="/reading/admin"
-                component={ReadingAdmin}
-              />
-              <PrivateRoute
-                exact
-                path="/reading/authors"
-                component={BookAuthors}
-              />
-              <PrivateRoute
-                exact
-                path="/reading/categories"
-                component={BookCategories}
-              />
-              <PrivateRoute
-                exact
-                path="/reading/statuses"
-                component={BookStatuses}
-              />
-
-              <PrivateRoute
-                exact
-                path="/food/cookbookAuthors"
-                component={CookbookAuthors}
-              />
-              <PrivateRoute
-                exact
-                path="/food/cookbooks"
-                component={Cookbooks}
-              />
-              <PrivateRoute
-                exact
-                path="/food/supermarkets"
-                component={Supermarkets}
-              />
-              <PrivateRoute
-                exact
-                path="/food/productCategories"
-                component={FoodCategories}
-              />
-              <PrivateRoute
-                exact
-                path="/food/recipeCategories"
-                component={RecipeCategories}
-              />
-              <PrivateRoute
-                exact
-                path="/food/products"
-                component={FoodProducts}
-              />
               <Route
-                exact
-                path="/food/recipes/:recipeId"
-                component={RecipeView}
-              />
-              <Route exact path="/food/recipes" component={RecipeList} />
-              <Route
-                exact
-                path="/food/mealPlans/:mealPlanId"
-                component={MealPlanView}
-              />
-              <Route exact path="/food/mealPlans" component={MealPlans}></Route>
-              <PrivateRoute exact path="/food/admin" component={FoodAdmin} />
+                path="admin"
+                element={
+                  <RequireAuth>
+                    <Outlet />
+                  </RequireAuth>
+                }
+              >
+                <Route path="content" element={<BlogPosts />} />
 
-              <Route exact path="/login" component={Login} />
-            </ScrollToTop>
+                <Route path="reading" element={<Outlet />}>
+                  <Route path="authors" element={<BookAuthors />} />
+                  <Route path="categories" element={<BookCategories />} />
+                  <Route path="statuses" element={<BookStatuses />} />
+                  <Route path="" element={<ReadingAdmin />} />
+                </Route>
+
+                <Route path="food" element={<Outlet />}>
+                  <Route path="cookbookAuthors" element={<CookbookAuthors />} />
+                  <Route path="cookbooks" element={<Cookbooks />} />
+                  <Route path="supermarkets" element={<Supermarkets />} />
+                  <Route
+                    path="productCategories"
+                    element={<FoodCategories />}
+                  />
+                  <Route
+                    path="recipeCategories"
+                    element={<RecipeCategories />}
+                  />
+                  <Route path="products" element={<FoodProducts />} />
+                  <Route path="" element={<FoodAdmin />} />
+                </Route>
+              </Route>
+
+              <Route
+                path="finance"
+                element={
+                  <RequireAuth>
+                    <Outlet />
+                  </RequireAuth>
+                }
+              >
+                <Route path="dashboard" element={<FinanceDashboard />} />
+                <Route path="transactions" element={<Transactions />} />
+                <Route path="expenses" element={<FinanceExpenses />} />
+              </Route>
+
+              <Route path="reading" element={<Books />} />
+
+              <Route path="food" element={<Outlet />}>
+                <Route path="recipes" element={<Outlet />}>
+                  <Route path=":recipeId" element={<RecipeView />} />
+                  <Route path="" element={<RecipeList />} />
+                </Route>
+
+                <Route path="mealPlans" element={<Outlet />}>
+                  <Route path=":mealPlanId" element={<MealPlanView />} />
+                  <Route path="" element={<MealPlans />} />
+                </Route>
+              </Route>
+
+              <Route path="login" element={<Login />} />
+            </Routes>
           </Box>
         </Container>
       </main>
