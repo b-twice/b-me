@@ -4,7 +4,7 @@ import {
   SelectFieldSchema,
   TextFieldSchema,
   MultiSelectFieldSchema,
-  NumberFieldSchema,
+  DateFieldSchema,
 } from "../core/components/forms/SchemaForm";
 import FormOptionType from "../core/components/forms/FormOptionType";
 import { MealPlan, Recipe, User } from "../common/client";
@@ -14,10 +14,14 @@ import { Omit } from "@material-ui/types";
 import getLookupName from "../core/components/forms/lookups/getLookupName";
 import { SchemaTableConfig } from "../core/components/tables/SchemaTable";
 import { UserApi } from "../common/client/AdminApi";
+import FormYearOptions from "../core/components/forms/FormYearOptions";
+import FormMonthOptions from "../core/components/forms/FormMonthOptions";
 
 export interface MealPlanFilter extends Omit<MealPlan, "user"> {
   user: User[];
   recipe: Recipe[];
+  year: FormOptionType[];
+  month: FormOptionType[];
 }
 
 export interface MealPlansTableConfig
@@ -71,16 +75,11 @@ function MealPlanSchemaContextProvider({
         required: false,
         getVal: getLookupName,
       } as SelectFieldSchema,
-      [propertyOf("days")]: {
-        title: "Days",
-        type: "number",
-        required: false,
-      } as NumberFieldSchema,
-      [propertyOf("notes")]: {
-        title: "Notes",
-        type: "text",
-        required: false,
-      } as TextFieldSchema,
+      [propertyOf("date")]: {
+        title: "Date",
+        type: "date",
+        required: true,
+      } as DateFieldSchema,
     },
     object: {} as MealPlan,
   } as FormSchema<MealPlan>;
@@ -106,11 +105,25 @@ function MealPlanSchemaContextProvider({
         required: false,
         getVal: getLookupName,
       } as MultiSelectFieldSchema,
+      year: {
+        title: "Years",
+        type: "multiselect",
+        required: false,
+        options: FormYearOptions,
+      } as MultiSelectFieldSchema,
+      month: {
+        title: "Months",
+        type: "multiselect",
+        required: false,
+        options: FormMonthOptions,
+      } as MultiSelectFieldSchema,
     },
     object: {
       name: "",
       user: [],
       recipe: [],
+      year: [],
+      month: [],
     } as MealPlanFilter,
     type: "FILTER",
     save: (o: MealPlan) => Promise.resolve(null), // Bypass saving, and apply the filter higher up in a get request

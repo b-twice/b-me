@@ -15,7 +15,7 @@ import { LookupEntity } from "../core/components/forms/lookups/LookupEntity.inte
 import EditSchemaContextProps from "../core/components/forms/EditSchemaContextProps.interface";
 import FormYearOptions from "../core/components/forms/FormYearOptions";
 import currencyFormatter from "../core/components/formatters/CurrencyFormatter";
-import FormMonthOptions from "../core/components/forms/FormMonthOptions.tsx";
+import FormMonthOptions from "../core/components/forms/FormMonthOptions";
 import FormOptionType from "../core/components/forms/FormOptionType";
 import { FinanceApi } from "../common/client/FinanceApi";
 import getLookupName from "../core/components/forms/lookups/getLookupName";

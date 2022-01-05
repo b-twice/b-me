@@ -20,6 +20,7 @@ export default function SchemaFormSelect({
       options={schema.options}
       helperText={schema.helperText}
       obj={obj[property]}
+      disabled={schema.disabled}
       valueProperty="id"
       labelProperty="name"
       onChange={handleChange}

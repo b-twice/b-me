@@ -26,7 +26,12 @@ function FinancialSummaryLineItem({
         button
         content={
           <Typography variant="subtitle2" color="textPrimary">
-            <Grid container direction="row" justify="space-between" spacing={0}>
+            <Grid
+              container
+              direction="row"
+              justifyContent="space-between"
+              spacing={0}
+            >
               <Grid item>{title}</Grid>
               <Grid item>{currencyFormatter.format(amount)}</Grid>
             </Grid>

@@ -29,7 +29,7 @@ import {
 import { UserApi } from "../common/client/AdminApi";
 import FormYearOptions from "../core/components/forms/FormYearOptions";
 import currencyFormatter from "../core/components/formatters/CurrencyFormatter";
-import FormMonthOptions from "../core/components/forms/FormMonthOptions.tsx";
+import FormMonthOptions from "../core/components/forms/FormMonthOptions";
 import { SchemaTableConfig } from "../core/components/tables/SchemaTable";
 
 export const transactionUtility = {

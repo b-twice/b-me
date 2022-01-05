@@ -1,13 +1,17 @@
+import moment from "moment";
 import FormOptionType from "./FormOptionType";
 
-export default [
-  "2022",
-  "2021",
-  "2020",
-  "2019",
-  "2018",
-  "2017",
-  "2016",
-  "2015",
-  "2014",
-].map((year) => ({ value: year, label: year } as FormOptionType));
+const yearOptions = () => {
+  const startYear = 2014;
+  let currentYear = +moment().format("YYYY");
+  const years = [];
+  while (currentYear >= startYear) {
+    years.push(currentYear);
+    currentYear -= 1;
+  }
+  return years;
+};
+export default yearOptions().map(
+  (year) =>
+    ({ value: year.toString(), label: year.toString() } as FormOptionType)
+);

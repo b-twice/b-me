@@ -55,6 +55,7 @@ export interface FieldSchema {
   required: boolean;
   error?: string;
   helperText?: string;
+  disabled?: boolean;
   // method to retrieve value
   getVal?(value: any): any;
   // modify values on load/save

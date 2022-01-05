@@ -34,6 +34,7 @@ interface MultiSelectProps {
   required: boolean;
   error: string;
   helperText?: string;
+  disabled?: boolean;
   onChange(obj: { [key: string]: any }): void;
 }
 
@@ -47,6 +48,7 @@ export default function FormMultiSelect({
   required,
   onChange,
   error,
+  disabled,
   helperText,
 }: MultiSelectProps) {
   const classes = useSelectStyles();
@@ -104,6 +106,7 @@ export default function FormMultiSelect({
       options={options}
       components={components}
       value={values}
+      isDisabled={disabled}
       onChange={handleChange}
       required={required}
       isMulti

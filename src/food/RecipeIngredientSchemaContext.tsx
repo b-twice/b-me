@@ -7,11 +7,7 @@ import {
 } from "../core/components/forms/SchemaForm";
 import FormOptionType from "../core/components/forms/FormOptionType";
 import { RecipeIngredient } from "../common/client";
-import {
-  RecipeIngredientApi,
-  RecipeApi,
-  FoodProductApi,
-} from "../common/client/FoodApi";
+import { RecipeIngredientApi, FoodProductApi } from "../common/client/FoodApi";
 import EditSchemaContextProps from "../core/components/forms/EditSchemaContextProps.interface";
 import getLookupName from "../core/components/forms/lookups/getLookupName";
 
@@ -27,19 +23,17 @@ function RecipeIngredientSchemaContextProvider({
   children: JSX.Element;
 }) {
   const [ingredients, setIngredients] = useState<FormOptionType[]>([]);
-  const [recipes, setRecipes] = useState<FormOptionType[]>([]);
   useEffect(() => {
     const setOption = (
       obj: any,
       label: string,
       value: string | number | undefined
     ) => ({ ...obj, label: label, value: value } as FormOptionType);
-    Promise.all([RecipeApi.getAll(), FoodProductApi.getAll()])
-      .then(([recipes, ingredients]) => {
+    Promise.all([FoodProductApi.getAll()])
+      .then(([ingredients]) => {
         setIngredients(
           ingredients.map((r) => setOption(r, r.name as string, r.id))
         );
-        setRecipes(recipes.map((r) => setOption(r, r.name as string, r.id)));
       })
       .catch((err) => {
         // TODO - error handling for user
@@ -53,8 +47,9 @@ function RecipeIngredientSchemaContextProvider({
       [propertyOf("recipe")]: {
         title: "Recipe",
         type: "select",
-        options: recipes,
+        options: [],
         required: true,
+        disabled: true,
         getVal: getLookupName,
       } as SelectFieldSchema,
       [propertyOf("foodProduct")]: {

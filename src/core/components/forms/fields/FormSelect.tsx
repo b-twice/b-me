@@ -34,6 +34,7 @@ interface SelectProps {
   required: boolean;
   error: string;
   helperText?: string;
+  disabled?: boolean;
   onChange(obj: { [key: string]: any }): void;
 }
 
@@ -48,6 +49,7 @@ export default function FormSelect({
   onChange,
   error,
   helperText,
+  disabled,
 }: SelectProps) {
   const classes = useSelectStyles();
   const theme = useTheme();
@@ -91,7 +93,9 @@ export default function FormSelect({
       classes={classes}
       styles={selectStyles}
       inputId={id}
+      isDisabled={disabled}
       TextFieldProps={{
+        disabled: disabled,
         label: label,
         variant: "filled",
         error: !!error,

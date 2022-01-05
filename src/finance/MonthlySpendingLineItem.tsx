@@ -5,7 +5,7 @@ import { TransactionTotal } from "../common/client";
 import ButtonSplitTextListItem from "../core/components/lists/ButtonSplitTextListItem";
 import SplitTextListItem from "../core/components/lists/SplitTextListItem";
 import { FinanceApi } from "../common/client/FinanceApi";
-import FormMonthOptions from "../core/components/forms/FormMonthOptions.tsx";
+import FormMonthOptions from "../core/components/forms/FormMonthOptions";
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -33,10 +33,9 @@ function MonthlySpendingLineItem({
   const [open, setOpen] = React.useState(false);
 
   const getSummary = () => {
-    FinanceApi.getTransactionCategoryMonthlyTotals(
-      year,
-      total?.name
-    ).then((result) => setItems(result));
+    FinanceApi.getTransactionCategoryMonthlyTotals(year, total?.name).then(
+      (result) => setItems(result)
+    );
   };
 
   const handleClick = () => {

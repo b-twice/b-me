@@ -7,6 +7,7 @@ import { SelectMenuFieldSchema } from "../core/components/forms/SchemaForm";
 import SchemaFormField from "../core/components/forms/fields/SchemaField";
 import FinanceSpendingCard from "./SpendingCard";
 import FinanceMonthlySpendingSummaryCard from "./MonthlySpendingSummaryCard";
+import moment from "moment";
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -38,9 +39,10 @@ const formSchema = {
 
 function FinanceDashboard() {
   const classes = useStyles();
+  const currentYear = (+moment().format("YYYY") - 1).toString();
 
   const [form, setForm] = useState<{ [key: string]: any }>({
-    year: { id: "2021", name: "2021" },
+    year: { id: currentYear, name: currentYear },
   });
 
   const onFormChange = (obj: { [key: string]: any }) => setForm({ ...obj });

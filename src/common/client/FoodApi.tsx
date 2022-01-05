@@ -10,6 +10,8 @@ import {
   RecipeCategoryClient,
   RecipeClient,
   RecipeIngredientClient,
+  RecipeNoteClient,
+  MealPlanNoteClient,
   CookbookClient,
 } from "./index";
 
@@ -20,6 +22,8 @@ const FoodCategoryApi = new FoodCategoryClient();
 const FoodProductApi = new FoodProductClient();
 const RecipeCategoryApi = new RecipeCategoryClient();
 const RecipeApi = new RecipeClient();
+const RecipeNoteApi = new RecipeNoteClient();
+const MealPlanNoteApi = new MealPlanNoteClient();
 const RecipeIngredientApi = new RecipeIngredientClient();
 const MealPlanApi = new MealPlanClient();
 const MealPlanRecipeApi = new MealPlanRecipeClient();
@@ -34,6 +38,8 @@ export {
   FoodQuantityTypeApi,
   RecipeCategoryApi,
   MealPlanApi,
+  MealPlanNoteApi,
+  RecipeNoteApi,
   RecipeApi,
   RecipeIngredientApi,
   MealPlanRecipeApi,

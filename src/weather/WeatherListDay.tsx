@@ -66,7 +66,7 @@ function WeatherListDay({ day }: WeatherListDayProps) {
                 <Grid
                   container
                   direction="row"
-                  justify="space-between"
+                  justifyContent="space-between"
                   spacing={0}
                 >
                   <Grid item>
