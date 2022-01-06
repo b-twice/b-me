@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   FormSchema,
   SelectFieldSchema,
   TextFieldSchema,
 } from "../core/components/forms/SchemaForm";
-import FormOptionType from "../core/components/forms/FormOptionType";
 import { RecipeNote } from "../common/client";
-import { RecipeNoteApi, RecipeApi } from "../common/client/FoodApi";
+import { RecipeNoteApi } from "../common/client/FoodApi";
 import EditSchemaContextProps from "../core/components/forms/EditSchemaContextProps.interface";
 import getLookupName from "../core/components/forms/lookups/getLookupName";
 

@@ -143,7 +143,6 @@ function Header() {
             items={[
               { path: "finance/dashboard", title: "Dashboard" },
               { path: "finance/transactions", title: "Transactions" },
-              { path: "finance/expenses", title: "Expenses" },
             ]}
             nested={true}
           />

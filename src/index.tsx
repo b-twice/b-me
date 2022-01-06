@@ -1,4 +1,4 @@
-import React from "react";
+import React, { StrictMode } from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import App from "./App";
@@ -6,9 +6,11 @@ import reportWebVitals from "./reportWebVitals";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 
 ReactDOM.render(
-  <Router basename="/me">
-    <App />
-  </Router>,
+  <StrictMode>
+    <Router basename="/me">
+      <App />
+    </Router>
+  </StrictMode>,
   document.getElementById("root")
 );
 
