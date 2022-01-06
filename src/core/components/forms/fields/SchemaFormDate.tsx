@@ -21,6 +21,7 @@ export default function SchemaFormDate({
       id={property}
       label={schema.title}
       value={obj[property] || ""}
+      disabled={schema.disabled}
       onChange={handleChange}
       variant="filled"
       type="Date"

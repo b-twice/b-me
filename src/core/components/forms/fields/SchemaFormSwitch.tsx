@@ -21,6 +21,7 @@ export default function SchemaFormSwitch({
           checked={obj[property] === 1 ? true : false}
           color="secondary"
           required={schema.required}
+          disabled={schema.disabled}
           id={property}
           onChange={handleChange}
         />

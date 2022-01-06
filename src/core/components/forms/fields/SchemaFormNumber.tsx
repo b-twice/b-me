@@ -19,6 +19,7 @@ export default function SchemaFormNumber({
       error={!!error}
       id={property}
       label={schema.title}
+      disabled={schema.disabled}
       value={obj[property] || ""}
       onChange={handleChange}
       helperText={schema.helperText}

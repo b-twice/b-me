@@ -62,17 +62,19 @@ function RecipeIngredientSchemaContextProvider({
       [propertyOf("count")]: {
         title: "Count",
         type: "number",
-        required: false,
+        required: true,
+        visible: false,
       } as NumberFieldSchema,
       [propertyOf("weight")]: {
         title: "Weight",
         type: "number",
-        required: false,
+        required: true,
+        visible: false,
       } as NumberFieldSchema,
       [propertyOf("measurement")]: {
         title: "Measurement",
         type: "text",
-        required: false,
+        required: true,
       } as TextFieldSchema,
     },
     object: {} as RecipeIngredient,

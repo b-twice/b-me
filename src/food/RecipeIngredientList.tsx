@@ -67,14 +67,17 @@ function RecipeIngredientList({ recipe }: { recipe: Recipe }) {
             object: obj,
             properties: {
               ...schema.properties,
-              [propertyOfRecipeIngredient("foodProduct")]: {
-                ...schema.properties[propertyOfRecipeIngredient("foodProduct")],
-                helperText: `By ${quantity.name}`,
-              },
               [propertyOfRecipeIngredient("weight")]: {
                 ...schema.properties[propertyOfRecipeIngredient("weight")],
-                disabled: quantity.name !== "Weight",
-                helperText: quantity.name === "Weight" ? `${unit.name}` : "",
+                visible: quantity.name === "Weight",
+                helperText:
+                  quantity.name === "Weight"
+                    ? product.measurement || `Measured in ${unit.name}`
+                    : "",
+              },
+              [propertyOfRecipeIngredient("count")]: {
+                ...schema.properties[propertyOfRecipeIngredient("count")],
+                visible: quantity.name === "Count",
               },
             },
           } as FormSchema<ListObjectEntity>;

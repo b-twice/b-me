@@ -18,6 +18,7 @@ export default function SchemaFormSelectMenu({
       required={schema.required}
       id={property}
       options={schema.options}
+      disabled={schema.disabled}
       obj={obj[property]}
       valueProperty="id"
       labelProperty="name"

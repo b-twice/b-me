@@ -13,6 +13,7 @@ interface SelectProps {
   required: boolean;
   error: string;
   helperText?: string;
+  disabled?: boolean;
   onChange(obj: FormOptionType): void;
 }
 
@@ -27,6 +28,7 @@ export default function FormSelectMenu({
   onChange,
   error,
   helperText,
+  disabled,
 }: SelectProps) {
   const [value, setValue] = useState<string>("");
 
@@ -60,6 +62,7 @@ export default function FormSelectMenu({
         value={value}
         onChange={handleChange}
         required={required}
+        disabled={disabled}
         error={!!error}
       >
         {!required && <MenuItem value="">&nbsp;</MenuItem>}

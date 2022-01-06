@@ -21,6 +21,7 @@ export default function SchemaFormText({
       value={obj[property] || ""}
       onChange={handleChange}
       helperText={schema.helperText}
+      disabled={schema.disabled}
       variant="filled"
     />
   );

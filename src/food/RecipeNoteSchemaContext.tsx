@@ -34,7 +34,7 @@ function RecipeNoteSchemaContextProvider({
       [propertyOf("content")]: {
         title: "Note",
         type: "text",
-        required: false,
+        required: true,
       } as TextFieldSchema,
     },
     object: {} as RecipeNote,

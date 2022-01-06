@@ -21,6 +21,7 @@ export default function SchemaFormCurrency({
       label={schema.title}
       value={obj[property] || ""}
       onChange={handleChange}
+      disabled={schema.disabled}
       variant="filled"
       type="number"
       InputProps={{

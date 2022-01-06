@@ -56,6 +56,7 @@ export interface FieldSchema {
   error?: string;
   helperText?: string;
   disabled?: boolean;
+  visible?: boolean;
   // method to retrieve value
   getVal?(value: any): any;
   // modify values on load/save
@@ -177,6 +178,7 @@ export default function SchemaForm<T extends ObjectEntity>({
     Object.entries(schema.properties).forEach(([prop, fieldSchema]) => {
       if (
         fieldSchema.required &&
+        fieldSchema.visible !== false &&
         (obj[prop] === undefined || obj[prop] === null || obj[prop] === "")
       ) {
         errors[prop] = `${fieldSchema.title} is required.`;
