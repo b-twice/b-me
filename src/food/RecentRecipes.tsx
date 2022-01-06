@@ -18,6 +18,8 @@ import { Recipe } from "../common/client";
 import AppSpinner from "../core/components/AppSpinner";
 import { RecipeApi } from "../common/client/FoodApi";
 import { Link } from "@material-ui/core";
+import { NavLink } from "react-router-dom";
+import ListItemLink from "../core/components/ListItemLink";
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -63,24 +65,12 @@ function RecentRecipesCard() {
               </Typography>
             )}
             {recipes.map((recipe) => (
-              <ListItem key={recipe.id}>
-                {recipe.url && (
-                  <ListItemText
-                    primary={
-                      <Link color="secondary" href={recipe.url}>
-                        {recipe.name}
-                      </Link>
-                    }
-                    secondary={recipe.cookbook?.name}
-                  />
-                )}
-                {!recipe.url && (
-                  <ListItemText
-                    primary={recipe.name}
-                    secondary={recipe.cookbook?.name}
-                  />
-                )}
-              </ListItem>
+              <ListItemLink
+                key={recipe.id}
+                path={`/food/recipes/${recipe?.id}`}
+                name={recipe.name!}
+                secondary={recipe.cookbook?.name}
+              />
             ))}
           </List>
         )}

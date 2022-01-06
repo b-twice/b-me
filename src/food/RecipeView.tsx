@@ -2,7 +2,13 @@ import React, { Fragment, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Recipe } from "../common/client";
 import { RecipeApi } from "../common/client/FoodApi";
-import { createStyles, Link, makeStyles, Theme } from "@material-ui/core";
+import {
+  createStyles,
+  Link,
+  makeStyles,
+  Theme,
+  Typography,
+} from "@material-ui/core";
 import RecipeIngredientList from "./RecipeIngredientList";
 import RecipeNoteList from "./RecipeNoteList";
 
@@ -24,12 +30,21 @@ function RecipeView() {
 
   return (
     <Fragment>
-      {recipe?.url && (
-        <Link color="secondary" href={recipe?.url}>
-          <h1>{recipe?.name}</h1>
-        </Link>
-      )}
-      {!recipe?.url && <h1>{recipe?.name}</h1>}
+      <Typography variant="h4" component="h4">
+        {recipe?.url && (
+          <Link color="secondary" href={recipe?.url}>
+            {recipe?.name}
+          </Link>
+        )}
+        {!recipe?.url && recipe?.name}
+      </Typography>
+      <Typography variant="subtitle1" gutterBottom>
+        By <em>{recipe?.cookbook?.name}</em>&nbsp;&nbsp;&nbsp;
+        <span>Servings: {recipe?.servings}</span>&nbsp;&nbsp;&nbsp;
+        {recipe?.pageNumber !== undefined && recipe.pageNumber > 0 && (
+          <span>Page #: {recipe?.pageNumber}</span>
+        )}
+      </Typography>
       <div className={classes.spacer}>
         <RecipeIngredientList recipe={recipe} />
       </div>

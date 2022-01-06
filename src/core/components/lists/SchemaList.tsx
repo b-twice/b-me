@@ -122,7 +122,7 @@ function SchemaList<T extends ListObjectEntity>({
 
   return (
     <Fragment>
-      <Typography color="textSecondary" variant="h6" gutterBottom>
+      <Typography color="textSecondary" variant="h6" gutterBottom={false}>
         {title}
       </Typography>
       <List component="div" dense>

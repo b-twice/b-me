@@ -1,4 +1,4 @@
-import { createStyles, makeStyles, Theme } from "@material-ui/core";
+import { createStyles, makeStyles, Theme, Typography } from "@material-ui/core";
 import React, { Fragment, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { MealPlan } from "../common/client";
@@ -23,7 +23,14 @@ function MealPlanView() {
   }, [params]);
   return (
     <Fragment>
-      <h1>{mealPlan?.name}</h1>
+      <Typography variant="h4" component="h4">
+        {mealPlan?.name}
+      </Typography>
+      {mealPlan?.date && (
+        <Typography variant="subtitle1" gutterBottom>
+          Added on {mealPlan.date}
+        </Typography>
+      )}
       <div className={classes.spacer}>
         <MealPlanRecipeList mealPlan={mealPlan} />
       </div>
