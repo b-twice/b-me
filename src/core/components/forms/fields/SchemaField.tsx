@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment } from "react";
 import {
   TextFieldSchema,
   SelectFieldSchema,
@@ -18,7 +18,6 @@ import SchemaFormCurrency from "./SchemaFormCurrency";
 import SchemaFormSelectMenu from "./SchemaFormSelectMenu";
 import SchemaFormSwitch from "./SchemaFormSwitch";
 import SchemaFormNumber from "./SchemaFormNumber";
-import usePrevious from "../../../hooks/usePrevious";
 
 export interface SchemaFieldProps<T> {
   property: string;
@@ -39,17 +38,6 @@ export default function SchemaFormField(
     | SwitchFieldSchema
   >
 ) {
-  const previousVisibility = usePrevious(props.schema.visible);
-
-  useEffect(() => {
-    if (
-      props.schema.visible === false &&
-      previousVisibility !== props.schema.visible
-    ) {
-      props.obj[props.property] = undefined;
-    }
-  }, [previousVisibility, props.schema.visible, props.obj, props.property]);
-
   if (props.schema.visible === false) return <Fragment />;
   switch (props.schema.type) {
     case "text":

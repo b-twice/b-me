@@ -175,20 +175,21 @@ export default function SchemaForm<T extends ObjectEntity>({
 
   const validate = (): boolean => {
     let errors: { [key: string]: any } = {};
-    Object.entries(schema.properties).forEach(([prop, fieldSchema]) => {
-      if (
-        fieldSchema.required &&
-        fieldSchema.visible !== false &&
-        (obj[prop] === undefined || obj[prop] === null || obj[prop] === "")
-      ) {
-        errors[prop] = `${fieldSchema.title} is required.`;
-      } else if (
-        fieldSchema.type === "currency" &&
-        !!isNaN(obj[prop] - parseFloat(obj[prop]))
-      ) {
-        errors[prop] = `${fieldSchema.title} must be a number.`;
-      }
-    });
+    Object.entries(schema.properties)
+      .filter(([prop, fieldSchema]) => fieldSchema.visible !== false)
+      .forEach(([prop, fieldSchema]) => {
+        if (
+          fieldSchema.required &&
+          (obj[prop] === undefined || obj[prop] === null || obj[prop] === "")
+        ) {
+          errors[prop] = `${fieldSchema.title} is required.`;
+        } else if (
+          (fieldSchema.type === "currency" || fieldSchema.type === "number") &&
+          !!isNaN(obj[prop] - parseFloat(obj[prop]))
+        ) {
+          errors[prop] = `${fieldSchema.title} must be a number.`;
+        }
+      });
     setError(errors);
     return Object.keys(errors).length === 0;
   };
@@ -197,7 +198,9 @@ export default function SchemaForm<T extends ObjectEntity>({
   const transform = (): T => {
     let result = { ...obj };
     Object.entries(schema.properties).forEach(([prop, fieldSchema]) => {
-      if (fieldSchema.transform) {
+      if (fieldSchema.visible === false) {
+        (result as ObjectEntity)[prop] = null;
+      } else if (fieldSchema.transform) {
         (result as ObjectEntity)[prop] = fieldSchema.transform(obj[prop]);
       }
     });
