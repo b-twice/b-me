@@ -1,5 +1,5 @@
 import React, { useState, useEffect, CSSProperties } from "react";
-import { useTheme } from "@material-ui/core/styles";
+import { useTheme } from "@mui/material/styles";
 import Select from "react-select";
 import FormOptionType from "../FormOptionType";
 import { ValueType } from "react-select/src/types";

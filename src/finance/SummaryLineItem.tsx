@@ -1,5 +1,7 @@
 import React, { useState, Fragment } from "react";
-import { Collapse, Typography, Grid } from "@material-ui/core";
+import Collapse from "@mui/material/Collapse";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
 import currencyFormatter from "../core/components/formatters/CurrencyFormatter";
 import TextListItem from "../core/components/lists/TextListItem";
 
@@ -14,7 +16,6 @@ function FinancialSummaryLineItem({
   amount,
   children,
 }: FinancialSummaryLineItemProps) {
-  // const classes = useStyles();
   const [open, setOpen] = useState(false);
 
   const handleClick = () => setOpen(!open);

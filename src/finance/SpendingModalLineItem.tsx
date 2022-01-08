@@ -1,23 +1,10 @@
 import React, { useState, Fragment } from "react";
-import { Collapse, makeStyles, Theme, createStyles } from "@material-ui/core";
+import Collapse from "@mui/material/Collapse";
 import currencyFormatter from "../core/components/formatters/CurrencyFormatter";
 import { TransactionTotal, TransactionRecord } from "../common/client";
 import ButtonSplitTextListItem from "../core/components/lists/ButtonSplitTextListItem";
 import SplitTextListItem from "../core/components/lists/SplitTextListItem";
 import { TransactionApi } from "../common/client/FinanceApi";
-
-const useStyles = makeStyles((theme: Theme) => {
-  return createStyles({
-    lineItem: {
-      fontWeight: 400,
-      borderBottom: `1px solid ${
-        theme.palette.type === "light"
-          ? "rgba(0,0,0,0.12)"
-          : "rgba(255,255,255,0.12)"
-      }`,
-    },
-  });
-});
 
 interface SpendingModalLineItemProps {
   category: TransactionTotal | null;
@@ -30,8 +17,6 @@ function SpendingModalLineItem({
   tag,
   year,
 }: SpendingModalLineItemProps) {
-  const classes = useStyles();
-
   const getSummary = () => {
     TransactionApi.getPage(
       "date_desc",
@@ -70,8 +55,11 @@ function SpendingModalLineItem({
         {items?.map((item) => (
           <SplitTextListItem
             key={item.id}
-            className={classes.lineItem}
-            variant="subtitle2"
+            sx={{
+              fontWeight: 400,
+              borderBottom: "1px solid rgba(0,0,0,0.12)",
+            }}
+            typography={{ variant: "subtitle2" }}
             left={`${item.date} - ${item.description}`}
             right={currencyFormatter.format(item.amount || 0)}
           />

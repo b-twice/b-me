@@ -1,13 +1,5 @@
 import React, { Fragment, useState, useEffect, useRef } from "react";
-import {
-  makeStyles,
-  Theme,
-  createStyles,
-  Card,
-  CardContent,
-  Typography,
-  List,
-} from "@material-ui/core";
+import { Card, CardContent, Typography, List } from "@mui/material";
 import { FinanceApi } from "../common/client/FinanceApi";
 import AppSpinner from "../core/components/AppSpinner";
 import currencyFormatter from "../core/components/formatters/CurrencyFormatter";
@@ -16,50 +8,17 @@ import { TransactionTotal } from "../common/client";
 import { SpendingModalRef, SpendingModal } from "./SpendingModal";
 import ButtonSplitTextListItem from "../core/components/lists/ButtonSplitTextListItem";
 
-const useStyles = makeStyles((theme: Theme) => {
-  return createStyles({
-    card: {
-      width: "300px",
-    },
-    title: {
-      fontSize: 14,
-    },
-    section: {
-      margin: theme.spacing(2, 0),
-    },
-    lineItem: {
-      fontWeight: 400,
-    },
-    lineItemTotal: {
-      paddingTop: theme.spacing(2),
-      borderTop: `1px solid ${
-        theme.palette.type === "light"
-          ? "rgba(0,0,0,0.12)"
-          : "rgba(255,255,255,0.12)"
-      }`,
-      fontWeight: 700,
-    },
-    list: {
-      overflowY: "auto",
-    },
-  });
-});
-
 interface FinanceSpendingCardProps {
   year: string;
 }
 
 function FinanceSpendingCard({ year }: FinanceSpendingCardProps) {
-  const classes = useStyles();
-
   const [items, setItems] = useState<TransactionTotal[] | null>(null);
   const [total, setTotal] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
-  const [
-    selectedTransactionCategory,
-    setSelectedTransactionCategory,
-  ] = useState<TransactionTotal | null>(null);
+  const [selectedTransactionCategory, setSelectedTransactionCategory] =
+    useState<TransactionTotal | null>(null);
 
   const modalRef = useRef<SpendingModalRef>(null);
 
@@ -95,13 +54,9 @@ function FinanceSpendingCard({ year }: FinanceSpendingCardProps) {
 
   return (
     <Fragment>
-      <Card className={classes.card}>
+      <Card sx={{ width: 300 }}>
         <CardContent>
-          <Typography
-            className={classes.title}
-            color="textSecondary"
-            gutterBottom
-          >
+          <Typography fontSize={14} color="textSecondary" gutterBottom>
             Annual Summary
           </Typography>
           {error && (
@@ -113,11 +68,11 @@ function FinanceSpendingCard({ year }: FinanceSpendingCardProps) {
             <AppSpinner />
           ) : (
             <Fragment>
-              <List className={classes.list}>
+              <List sx={{ overflowY: "auto" }}>
                 {items?.map((item) => (
                   <ButtonSplitTextListItem
                     key={item.name}
-                    className={classes.lineItem}
+                    // sx={{ fontWeight: 400 }}
                     variant="subtitle2"
                     left={item.name}
                     right={currencyFormatter.format(item.amount || 0)}
@@ -125,8 +80,12 @@ function FinanceSpendingCard({ year }: FinanceSpendingCardProps) {
                   />
                 ))}
                 <SplitTextListItem
-                  className={classes.lineItemTotal}
-                  variant="subtitle2"
+                  sx={{
+                    pt: 2,
+                    borderTop: "1px solid rgba(0,0,0,0.12)",
+                    fontWeight: "bold",
+                  }}
+                  typography={{ variant: "subtitle2" }}
                   left="Total"
                   right={currencyFormatter.format(total)}
                 />

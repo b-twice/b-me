@@ -1,9 +1,9 @@
-import { Omit } from "@material-ui/types";
+import { DistributiveOmit } from "@mui/types";
 import { ObjectEntity } from "../ObjectEntityType";
 
-export interface LookupEntity extends Omit<ObjectEntity, "id"> {
+export interface LookupEntity extends DistributiveOmit<ObjectEntity, "id"> {
   id?: number | string | undefined;
   name: string;
   keyword?: string;
 }
-export interface LookupEntityFilter extends Omit<LookupEntity, "id"> {}
+export interface LookupEntityFilter extends DistributiveOmit<LookupEntity, "id"> {}

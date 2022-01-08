@@ -1,47 +1,21 @@
 import React, { Fragment } from "react";
-import {
-  Grid,
-  Typography,
-  createStyles,
-  makeStyles,
-  Theme,
-} from "@material-ui/core";
+import { Grid, Typography } from "@mui/material";
 import RecentBooksCard from "../books/RecentBooksCard";
 import WeatherCard from "../weather/WeatherCard";
 import RecentRecipesCard from "../food/RecentRecipes";
 
-const useStyles = makeStyles((theme: Theme) => {
-  return createStyles({
-    container: {
-      marginTop: theme.spacing(2),
-      [theme.breakpoints.down("md")]: {
-        justifyContent: "center",
-      },
-    },
-    title: {
-      marginTop: theme.spacing(4),
-    },
-  });
-});
-
 function Home() {
-  const classes = useStyles();
   return (
     <Fragment>
       <Typography
         color="textSecondary"
         variant="h5"
         gutterBottom
-        className={classes.title}
+        sx={{ mt: 4 }}
       >
         Dashboard
       </Typography>
-      <Grid
-        spacing={3}
-        container
-        className={classes.container}
-        justifyContent="center"
-      >
+      <Grid spacing={3} container justifyContent="center" mt={3}>
         <Grid item>
           <WeatherCard />
         </Grid>

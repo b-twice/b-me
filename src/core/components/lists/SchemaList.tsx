@@ -14,10 +14,10 @@ import {
   ListItemIcon,
   IconButton,
   Button,
-} from "@material-ui/core";
-import ArrowRightIcon from "@material-ui/icons/ArrowRight";
-import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from "@material-ui/icons/Edit";
+} from "@mui/material";
+import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import AppSnackbar from "../AppSnackbar";
 import { EditModalRef, EditModal } from "../forms/EditModal";
 import { ListObjectEntity } from "../forms/ObjectEntityType";
@@ -137,10 +137,10 @@ function SchemaList<T extends ListObjectEntity>({
             </ListItemText>
             {authContext.authenticated && (
               <Fragment>
-                <IconButton onClick={() => handleEdit(o)}>
+                <IconButton onClick={() => handleEdit(o)} size="large">
                   <EditIcon color="inherit" />
                 </IconButton>
-                <IconButton onClick={() => handleDelete(o)}>
+                <IconButton onClick={() => handleDelete(o)} size="large">
                   <DeleteIcon color="inherit" />
                 </IconButton>
               </Fragment>

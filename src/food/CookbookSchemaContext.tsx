@@ -9,16 +9,16 @@ import FormOptionType from "../core/components/forms/FormOptionType";
 import { Cookbook, CookbookAuthor } from "../common/client";
 import { CookbookApi, CookbookAuthorApi } from "../common/client/FoodApi";
 import EditSchemaContextProps from "../core/components/forms/EditSchemaContextProps.interface";
-import { Omit } from "@material-ui/types";
+import { DistributiveOmit } from "@mui/types";
 import getLookupName from "../core/components/forms/lookups/getLookupName";
 import { SchemaTableConfig } from "../core/components/tables/SchemaTable";
 
-export interface CookbookFilter extends Omit<Cookbook, "cookbookAuthor"> {
+export interface CookbookFilter extends DistributiveOmit<Cookbook, "cookbookAuthor"> {
   cookbookAuthor: CookbookAuthor[];
 }
 
 export interface CookbooksTableConfig
-  extends Omit<SchemaTableConfig, "filter"> {
+  extends DistributiveOmit<SchemaTableConfig, "filter"> {
   filter: CookbookFilter;
 }
 

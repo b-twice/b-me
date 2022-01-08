@@ -18,7 +18,7 @@ import {
 } from "../common/client";
 import { LookupEntity } from "../core/components/forms/lookups/LookupEntity.interface";
 import EditSchemaContextProps from "../core/components/forms/EditSchemaContextProps.interface";
-import { Omit } from "@material-ui/types";
+import { DistributiveOmit } from "@mui/types";
 import getLookupName from "../core/components/forms/lookups/getLookupName";
 import {
   TransactionApi,
@@ -78,17 +78,17 @@ export const transactionUtility = {
 };
 
 export interface TransactionTableRecord
-  extends Omit<TransactionRecord, "transactionRecordTag"> {
+  extends DistributiveOmit<TransactionRecord, "transactionRecordTag"> {
   tags: FormOptionType[];
 }
 
 export interface TransactionTableConfig
-  extends Omit<SchemaTableConfig, "filter"> {
+  extends DistributiveOmit<SchemaTableConfig, "filter"> {
   filter: TransactionFilter;
 }
 
 export interface TransactionFilter
-  extends Omit<
+  extends DistributiveOmit<
     TransactionRecord,
     "bank" | "category" | "user" | "date" | "description"
   > {

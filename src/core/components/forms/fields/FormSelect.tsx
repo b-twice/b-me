@@ -1,28 +1,9 @@
 import React, { useState, useEffect, CSSProperties } from "react";
-import { useTheme } from "@material-ui/core/styles";
-import Select from "react-select";
+import { useTheme } from "@mui/material/styles";
+import TextField from "@mui/material/TextField";
 import FormOptionType from "../FormOptionType";
 import { ValueType } from "react-select/src/types";
-import {
-  Control,
-  Menu,
-  SingleValue,
-  NoOptionsMessage,
-  Option,
-  Placeholder,
-  ValueContainer,
-  useSelectStyles,
-} from "./SelectComponents";
-
-const components = {
-  Control,
-  Menu,
-  NoOptionsMessage,
-  Option,
-  Placeholder,
-  SingleValue,
-  ValueContainer,
-};
+import Autocomplete from "@mui/material/Autocomplete";
 
 interface SelectProps {
   label: string;
@@ -51,20 +32,7 @@ export default function FormSelect({
   helperText,
   disabled,
 }: SelectProps) {
-  const classes = useSelectStyles();
-  const theme = useTheme();
-
   const [option, setOption] = useState<ValueType<FormOptionType>>(null);
-  const selectStyles = {
-    input: (base: CSSProperties) => ({
-      ...base,
-      color: theme.palette.text.primary,
-      "& input": {
-        font: "inherit",
-      },
-    }),
-  };
-
   useEffect(() => {
     if (obj !== undefined && obj !== null) {
       let label = obj[labelProperty];
@@ -87,30 +55,50 @@ export default function FormSelect({
       [valueProperty]: selected.value,
     });
   }
+  console.log(option);
 
   return (
-    <Select
-      classes={classes}
-      styles={selectStyles}
-      inputId={id}
-      isDisabled={disabled}
-      TextFieldProps={{
-        disabled: disabled,
-        label: label,
-        variant: "filled",
-        error: !!error,
-        helperText: helperText,
-        InputLabelProps: {
-          htmlFor: id,
-          shrink: true,
-        },
-      }}
-      placeholder={label}
+    <Autocomplete
+      disablePortal
+      id={id}
+      disabled={disabled}
       options={options}
-      components={components}
-      value={option}
+      placeholder={label}
       onChange={handleChange}
-      required={required}
+      value={option}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          label={label}
+          variant="filled"
+          error={!!error}
+          helperText={helperText}
+          required={required}
+        />
+      )}
     />
+    // <Select
+    //   classes={classes}
+    //   styles={selectStyles}
+    //   inputId={id}
+    //   isDisabled={disabled}
+    //   TextFieldProps={{
+    //     disabled: disabled,
+    //     label: label,
+    //     variant: "filled",
+    //     error: !!error,
+    //     helperText: helperText,
+    //     InputLabelProps: {
+    //       htmlFor: id,
+    //       shrink: true,
+    //     },
+    //   }}
+    //   placeholder={label}
+    //   options={options}
+    //   components={components}
+    //   value={option}
+    //   onChange={handleChange}
+    //   required={required}
+    // />
   );
 }

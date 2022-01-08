@@ -4,7 +4,7 @@ import {
   TableRow,
   TableCell,
   TableSortLabel,
-} from "@material-ui/core";
+} from "@mui/material";
 
 export interface HeadRow {
   disablePadding: boolean;

@@ -16,18 +16,18 @@ import {
   FoodQuantityTypeApi,
 } from "../common/client/FoodApi";
 import EditSchemaContextProps from "../core/components/forms/EditSchemaContextProps.interface";
-import { Omit } from "@material-ui/types";
+import { DistributiveOmit } from "@mui/types";
 import getLookupName from "../core/components/forms/lookups/getLookupName";
 import { SchemaTableConfig } from "../core/components/tables/SchemaTable";
 
 export interface FoodProductFilter
-  extends Omit<FoodProduct, "foodCategory" | "supermarket"> {
+  extends DistributiveOmit<FoodProduct, "foodCategory" | "supermarket"> {
   foodCategory: FoodCategory[];
   supermarket: Supermarket[];
 }
 
 export interface FoodProductsTableConfig
-  extends Omit<SchemaTableConfig, "filter"> {
+  extends DistributiveOmit<SchemaTableConfig, "filter"> {
   filter: FoodProductFilter;
 }
 

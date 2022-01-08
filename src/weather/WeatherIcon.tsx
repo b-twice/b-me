@@ -1,28 +1,6 @@
-import React from "react";
-import { Theme, makeStyles, createStyles } from "@material-ui/core";
+import { Typography } from "@mui/material";
 import { Icon } from "../common/client";
-import clsx from "clsx";
 
-const useStyles = makeStyles((theme: Theme) => {
-  return createStyles({
-    icon: {
-      fontFamily:
-        "apple color emoji,segoe ui emoji,noto color emoji,android emoji,emojisymbols,emojione mozilla,twemoji mozilla,segoe ui symbol",
-      fontStyle: "normal",
-      fontWeight: theme.typography.fontWeightRegular as number,
-    },
-    small: {
-      fontSize: theme.typography.h6.fontSize,
-      lineHeight: "5px",
-      height: "10px",
-    },
-    large: {
-      fontSize: theme.typography.h2.fontSize,
-      lineHeight: "20px",
-      height: "30px",
-    },
-  });
-});
 interface WeatherIconProps {
   type: Icon;
   size: "small" | "large";
@@ -56,17 +34,27 @@ const getWeatherIcon = (type: Icon): string => {
 
 // I know, this is as cheap as a solution as you can get - emojis.
 export default function WeatherIcon({ type, size }: WeatherIconProps) {
-  const classes = useStyles();
   return (
-    <div
-      className={clsx(
-        classes.icon,
-        size === "large" ? classes.large : classes.small
-      )}
+    <Typography
+      fontWeight="regular"
+      fontFamily="apple color emoji,segoe ui emoji,noto color emoji,android emoji,emojisymbols,emojione mozilla,twemoji mozilla,segoe ui symbol"
+      fontStyle="normal"
+      sx={{
+        ...(size === "large" && {
+          typography: "h2",
+          lineHeight: "20px",
+          height: "30px",
+        }),
+        ...(size !== "large" && {
+          typography: "h4",
+          lineHeight: "5px",
+          height: "10px",
+        }),
+      }}
     >
       <span role="img" aria-label="weather">
         {getWeatherIcon(type)}
       </span>
-    </div>
+    </Typography>
   );
 }

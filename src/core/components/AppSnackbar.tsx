@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Snackbar from "@material-ui/core/Snackbar";
+import Snackbar, { SnackbarCloseReason } from "@mui/material/Snackbar";
 
 interface AppSnackbarProps {
   duration?: number;
@@ -11,8 +11,8 @@ function AppSnackbar({ message, duration, onClose }: AppSnackbarProps) {
   const [open, setOpen] = React.useState(false);
 
   function handleClose(
-    event: React.SyntheticEvent | React.MouseEvent,
-    reason?: string
+    event: React.SyntheticEvent<any, Event> | Event,
+    reason?: SnackbarCloseReason
   ) {
     setOpen(false);
     if (onClose) {

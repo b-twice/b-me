@@ -11,15 +11,15 @@ import FormOptionType from "../core/components/forms/FormOptionType";
 import { Post, PostGroup } from "../common/client";
 import { BlogPostApi } from "../common/client/BlogPostApi";
 import EditSchemaContextProps from "../core/components/forms/EditSchemaContextProps.interface";
-import { Omit } from "@material-ui/types";
+import { DistributiveOmit } from "@mui/types";
 import getLookupName from "../core/components/forms/lookups/getLookupName";
 import { SchemaTableConfig } from "../core/components/tables/SchemaTable";
 
-export interface PostFilter extends Omit<Post, "postGroup"> {
+export interface PostFilter extends DistributiveOmit<Post, "postGroup"> {
   postGroup: PostGroup[];
 }
 
-export interface PostsTableConfig extends Omit<SchemaTableConfig, "filter"> {
+export interface PostsTableConfig extends DistributiveOmit<SchemaTableConfig, "filter"> {
   filter: PostFilter;
 }
 

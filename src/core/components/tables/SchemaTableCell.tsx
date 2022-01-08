@@ -1,15 +1,12 @@
-import { createStyles, makeStyles, TableCell, Theme } from "@material-ui/core";
+import TableCell from "@mui/material/TableCell";
 import React, { useEffect, useState } from "react";
 import { FieldSchema, TextFieldSchema } from "../forms/SchemaForm";
-import CheckIcon from "@material-ui/icons/Check";
+import CheckIcon from "@mui/icons-material/Check";
 import { NavLink } from "react-router-dom";
+import { styled } from "@mui/system";
 
-const useStyles = makeStyles((theme: Theme) => {
-  return createStyles({
-    link: {
-      color: "inherit",
-    },
-  });
+const Link = styled(NavLink)({
+  color: "inherit",
 });
 
 interface SchemaTableCellProps {
@@ -19,7 +16,6 @@ interface SchemaTableCellProps {
 }
 function SchemaTableCell({ property, fieldSchema, row }: SchemaTableCellProps) {
   const [path, setPath] = useState("");
-  const classes = useStyles();
   useEffect(() => {
     if (fieldSchema.type === "text" && (fieldSchema as TextFieldSchema).path)
       setPath((fieldSchema as TextFieldSchema).path!(row));
@@ -33,11 +29,11 @@ function SchemaTableCell({ property, fieldSchema, row }: SchemaTableCellProps) {
   else if (fieldSchema.type === "text" && (fieldSchema as TextFieldSchema).path)
     return (
       <TableCell>
-        <NavLink to={path} className={classes.link}>
+        <Link to={path}>
           {fieldSchema.getVal
             ? fieldSchema.getVal(row[property])
             : row[property]}
-        </NavLink>
+        </Link>
       </TableCell>
     );
   else

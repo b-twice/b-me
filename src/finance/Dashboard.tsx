@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-import { Grid, makeStyles, Theme, createStyles } from "@material-ui/core";
+import { Grid } from "@mui/material";
 import FinanceSummaryCard from "./SummaryCard";
 import getLookupName from "../core/components/forms/lookups/getLookupName";
 import FormYearOptions from "../core/components/forms/FormYearOptions";
@@ -8,23 +8,14 @@ import SchemaFormField from "../core/components/forms/fields/SchemaField";
 import FinanceSpendingCard from "./SpendingCard";
 import FinanceMonthlySpendingSummaryCard from "./MonthlySpendingSummaryCard";
 import moment from "moment";
+import { styled } from "@mui/system";
 
-const useStyles = makeStyles((theme: Theme) => {
-  return createStyles({
-    container: {
-      marginTop: theme.spacing(2),
-      [theme.breakpoints.down("md")]: {
-        justifyContent: "center",
-      },
-    },
-    year: {
-      position: "fixed",
-      bottom: "10px",
-      right: "10px",
-      backgroundColor: "rgba(255, 255, 255, 1)",
-      zIndex: 999,
-    },
-  });
+const YearMenu = styled("div")({
+  position: "fixed",
+  bottom: "10px",
+  right: "10px",
+  backgroundColor: "rgba(255, 255, 255, 1)",
+  zIndex: 999,
 });
 
 const formSchema = {
@@ -38,7 +29,6 @@ const formSchema = {
 };
 
 function FinanceDashboard() {
-  const classes = useStyles();
   const currentYear = (+moment().format("YYYY") - 1).toString();
 
   const [form, setForm] = useState<{ [key: string]: any }>({
@@ -49,7 +39,7 @@ function FinanceDashboard() {
 
   return (
     <Fragment>
-      <div className={classes.year}>
+      <YearMenu>
         <SchemaFormField
           property={"year"}
           obj={form}
@@ -57,7 +47,7 @@ function FinanceDashboard() {
           onChange={onFormChange}
           error={""}
         />
-      </div>
+      </YearMenu>
 
       <Grid container direction="row">
         <Grid item xs={10}>

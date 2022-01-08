@@ -1,96 +1,72 @@
 import React, { useContext, useState, Fragment } from "react";
 import { AuthContext } from "./Auth";
 
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import {
-  Typography,
-  createStyles,
-  makeStyles,
-  IconButton,
-  Theme,
-  Drawer,
-  ListItem,
-  List,
-  ListItemText,
-  useScrollTrigger,
-  Hidden,
-  useTheme,
-} from "@material-ui/core";
-import MenuIcon from "@material-ui/icons/Menu";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import Drawer from "@mui/material/Drawer";
+import Hidden from "@mui/material/Hidden";
+import useScrollTrigger from "@mui/material/useScrollTrigger";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import MenuIcon from "@mui/icons-material/Menu";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import AppLink from "./components/AppLink";
 import GroupRouteList from "./components/GroupRouteLists";
 import ThemeToggleButton from "./components/ThemeToggleButton";
 import { useNavigate } from "react-router-dom";
+import { styled } from "@mui/system";
 
 const drawerWidth = 240;
-const useStyles = makeStyles((theme: Theme) => {
-  return createStyles({
-    title: {
-      flexGrow: 1,
-    },
-    logo: {
-      color: theme.palette.text.primary,
-      fontWeight: 300,
-      fontFamily: "Montserrat",
-    },
-    appBar: {
-      marginLeft: drawerWidth,
-      [theme.breakpoints.up("sm")]: {
-        width: `calc(100% - ${drawerWidth}px)`,
-      },
-      borderBottom: `1px solid ${
-        theme.palette.type === "light"
-          ? "rgba(0,0,0,0.12)"
-          : "rgba(255,255,255,0.12)"
-      }`,
-    },
-    drawer: {
-      [theme.breakpoints.up("sm")]: {
-        width: drawerWidth,
-        flexShrink: 0,
-      },
-      backgroundColor: theme.palette.primary.light,
-    },
-    toolbar: theme.mixins.toolbar,
-    drawerPaper: {
-      width: drawerWidth,
-      backgroundColor: theme.palette.primary.light,
-    },
-    menuButton: {
-      marginRight: theme.spacing(2),
-      [theme.breakpoints.up("sm")]: {
-        display: "none",
-      },
-    },
 
-    login: {
-      position: "relative",
-      bottom: 0,
-    },
-    contentList: {
-      flex: 1,
-    },
-    listTitle: {
-      fontWeight: theme.typography.fontWeightBold as number,
-    },
-    listIcon: {
-      color: "inherit",
-    },
-  });
-});
+const HeaderAppBar = styled(AppBar)(({ theme }) => ({
+  marginLeft: drawerWidth,
+  [theme.breakpoints.up("sm")]: {
+    width: `calc(100% - ${drawerWidth}px)`,
+  },
+  borderBottom: `1px solid ${
+    theme.palette.mode === "light"
+      ? "rgba(0,0,0,0.12)"
+      : "rgba(255,255,255,0.12)"
+  }`,
+}));
+
+const AppLogo = styled("span")(({ theme }) => ({
+  color: theme.palette.text.primary,
+  fontWeight: "lighter",
+  fontFamily: "Montserrat",
+}));
+
+const MenuIconButton = styled(IconButton)(({ theme }) => ({
+  marginRight: theme.spacing(2),
+  [theme.breakpoints.up("sm")]: {
+    display: "none",
+  },
+}));
+
+const Sidebar = styled("nav")(({ theme }) => ({
+  [theme.breakpoints.up("sm")]: {
+    width: drawerWidth,
+    flexShrink: 0,
+  },
+  backgroundColor: theme.palette.primary.light,
+}));
+
+const HeaderDrawer = styled(Drawer)(({ theme }) => ({
+  "& .MuiDrawer-paper": {
+    width: drawerWidth,
+    backgroundColor: theme.palette.primary.light,
+  },
+}));
 
 function ElevationScroll(props: any) {
-  const { children, window } = props;
-  // Note that you normally won't need to set the window ref as useScrollTrigger
-  // will default to window.
-  // This is only being set here because the demo is in an iframe.
+  const { children } = props;
   const trigger = useScrollTrigger({
     disableHysteresis: true,
     threshold: 0,
-    target: window ? window() : undefined,
   });
 
   return React.cloneElement(children, {
@@ -102,9 +78,6 @@ function Header() {
   const navigate = useNavigate();
   const authContext = useContext(AuthContext);
 
-  const classes = useStyles();
-  const theme = useTheme();
-
   const logout = () => authContext.logout(() => navigate("/"));
 
   const [open, setOpen] = useState(false);
@@ -114,7 +87,7 @@ function Header() {
   const drawer = (
     <Fragment>
       <Toolbar />
-      <List component="div" className={classes.contentList}>
+      <List component="div" sx={{ flex: 1 }}>
         {authContext.authenticated && (
           <GroupRouteList
             title="Admin"
@@ -131,7 +104,8 @@ function Header() {
           <ListItem button>
             <ListItemText
               primary="Content"
-              classes={{ primary: classes.listTitle }}
+              sx={{ fontWeight: "bold" }}
+              disableTypography={true}
             />
           </ListItem>
         </AppLink>
@@ -159,8 +133,9 @@ function Header() {
         <AppLink to="/reading" onClick={handleDrawerClose}>
           <ListItem button>
             <ListItemText
-              primary="Reading List"
-              classes={{ primary: classes.listTitle }}
+              primary="Content"
+              sx={{ fontWeight: "bold" }}
+              disableTypography={true}
             />
           </ListItem>
         </AppLink>
@@ -171,66 +146,62 @@ function Header() {
   return (
     <Fragment>
       <ElevationScroll>
-        <AppBar color="primary" elevation={2} className={classes.appBar}>
+        <HeaderAppBar elevation={2}>
           <Toolbar>
-            <IconButton
+            <MenuIconButton
               color="inherit"
               aria-label="open drawer"
               edge="start"
               onClick={handleDrawerToggle}
-              className={classes.menuButton}
+              size="large"
             >
               <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" className={classes.title}>
+            </MenuIconButton>
+            <Typography variant="h6" flexGrow={1}>
               <AppLink to="/">
-                <span className={classes.logo}>ME</span>
+                <AppLogo>ME</AppLogo>
               </AppLink>
             </Typography>
             <ThemeToggleButton />
             {authContext.authenticated ? (
-              <IconButton onClick={logout} color="inherit" aria-label="logout">
+              <IconButton
+                onClick={logout}
+                color="inherit"
+                aria-label="logout"
+                size="large"
+              >
                 <ExitToAppIcon />
               </IconButton>
             ) : (
               <AppLink to="login">
-                <IconButton color="inherit" aria-label="login">
+                <IconButton color="inherit" aria-label="login" size="large">
                   <AccountCircleIcon />
                 </IconButton>
               </AppLink>
             )}
           </Toolbar>
-        </AppBar>
+        </HeaderAppBar>
       </ElevationScroll>
-      <nav className={classes.drawer}>
+      <Sidebar>
         <Hidden smUp>
-          <Drawer
+          <HeaderDrawer
             variant="temporary"
-            anchor={theme.direction === "rtl" ? "right" : "left"}
+            anchor="left"
             open={open}
             onClose={handleDrawerToggle}
-            classes={{
-              paper: classes.drawerPaper,
-            }}
             ModalProps={{
               keepMounted: true, // Better open performance on mobile.
             }}
           >
             {drawer}
-          </Drawer>
+          </HeaderDrawer>
         </Hidden>
-        <Hidden xsDown>
-          <Drawer
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            variant="permanent"
-            open
-          >
+        <Hidden smDown>
+          <HeaderDrawer variant="permanent" open>
             {drawer}
-          </Drawer>
+          </HeaderDrawer>
         </Hidden>
-      </nav>
+      </Sidebar>
     </Fragment>
   );
 }

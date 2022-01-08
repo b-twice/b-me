@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Select from "@material-ui/core/Select";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import FormOptionType from "../FormOptionType";
-import { MenuItem, FormControl, InputLabel } from "@material-ui/core";
+import { MenuItem, FormControl, InputLabel } from "@mui/material";
 
 interface SelectProps {
   label: string;
@@ -39,18 +39,17 @@ export default function FormSelectMenu({
   }, [obj, valueProperty, labelProperty]);
 
   function handleChange(
-    event: React.ChangeEvent<{
-      label?: unknown;
-      name?: unknown;
-      value: unknown;
-    }>
+    event: SelectChangeEvent<string>
+    // event: React.ChangeEvent<{
+    //   label?: unknown;
+    //   name?: unknown;
+    //   value: unknown;
+    // }>
   ): void {
-    const selected = event.target as FormOptionType;
     onChange({
-      ...selected,
-      [labelProperty]: selected.label,
-      [valueProperty]: selected.value,
-    });
+      [labelProperty]: event.target.name,
+      [valueProperty]: event.target.value,
+    } as FormOptionType);
   }
 
   return (

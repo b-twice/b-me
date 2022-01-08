@@ -1,37 +1,15 @@
 import React, { useState, useEffect } from "react";
-import {
-  Card,
-  CardContent,
-  Typography,
-  makeStyles,
-  Theme,
-  createStyles,
-  List,
-  ListItemText,
-  ListItem,
-  CardActions,
-  Button,
-  Divider,
-} from "@material-ui/core";
+import { Card, CardContent, CardActions, Divider } from "@mui/material";
+import List from "@mui/material/List";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
 import AppLink from "../core/components/AppLink";
 import { Recipe } from "../common/client";
 import AppSpinner from "../core/components/AppSpinner";
 import { RecipeApi } from "../common/client/FoodApi";
-import { Link } from "@material-ui/core";
-import { NavLink } from "react-router-dom";
 import ListItemLink from "../core/components/ListItemLink";
 
-const useStyles = makeStyles((theme: Theme) => {
-  return createStyles({
-    card: {
-      width: "300px",
-    },
-  });
-});
-
 function RecentRecipesCard() {
-  const classes = useStyles();
-
   const [recipes, setRecipes] = useState<Array<Recipe>>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
@@ -50,7 +28,7 @@ function RecentRecipesCard() {
   }, []);
 
   return (
-    <Card className={classes.card}>
+    <Card sx={{ width: 300 }}>
       <CardContent>
         <Typography variant="h5" component="h2" gutterBottom>
           Recent Recipes

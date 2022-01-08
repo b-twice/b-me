@@ -1,4 +1,5 @@
-import { createStyles, makeStyles, Theme, Typography } from "@material-ui/core";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
 import React, { Fragment, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { MealPlan } from "../common/client";
@@ -6,17 +7,8 @@ import { MealPlanApi } from "../common/client/FoodApi";
 import MealPlanNoteList from "./MealPlanNoteList";
 import MealPlanRecipeList from "./MealPlanRecipeList";
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    spacer: {
-      marginBottom: theme.spacing(4),
-    },
-  })
-);
-
 function MealPlanView() {
   const params = useParams() as any;
-  const classes = useStyles();
   const [mealPlan, setMealPlan] = useState<MealPlan | undefined>(undefined);
   useEffect(() => {
     MealPlanApi.get(params.mealPlanId).then((result) => setMealPlan(result));
@@ -31,10 +23,14 @@ function MealPlanView() {
           Added on {mealPlan.date}
         </Typography>
       )}
-      <div className={classes.spacer}>
-        <MealPlanRecipeList mealPlan={mealPlan} />
-      </div>
-      <MealPlanNoteList mealPlan={mealPlan} />
+      <Grid direction="column" container spacing={4}>
+        <Grid item>
+          <MealPlanRecipeList mealPlan={mealPlan} />
+        </Grid>
+        <Grid item>
+          <MealPlanNoteList mealPlan={mealPlan} />
+        </Grid>
+      </Grid>
     </Fragment>
   );
 }

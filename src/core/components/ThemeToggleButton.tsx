@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
-import InvertColorsIcon from "@material-ui/icons/InvertColors";
-import { IconButton } from "@material-ui/core";
+import InvertColorsIcon from "@mui/icons-material/InvertColors";
+import { IconButton } from "@mui/material";
 import { AppThemeContext } from "../../theme/AppThemeContext";
 
 export default function ThemeToggleButton() {
@@ -16,7 +16,7 @@ export default function ThemeToggleButton() {
   };
 
   return (
-    <IconButton onClick={handleColorChange}>
+    <IconButton onClick={handleColorChange} size="large">
       <InvertColorsIcon />
     </IconButton>
   );

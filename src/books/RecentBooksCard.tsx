@@ -3,9 +3,6 @@ import {
   Card,
   CardContent,
   Typography,
-  makeStyles,
-  Theme,
-  createStyles,
   List,
   ListItemText,
   ListItem,
@@ -13,24 +10,14 @@ import {
   CardActions,
   Button,
   Divider,
-} from "@material-ui/core";
+} from "@mui/material";
 import AppLink from "../core/components/AppLink";
 import { Book } from "../common/client";
 import { BookApi } from "../common/client/BookApi";
-import BookIcon from "@material-ui/icons/Book";
+import BookIcon from "@mui/icons-material/Book";
 import AppSpinner from "../core/components/AppSpinner";
 
-const useStyles = makeStyles((theme: Theme) => {
-  return createStyles({
-    card: {
-      width: "300px",
-    },
-  });
-});
-
 function RecentBooksCard() {
-  const classes = useStyles();
-
   const [books, setBooks] = useState<Array<Book>>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
@@ -49,7 +36,7 @@ function RecentBooksCard() {
   }, []);
 
   return (
-    <Card className={classes.card}>
+    <Card sx={{ width: 300 }}>
       <CardContent>
         <Typography variant="h5" component="h2" gutterBottom>
           Reading List

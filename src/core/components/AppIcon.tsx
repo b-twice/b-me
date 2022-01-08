@@ -1,16 +1,11 @@
 import React from "react";
-import Icon, { IconProps } from "@material-ui/core/Icon";
-import { makeStyles } from "@material-ui/styles";
-
-const useStyles = makeStyles({
-  root: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+import Icon, { IconProps } from "@mui/material/Icon";
 
 export default function AppIcon(props: IconProps) {
-  const classes = useStyles();
-  return <Icon className={classes.root} {...props} />;
+  return (
+    <Icon
+      sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
+      {...props}
+    />
+  );
 }

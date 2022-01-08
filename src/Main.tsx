@@ -1,5 +1,4 @@
-import { makeStyles, createStyles } from "@material-ui/styles";
-import { Theme, Toolbar, Container, Box } from "@material-ui/core";
+import { Toolbar, Container, Box } from "@mui/material";
 import Header from "./core/Header";
 import { Outlet, Route, Routes } from "react-router";
 import Home from "./core/Home";
@@ -12,7 +11,6 @@ import BookStatuses from "./books/BookStatuses";
 import { RequireAuth } from "./core/Auth";
 import Transactions from "./finance/Transactions";
 import FinanceDashboard from "./finance/Dashboard";
-import FinanceExpenses from "./finance/Expenses";
 import BlogPosts from "./blog/BlogPosts";
 import CookbookAuthors from "./food/CookbookAuthors";
 import Supermarkets from "./food/Supermarkets";
@@ -28,33 +26,28 @@ import MealPlanView from "./food/MealPlanView";
 import RecipeView from "./food/RecipeView";
 import BlogContentList from "./blog/BlogContentList";
 
-const useStyles = makeStyles((theme: Theme) => {
-  return createStyles({
-    app: {
-      display: "flex",
-      minHeight: "100vh",
-      width: "100%",
-      margin: "0 auto",
-      background: theme.palette.primary.main,
-    },
-    main: {
-      flexGrow: 1,
-      overflow: "hidden",
-      paddingBottom: theme.spacing(2),
-      marginBottom: theme.spacing(4),
-    },
-    container: {},
-  });
-});
-
 function Main() {
-  const classes = useStyles();
   return (
-    <div className={classes.app}>
+    <Box
+      sx={{
+        display: "flex",
+        minHeight: "100vh",
+        width: "100%",
+        margin: "0 auto",
+      }}
+    >
       <Header />
-      <main className={classes.main}>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          overflow: "hidden",
+          paddingBottom: 2,
+          marginBottom: 4,
+        }}
+      >
         <Toolbar />
-        <Container className={classes.container}>
+        <Container maxWidth="xl">
           <Box my={4}>
             <Routes>
               <Route path="/" element={<Home />} />
@@ -109,7 +102,6 @@ function Main() {
               >
                 <Route path="dashboard" element={<FinanceDashboard />} />
                 <Route path="transactions" element={<Transactions />} />
-                <Route path="expenses" element={<FinanceExpenses />} />
               </Route>
 
               <Route path="reading" element={<Books />} />
@@ -130,8 +122,8 @@ function Main() {
             </Routes>
           </Box>
         </Container>
-      </main>
-    </div>
+      </Box>
+    </Box>
   );
 }
 

@@ -1,21 +1,18 @@
 import React, { HTMLAttributes } from "react";
-import {
-  makeStyles,
-  Theme,
-  createStyles,
-  emphasize,
-} from "@material-ui/core/styles";
+import { Theme, emphasize } from "@mui/material/styles";
+import makeStyles from '@mui/styles/makeStyles';
+import createStyles from '@mui/styles/createStyles';
 import FormOptionType from "../FormOptionType";
-import { Paper, Typography, MenuItem, Chip } from "@material-ui/core";
+import { Paper, Typography, MenuItem, Chip } from "@mui/material";
 import { ValueContainerProps } from "react-select/src/components/containers";
 import { ControlProps } from "react-select/src/components/Control";
 import { MenuProps, NoticeProps } from "react-select/src/components/Menu";
 import { OptionProps } from "react-select/src/components/Option";
 import { PlaceholderProps } from "react-select/src/components/Placeholder";
-import { Omit } from "@material-ui/types";
-import TextField, { BaseTextFieldProps } from "@material-ui/core/TextField";
+import { DistributiveOmit } from "@mui/types";
+import TextField, { BaseTextFieldProps } from "@mui/material/TextField";
 import { MultiValueProps } from "react-select/src/components/MultiValue";
-import CancelIcon from "@material-ui/icons/Cancel";
+import CancelIcon from "@mui/icons-material/Cancel";
 import clsx from "clsx";
 import { SingleValueProps } from "react-select/src/components/SingleValue";
 
@@ -37,7 +34,7 @@ const useSelectStyles = makeStyles((theme: Theme) =>
     },
     chipFocused: {
       backgroundColor: emphasize(
-        theme.palette.type === "light"
+        theme.palette.mode === "light"
           ? theme.palette.grey[300]
           : theme.palette.grey[700],
         0.08
@@ -125,7 +122,7 @@ function Option(props: OptionProps<FormOptionType>) {
   );
 }
 
-type MuiPlaceholderProps = Omit<
+type MuiPlaceholderProps = DistributiveOmit<
   PlaceholderProps<FormOptionType>,
   "innerProps"
 > &
