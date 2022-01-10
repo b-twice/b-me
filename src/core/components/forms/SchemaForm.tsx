@@ -5,22 +5,13 @@ import SchemaFormField from "./fields/SchemaField";
 import AppSnackbar from "../AppSnackbar";
 import { ObjectEntity } from "./ObjectEntityType";
 import { styled } from "@mui/system";
+import { Stack } from "@mui/material";
 
 const Root = styled("div")({
   flexGrow: 1,
   overflow: "auto",
   height: "100%",
 });
-
-const FormControls = styled("div")(({ theme }) => ({
-  display: "flex",
-  flexDirection: "column",
-  padding: theme.spacing(2),
-  "& > div": {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-  },
-}));
 
 export interface FormSchema<T> {
   type: "EDIT" | "ADD" | "FILTER";
@@ -38,6 +29,7 @@ type FieldType =
   | "date"
   | "currency"
   | "select-menu"
+  | "rating"
   | "switch";
 
 export interface FieldSchema {
@@ -59,7 +51,14 @@ export interface FieldSchema {
 
 export interface TextFieldSchema extends FieldSchema {
   type: "text";
-  path?: (o: any) => string;
+  path?: (o: any) => string; // url link
+}
+
+export interface RatingFieldSchema extends FieldSchema {
+  type: "rating";
+  max?: number;
+  size?: "small" | "medium" | "large" | undefined;
+  icon?: string;
 }
 
 export interface NumberFieldSchema extends FieldSchema {
@@ -206,7 +205,7 @@ export default function SchemaForm<T extends ObjectEntity>({
             isSaving={isSaving}
             saveText={saveText}
           />
-          <FormControls>
+          <Stack spacing={2} sx={{ p: 2 }}>
             {Object.entries(schema.properties).map(([k, v]) => (
               <SchemaFormField
                 property={k}
@@ -217,7 +216,7 @@ export default function SchemaForm<T extends ObjectEntity>({
                 error={error[k]}
               />
             ))}
-          </FormControls>
+          </Stack>
         </form>
       </Root>
       <AppSnackbar message={appMessage} onClose={() => setAppMessage("")} />

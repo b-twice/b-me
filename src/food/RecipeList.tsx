@@ -4,7 +4,7 @@ import {
   RecipeSchemaContextProvider,
   RecipeFilter,
   RecipesTableConfig,
-} from "./RecipeListSchemaContext";
+} from "./RecipeSchemaContext";
 import { Recipe } from "../common/client";
 import withProvider from "../core/components/withProvider";
 import SchemaTable, {

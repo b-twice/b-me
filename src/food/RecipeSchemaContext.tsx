@@ -4,6 +4,7 @@ import {
   SelectFieldSchema,
   TextFieldSchema,
   MultiSelectFieldSchema,
+  RatingFieldSchema,
 } from "../core/components/forms/SchemaForm";
 import FormOptionType from "../core/components/forms/FormOptionType";
 import {
@@ -36,7 +37,8 @@ export interface RecipeFilter
   recipeIngredients: FoodProduct[];
 }
 
-export interface RecipesTableConfig extends DistributiveOmit<SchemaTableConfig, "filter"> {
+export interface RecipesTableConfig
+  extends DistributiveOmit<SchemaTableConfig, "filter"> {
   filter: RecipeFilter;
 }
 
@@ -125,6 +127,20 @@ function RecipeSchemaContextProvider({ children }: { children: JSX.Element }) {
         type: "text",
         required: false,
       } as TextFieldSchema,
+      [propertyOf("complexity")]: {
+        title: "Complexity",
+        type: "rating",
+        max: 3,
+        icon: "star",
+        required: false,
+      } as RatingFieldSchema,
+      [propertyOf("rating")]: {
+        title: "Rating",
+        type: "rating",
+        max: 5,
+        icon: "favorite",
+        required: false,
+      } as RatingFieldSchema,
     },
     object: {} as Recipe,
   } as FormSchema<Recipe>;
