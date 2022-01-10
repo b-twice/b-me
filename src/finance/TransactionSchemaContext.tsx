@@ -42,7 +42,10 @@ export const transactionUtility = {
     const item = { ...record };
     const transactionRecordTags: TransactionRecord[] = [];
     record?.tags?.forEach((tag) => {
-      const id = tag?.transactionRecordTag[0]?.id || 0;
+      const id =
+        (tag?.transactionRecordTag?.length &&
+          tag?.transactionRecordTag[0]?.id) ||
+        0;
       transactionRecordTags.push({
         id: id,
         transactionRecordId: record.id,
