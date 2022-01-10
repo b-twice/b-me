@@ -15,7 +15,6 @@ const theme = createTheme({
       light: "#f4f5f7", //light grey
     },
     secondary: {
-      // main: "#212121",
       main: "#2962ff", // blue
     },
   },
@@ -23,8 +22,6 @@ const theme = createTheme({
 
 function App() {
   return (
-    // <AppThemeContextProvider>
-    // </AppThemeContextProvider>
     <ThemeProvider theme={theme}>
       <Fragment>
         <CssBaseline />

@@ -16,7 +16,6 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import AppLink from "./components/AppLink";
 import GroupRouteList from "./components/GroupRouteLists";
-import ThemeToggleButton from "./components/ThemeToggleButton";
 import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
 
@@ -162,7 +161,6 @@ function Header() {
                 <AppLogo>ME</AppLogo>
               </AppLink>
             </Typography>
-            <ThemeToggleButton />
             {authContext.authenticated ? (
               <IconButton
                 onClick={logout}
