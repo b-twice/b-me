@@ -1,6 +1,6 @@
 import React, { useRef, Fragment, useState, useEffect } from "react";
-import { Tooltip, IconButton } from "@material-ui/core";
-import FilterListIcon from "@material-ui/icons/FilterList";
+import { Tooltip, IconButton } from "@mui/material";
+import FilterListIcon from "@mui/icons-material/FilterList";
 import { FormSchema } from "../forms/SchemaForm";
 import { EditModalRef, EditModal } from "../forms/EditModal";
 import { ObjectEntity } from "../forms/ObjectEntityType";
@@ -57,7 +57,7 @@ export default function CoreTableFilter<T extends ObjectEntity>({
           aria-label="filter list"
           onClick={handleFilter}
           color={isActive ? "secondary" : "default"}
-        >
+          size="large">
           <FilterListIcon />
         </IconButton>
       </Tooltip>

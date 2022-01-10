@@ -1,36 +1,18 @@
 import React, { Fragment, useState } from "react";
 import {
   Typography,
-  makeStyles,
-  Theme,
-  createStyles,
   Grid,
   ListItem,
   ListItemText,
   ListItemAvatar,
   Collapse,
   List,
-} from "@material-ui/core";
+} from "@mui/material";
 import { DataPoint } from "../common/client";
 import WeatherIcon from "./WeatherIcon";
 import moment, { CalendarSpec } from "moment";
-import ExpandLess from "@material-ui/icons/ExpandLess";
-import ExpandMore from "@material-ui/icons/ExpandMore";
-
-const useStyles = makeStyles((theme: Theme) => {
-  return createStyles({
-    label: {
-      display: "inline-block",
-      fontWeight: theme.typography.fontWeightMedium as number,
-    },
-    description: {
-      display: "inline-block",
-    },
-    weatherIcon: {
-      flex: "1",
-    },
-  });
-});
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
 
 interface WeatherListDayProps {
   day: DataPoint;
@@ -46,7 +28,6 @@ const dayFormat = {
 } as CalendarSpec;
 
 function WeatherListDay({ day }: WeatherListDayProps) {
-  const classes = useStyles();
   const [open, setOpen] = useState(false);
 
   const handleClick = () => {
@@ -93,29 +74,46 @@ function WeatherListDay({ day }: WeatherListDayProps) {
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List disablePadding>
           <ListItem>
-            <Grid container direction="row" justify="space-around" spacing={2}>
+            <Grid
+              container
+              direction="row"
+              justifyContent="space-around"
+              spacing={2}
+            >
               <Grid item>
-                <Typography className={classes.label} variant="body2">
+                <Typography
+                  display="inline-block"
+                  fontWeight="medium"
+                  variant="body2"
+                >
                   Humidity:&nbsp;
                 </Typography>
-                <Typography className={classes.description} variant="body2">
+                <Typography display="inline-block" variant="body2">
                   {day.humidity && (day.humidity * 100).toFixed(0)}%
                 </Typography>
               </Grid>
 
               <Grid item>
-                <Typography className={classes.label} variant="body2">
+                <Typography
+                  display="inline-block"
+                  fontWeight="medium"
+                  variant="body2"
+                >
                   Wind:&nbsp;
                 </Typography>
-                <Typography className={classes.description} variant="body2">
+                <Typography display="inline-block" variant="body2">
                   {day.windSpeed && day.windSpeed.toFixed(0)} mph
                 </Typography>
               </Grid>
               <Grid item>
-                <Typography className={classes.label} variant="body2">
+                <Typography
+                  display="inline-block"
+                  fontWeight="medium"
+                  variant="body2"
+                >
                   Rain:&nbsp;
                 </Typography>
-                <Typography className={classes.description} variant="body2">
+                <Typography display="inline-block" variant="body2">
                   {day.precipProbability &&
                     (day.precipProbability * 100).toFixed(0)}
                   %

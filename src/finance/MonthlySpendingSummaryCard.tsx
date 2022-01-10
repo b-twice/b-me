@@ -1,50 +1,14 @@
 import React, { Fragment, useState, useEffect } from "react";
-import {
-  makeStyles,
-  Theme,
-  createStyles,
-  Card,
-  CardContent,
-  Typography,
-  List,
-} from "@material-ui/core";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import List from "@mui/material/List";
 import { FinanceApi } from "../common/client/FinanceApi";
 import AppSpinner from "../core/components/AppSpinner";
 import { TransactionTotal } from "../common/client";
 import MonthlySpendingLineItem from "./MonthlySpendingLineItem";
 import SplitTextListItem from "../core/components/lists/SplitTextListItem";
 import currencyFormatter from "../core/components/formatters/CurrencyFormatter";
-
-const useStyles = makeStyles((theme: Theme) => {
-  return createStyles({
-    card: {
-      width: "300px",
-    },
-    title: {
-      fontSize: 14,
-    },
-    section: {
-      margin: theme.spacing(2, 0),
-    },
-    lineItem: {
-      fontWeight: 400,
-    },
-    lineItemTotal: {
-      paddingTop: theme.spacing(2),
-      // paddingTop: '20pxk',
-      borderTop: `1px solid ${
-        theme.palette.type === "light"
-          ? "rgba(0,0,0,0.12)"
-          : "rgba(255,255,255,0.12)"
-      }`,
-      fontWeight: 700,
-    },
-    list: {
-      overflowY: "auto",
-    },
-  });
-});
-
 interface FinanceMonthlySpendingSummaryCardProps {
   year: string;
 }
@@ -52,8 +16,6 @@ interface FinanceMonthlySpendingSummaryCardProps {
 function FinanceMonthlySpendingSummaryCard({
   year,
 }: FinanceMonthlySpendingSummaryCardProps) {
-  const classes = useStyles();
-
   const [average, setAverage] = useState<number>(0);
   const [items, setItems] = useState<TransactionTotal[] | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -82,13 +44,9 @@ function FinanceMonthlySpendingSummaryCard({
 
   return (
     <Fragment>
-      <Card className={classes.card}>
+      <Card sx={{ width: 300 }}>
         <CardContent>
-          <Typography
-            className={classes.title}
-            color="textSecondary"
-            gutterBottom
-          >
+          <Typography fontSize={14} color="textSecondary" gutterBottom>
             Monthly Summary
           </Typography>
           {error && (
@@ -100,7 +58,7 @@ function FinanceMonthlySpendingSummaryCard({
             <AppSpinner />
           ) : (
             <Fragment>
-              <List className={classes.list}>
+              <List sx={{ overflowY: "auto" }}>
                 {items?.map((item) => (
                   <MonthlySpendingLineItem
                     key={item.name}
@@ -109,8 +67,12 @@ function FinanceMonthlySpendingSummaryCard({
                   />
                 ))}
                 <SplitTextListItem
-                  className={classes.lineItemTotal}
-                  variant="subtitle2"
+                  sx={{
+                    pt: 2,
+                    borderTop: "1px solid rgba(0,0,0,0.12)",
+                    fontWeight: "bold",
+                  }}
+                  typography={{ variant: "subtitle2" }}
                   left="Average"
                   right={currencyFormatter.format(average)}
                 />

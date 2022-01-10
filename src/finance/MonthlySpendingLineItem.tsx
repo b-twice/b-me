@@ -1,19 +1,11 @@
 import React, { useState, Fragment } from "react";
-import { Collapse, makeStyles, Theme, createStyles } from "@material-ui/core";
+import Collapse from "@mui/material/Collapse";
 import currencyFormatter from "../core/components/formatters/CurrencyFormatter";
 import { TransactionTotal } from "../common/client";
 import ButtonSplitTextListItem from "../core/components/lists/ButtonSplitTextListItem";
 import SplitTextListItem from "../core/components/lists/SplitTextListItem";
 import { FinanceApi } from "../common/client/FinanceApi";
 import FormMonthOptions from "../core/components/forms/FormMonthOptions";
-
-const useStyles = makeStyles((theme: Theme) => {
-  return createStyles({
-    lineItem: {
-      fontWeight: 400,
-    },
-  });
-});
 
 interface MonthlySpendingLineItemProps {
   total: TransactionTotal | null;
@@ -24,8 +16,6 @@ function MonthlySpendingLineItem({
   total,
   year,
 }: MonthlySpendingLineItemProps) {
-  const classes = useStyles();
-
   const formatMonth = (month?: string) =>
     FormMonthOptions.find((m) => m.value === total?.name)?.label;
 
@@ -57,8 +47,10 @@ function MonthlySpendingLineItem({
         {items?.map((item) => (
           <SplitTextListItem
             key={item.name}
-            className={classes.lineItem}
-            variant="subtitle2"
+            sx={{ fontWeight: 400 }}
+            typography={{
+              variant: "subtitle2",
+            }}
             left={`${item.name}`}
             right={currencyFormatter.format(item.amount || 0)}
           />

@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, FormControlLabel } from "@material-ui/core";
+import { Switch, FormControlLabel } from "@mui/material";
 import { SchemaFieldProps } from "./SchemaField";
 import { SwitchFieldSchema } from "../SchemaForm";
 

@@ -1,45 +1,26 @@
 import React, { Fragment, useState, useEffect } from "react";
-import {
-  makeStyles,
-  Theme,
-  createStyles,
-  Card,
-  CardContent,
-  Typography,
-  Divider,
-  List,
-} from "@material-ui/core";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import List from "@mui/material/List";
 import { FinancialSummary } from "../common/client";
 import { FinanceApi } from "../common/client/FinanceApi";
 import AppSpinner from "../core/components/AppSpinner";
 import FinancialSummaryLineItem from "./SummaryLineItem";
 import currencyFormatter from "../core/components/formatters/CurrencyFormatter";
 import SplitTextListItem from "../core/components/lists/SplitTextListItem";
+import { styled } from "@mui/system";
 
-const useStyles = makeStyles((theme: Theme) => {
-  return createStyles({
-    card: {
-      width: "300px",
-    },
-    title: {
-      fontSize: 14,
-    },
-    section: {
-      margin: theme.spacing(2, 0),
-    },
-    lineItem: {
-      fontWeight: 400,
-    },
-  });
-});
+const Section = styled("div")(({ theme }) => ({
+  margin: theme.spacing(2, 0),
+}));
 
 interface FinanceSummaryCardProps {
   year: string;
 }
 
 function FinanceSummaryCard({ year }: FinanceSummaryCardProps) {
-  const classes = useStyles();
-
   const [summary, setSummary] = useState<FinancialSummary | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
@@ -60,13 +41,9 @@ function FinanceSummaryCard({ year }: FinanceSummaryCardProps) {
   }, [year]);
 
   return (
-    <Card className={classes.card}>
+    <Card sx={{ width: 300 }}>
       <CardContent>
-        <Typography
-          className={classes.title}
-          color="textSecondary"
-          gutterBottom
-        >
+        <Typography fontSize={14} color="textSecondary" gutterBottom>
           Net Worth
         </Typography>
         {error && (
@@ -78,12 +55,12 @@ function FinanceSummaryCard({ year }: FinanceSummaryCardProps) {
           <AppSpinner />
         ) : (
           <Fragment>
-            <div className={classes.section}>
+            <Section>
               <Typography variant="h4" component="h5" gutterBottom>
                 {summary?.netWorth &&
                   currencyFormatter.format(summary.netWorth)}
               </Typography>
-            </div>
+            </Section>
             <Divider />
             <List>
               {summary && (
@@ -92,42 +69,54 @@ function FinanceSummaryCard({ year }: FinanceSummaryCardProps) {
                   amount={summary.assetTotal || 0}
                 >
                   <SplitTextListItem
-                    className={classes.lineItem}
-                    variant="subtitle2"
+                    sx={{ fontWeight: 400 }}
+                    typography={{
+                      variant: "subtitle2",
+                    }}
                     left={"Savings"}
                     right={currencyFormatter.format(
                       summary?.asset?.saving || 0
                     )}
                   />
                   <SplitTextListItem
-                    className={classes.lineItem}
-                    variant="subtitle2"
+                    sx={{ fontWeight: 400 }}
+                    typography={{
+                      variant: "subtitle2",
+                    }}
                     left={"Retirement"}
                     right={currencyFormatter.format(
                       summary?.asset?.retirement || 0
                     )}
                   />
                   <SplitTextListItem
-                    className={classes.lineItem}
-                    variant="subtitle2"
+                    sx={{ fontWeight: 400 }}
+                    typography={{
+                      variant: "subtitle2",
+                    }}
                     left={"HSA"}
                     right={currencyFormatter.format(summary?.asset?.hsa || 0)}
                   />
                   <SplitTextListItem
-                    className={classes.lineItem}
-                    variant="subtitle2"
+                    sx={{ fontWeight: 400 }}
+                    typography={{
+                      variant: "subtitle2",
+                    }}
                     left={"Home"}
                     right={currencyFormatter.format(summary?.asset?.home || 0)}
                   />
                   <SplitTextListItem
-                    className={classes.lineItem}
-                    variant="subtitle2"
+                    sx={{ fontWeight: 400 }}
+                    typography={{
+                      variant: "subtitle2",
+                    }}
                     left={"Auto"}
                     right={currencyFormatter.format(summary?.asset?.auto || 0)}
                   />
                   <SplitTextListItem
-                    className={classes.lineItem}
-                    variant="subtitle2"
+                    sx={{ fontWeight: 400 }}
+                    typography={{
+                      variant: "subtitle2",
+                    }}
                     left={"Stock"}
                     right={currencyFormatter.format(summary?.asset?.stock || 0)}
                   />
@@ -139,14 +128,18 @@ function FinanceSummaryCard({ year }: FinanceSummaryCardProps) {
                   amount={summary.debtTotal || 0}
                 >
                   <SplitTextListItem
-                    className={classes.lineItem}
-                    variant="subtitle2"
+                    sx={{ fontWeight: 400 }}
+                    typography={{
+                      variant: "subtitle2",
+                    }}
                     left={"Home"}
                     right={currencyFormatter.format(summary?.debt?.home || 0)}
                   />
                   <SplitTextListItem
-                    className={classes.lineItem}
-                    variant="subtitle2"
+                    sx={{ fontWeight: 400 }}
+                    typography={{
+                      variant: "subtitle2",
+                    }}
                     left={"Auto"}
                     right={currencyFormatter.format(summary?.debt?.auto || 0)}
                   />
@@ -158,16 +151,20 @@ function FinanceSummaryCard({ year }: FinanceSummaryCardProps) {
                   amount={summary?.earnings?.gross || 0}
                 >
                   <SplitTextListItem
-                    className={classes.lineItem}
-                    variant="subtitle2"
+                    sx={{ fontWeight: 400 }}
+                    typography={{
+                      variant: "subtitle2",
+                    }}
                     left={"Taxable"}
                     right={currencyFormatter.format(
                       summary?.earnings?.taxable || 0
                     )}
                   />
                   <SplitTextListItem
-                    className={classes.lineItem}
-                    variant="subtitle2"
+                    sx={{ fontWeight: 400 }}
+                    typography={{
+                      variant: "subtitle2",
+                    }}
                     left={"Taxed"}
                     right={currencyFormatter.format(
                       summary?.earnings?.taxed || 0

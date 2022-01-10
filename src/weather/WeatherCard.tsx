@@ -3,15 +3,12 @@ import {
   Card,
   CardContent,
   Typography,
-  makeStyles,
-  Theme,
-  createStyles,
   CardActions,
   Button,
   Divider,
   List,
   Collapse,
-} from "@material-ui/core";
+} from "@mui/material";
 import WeatherApi from "../common/client/WeatherApi";
 import AppSpinner from "../core/components/AppSpinner";
 import { DarkSkyResponse, BingAddress } from "../common/client";
@@ -19,32 +16,8 @@ import GeocodeApi from "../common/client/GeocodeApi";
 import WeatherCurrent from "./WeatherCurrent";
 import WeatherListDay from "./WeatherListDay";
 
-const useStyles = makeStyles((theme: Theme) => {
-  return createStyles({
-    card: {
-      width: "300px",
-    },
-    title: {
-      fontSize: 14,
-      float: "right",
-    },
-    expand: {
-      transform: "rotate(0deg)",
-      marginLeft: "auto",
-      transition: theme.transitions.create("transform", {
-        duration: theme.transitions.duration.shortest,
-      }),
-    },
-    expandOpen: {
-      transform: "rotate(180deg)",
-    },
-  });
-});
-
 const defaultLocation: [number, number] = [37.533333, -77.466667]; // default to Richmond
 function WeatherCard() {
-  const classes = useStyles();
-
   const [weather, setWeather] = useState<DarkSkyResponse | null>(null);
   const [location, setLocation] = useState<BingAddress | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -106,7 +79,7 @@ function WeatherCard() {
   }, []);
 
   return (
-    <Card className={classes.card}>
+    <Card sx={{ width: 300 }}>
       <CardContent>
         {error && (
           <Typography color="error" variant="overline">

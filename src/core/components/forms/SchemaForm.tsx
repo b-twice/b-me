@@ -1,35 +1,26 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import FormAppBar from "./FormAppBar";
 import FormOptionType from "./FormOptionType";
 import SchemaFormField from "./fields/SchemaField";
 import AppSnackbar from "../AppSnackbar";
 import { ObjectEntity } from "./ObjectEntityType";
+import { styled } from "@mui/system";
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      flexGrow: 1,
-      overflow: "auto",
-      height: "100%",
-    },
-    form: {},
-    formControls: {
-      display: "flex",
-      flexDirection: "column",
-      padding: theme.spacing(2),
-      "& > div": {
-        marginTop: theme.spacing(1),
-        marginBottom: theme.spacing(1),
-      },
-    },
-    fab: {
-      position: "fixed",
-      bottom: theme.spacing(2),
-      right: theme.spacing(2),
-    },
-  })
-);
+const Root = styled("div")({
+  flexGrow: 1,
+  overflow: "auto",
+  height: "100%",
+});
+
+const FormControls = styled("div")(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  padding: theme.spacing(2),
+  "& > div": {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+  },
+}));
 
 export interface FormSchema<T> {
   type: "EDIT" | "ADD" | "FILTER";
@@ -120,8 +111,6 @@ export default function SchemaForm<T extends ObjectEntity>({
   onChange,
   saveText,
 }: SchemaFormProps<T>) {
-  const classes = useStyles();
-
   const [obj, setObject] = useState<T>({} as T);
   const [error, setError] = useState<{ [key: string]: string }>({});
   const [isSaving, setIsSaving] = useState(false);
@@ -209,19 +198,15 @@ export default function SchemaForm<T extends ObjectEntity>({
 
   return (
     <Fragment>
-      <div className={classes.root}>
-        <form
-          className={classes.form}
-          onSubmit={handleSubmit}
-          noValidate={true}
-        >
+      <Root>
+        <form onSubmit={handleSubmit} noValidate={true}>
           <FormAppBar
             title={schema.title}
             onCancel={onCancel}
             isSaving={isSaving}
             saveText={saveText}
           />
-          <div className={classes.formControls}>
+          <FormControls>
             {Object.entries(schema.properties).map(([k, v]) => (
               <SchemaFormField
                 property={k}
@@ -232,9 +217,9 @@ export default function SchemaForm<T extends ObjectEntity>({
                 error={error[k]}
               />
             ))}
-          </div>
+          </FormControls>
         </form>
-      </div>
+      </Root>
       <AppSnackbar message={appMessage} onClose={() => setAppMessage("")} />
     </Fragment>
   );

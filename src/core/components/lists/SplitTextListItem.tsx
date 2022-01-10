@@ -1,16 +1,23 @@
 import React from "react";
-import { Typography, Grid, TypographyProps } from "@material-ui/core";
+import { Typography, Grid, TypographyProps } from "@mui/material";
 import TextListItem from "./TextListItem";
+import { SxProps, Theme } from "@mui/material/styles";
 
 export default function SplitTextListItem({
   left,
   right,
-  ...typographyProps
-}: { left: any; right: any } & TypographyProps) {
+  sx,
+  typography,
+}: {
+  left: any;
+  right: any;
+  sx?: SxProps<Theme>;
+  typography?: TypographyProps;
+}) {
   return (
     <TextListItem
       content={
-        <Typography {...typographyProps}>
+        <Typography {...typography} sx={{ ...sx }}>
           <Grid
             container
             direction="row"

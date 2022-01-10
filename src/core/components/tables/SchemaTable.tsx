@@ -7,16 +7,13 @@ import React, {
   useReducer,
 } from "react";
 import {
-  Theme,
-  makeStyles,
-  createStyles,
   Paper,
   Table,
   TableRow,
   TableCell,
   TableBody,
   TablePagination,
-} from "@material-ui/core";
+} from "@mui/material";
 import { FormSchema } from "../forms/SchemaForm";
 import CoreTableHead, { HeadRow, TableHeaderOrder } from "./CoreTableHead";
 import { AuthContext } from "../../Auth";
@@ -50,19 +47,6 @@ export const schemaTableConfig = {
   filter: {} as LookupEntityFilter,
 } as SchemaTableConfig;
 
-const useStyles = makeStyles((theme: Theme) => {
-  return createStyles({
-    root: {
-      width: "100%",
-      marginTop: theme.spacing(3),
-      overflowX: "auto",
-    },
-    table: {
-      minWidth: 650,
-    },
-  });
-});
-
 interface SchemaTableProps<T> {
   filterSchema?: FormSchema<T>;
   page: PaginatedResult;
@@ -90,8 +74,6 @@ function SchemaTable<T extends ObjectEntity>({
   page,
   config,
 }: SchemaTableProps<T>) {
-  const classes = useStyles();
-
   const reducer = schemaTableReducer<T>();
   const [state, dispatch] = useReducer(reducer, { rows: [], count: 0 });
 
@@ -211,13 +193,13 @@ function SchemaTable<T extends ObjectEntity>({
 
   return (
     <Fragment>
-      <Paper className={classes.root}>
+      <Paper sx={{ width: "100%", marginTop: 3, overflowX: "auto" }}>
         <CoreTableToolbar
           title={title}
           filterSchema={filterSchema}
           onFilter={onFilter}
         />
-        <Table className={classes.table}>
+        <Table sx={{ minWidth: 650 }}>
           <CoreTableHead
             headRows={headRows}
             order={config.order}

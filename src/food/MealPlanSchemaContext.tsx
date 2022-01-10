@@ -10,14 +10,14 @@ import FormOptionType from "../core/components/forms/FormOptionType";
 import { MealPlan, Recipe, User } from "../common/client";
 import { MealPlanApi, RecipeApi } from "../common/client/FoodApi";
 import EditSchemaContextProps from "../core/components/forms/EditSchemaContextProps.interface";
-import { Omit } from "@material-ui/types";
+import { DistributiveOmit } from "@mui/types";
 import getLookupName from "../core/components/forms/lookups/getLookupName";
 import { SchemaTableConfig } from "../core/components/tables/SchemaTable";
 import { UserApi } from "../common/client/AdminApi";
 import FormYearOptions from "../core/components/forms/FormYearOptions";
 import FormMonthOptions from "../core/components/forms/FormMonthOptions";
 
-export interface MealPlanFilter extends Omit<MealPlan, "user"> {
+export interface MealPlanFilter extends DistributiveOmit<MealPlan, "user"> {
   user: User[];
   recipe: Recipe[];
   year: FormOptionType[];
@@ -25,7 +25,7 @@ export interface MealPlanFilter extends Omit<MealPlan, "user"> {
 }
 
 export interface MealPlansTableConfig
-  extends Omit<SchemaTableConfig, "filter"> {
+  extends DistributiveOmit<SchemaTableConfig, "filter"> {
   filter: MealPlanFilter;
 }
 
@@ -95,7 +95,7 @@ function MealPlanSchemaContextProvider({
         title: "User",
         type: "multiselect",
         options: users,
-        required: false,
+        required: true,
         getVal: getLookupName,
       } as MultiSelectFieldSchema,
       recipe: {

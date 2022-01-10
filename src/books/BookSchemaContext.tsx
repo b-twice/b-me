@@ -16,13 +16,13 @@ import {
 } from "../common/client/BookApi";
 import { LookupEntity } from "../core/components/forms/lookups/LookupEntity.interface";
 import EditSchemaContextProps from "../core/components/forms/EditSchemaContextProps.interface";
-import { Omit } from "@material-ui/types";
+import { DistributiveOmit } from "@mui/types";
 import getLookupName from "../core/components/forms/lookups/getLookupName";
 import FormYearOptions from "../core/components/forms/FormYearOptions";
 import { SchemaTableConfig } from "../core/components/tables/SchemaTable";
 
 export interface BookFilter
-  extends Omit<
+  extends DistributiveOmit<
     Book,
     "bookAuthor" | "bookStatus" | "bookCategory" | "readYear"
   > {
@@ -32,7 +32,7 @@ export interface BookFilter
   readYear: LookupEntity[];
 }
 
-export interface BooksTableConfig extends Omit<SchemaTableConfig, "filter"> {
+export interface BooksTableConfig extends DistributiveOmit<SchemaTableConfig, "filter"> {
   filter: BookFilter;
 }
 

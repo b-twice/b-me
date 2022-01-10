@@ -1,26 +1,14 @@
 import React, { Fragment, useEffect, useContext } from "react";
-import {
-  List,
-  ListItem,
-  ListItemText,
-  createStyles,
-  makeStyles,
-  Theme,
-  Collapse,
-} from "@material-ui/core";
-import ExpandLess from "@material-ui/icons/ExpandLess";
-import ExpandMore from "@material-ui/icons/ExpandMore";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import Collapse from "@mui/material/Collapse";
+
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
 import ListItemLink from "./ListItemLink";
 import { BlogContext } from "../../blog/BlogContext";
 import { useLocation } from "react-router-dom";
-
-const useStyles = makeStyles((theme: Theme) => {
-  return createStyles({
-    listTitle: {
-      fontWeight: theme.typography.fontWeightBold as number,
-    },
-  });
-});
 
 export type RouteItem = {
   path: string;
@@ -41,7 +29,6 @@ function GroupRouteList({
   nested,
 }: GroupRouteListProps) {
   const location = useLocation();
-  const classes = useStyles();
 
   const blogContext = useContext(BlogContext);
 
@@ -68,7 +55,7 @@ function GroupRouteList({
       <ListItem button onClick={handleClick}>
         <ListItemText
           primary={title}
-          classes={{ primary: classes.listTitle }}
+          primaryTypographyProps={{ sx: { fontWeight: "bold" } }}
         />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItem>

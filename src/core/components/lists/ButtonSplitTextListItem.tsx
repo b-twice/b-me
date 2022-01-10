@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, Grid, TypographyProps } from "@material-ui/core";
+import { Typography, Grid, TypographyProps } from "@mui/material";
 import TextListItem from "./TextListItem";
 
 export default function ButtonSplitTextListItem({

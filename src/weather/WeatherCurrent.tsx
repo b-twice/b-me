@@ -1,28 +1,7 @@
 import React, { Fragment } from "react";
-import {
-  Typography,
-  makeStyles,
-  Theme,
-  createStyles,
-  Grid,
-} from "@material-ui/core";
+import { Typography, Grid } from "@mui/material";
 import { DataPoint } from "../common/client";
 import WeatherIcon from "./WeatherIcon";
-
-const useStyles = makeStyles((theme: Theme) => {
-  return createStyles({
-    label: {
-      display: "inline-block",
-      fontWeight: theme.typography.fontWeightMedium as number,
-    },
-    description: {
-      display: "inline-block",
-    },
-    weatherIcon: {
-      flex: "1",
-    },
-  });
-});
 
 interface WeatherCurrentProps {
   current: DataPoint;
@@ -30,8 +9,6 @@ interface WeatherCurrentProps {
 }
 
 function WeatherCurrent({ current, day }: WeatherCurrentProps) {
-  const classes = useStyles();
-
   return (
     <Fragment>
       <Typography color="textSecondary" gutterBottom>
@@ -46,7 +23,7 @@ function WeatherCurrent({ current, day }: WeatherCurrentProps) {
         alignItems="center"
         spacing={1}
       >
-        <Grid item className={classes.weatherIcon}>
+        <Grid item flex={1}>
           <Grid container direction="row" justifyContent="center">
             <Grid item>
               <WeatherIcon type={current.icon!} size="large" />
@@ -57,16 +34,20 @@ function WeatherCurrent({ current, day }: WeatherCurrentProps) {
         <Grid item>
           <Grid container direction="column" alignItems="flex-end" spacing={0}>
             <Grid item>
-              <Typography className={classes.label} variant="body2">
+              <Typography
+                display="inline-block"
+                fontWeight="medium"
+                variant="body2"
+              >
                 Temp:&nbsp;
               </Typography>
-              <Typography className={classes.description} variant="body2">
+              <Typography display="inline-block" variant="body2">
                 {day.apparentTemperatureHigh &&
                   day.apparentTemperatureHigh.toFixed(0)}
                 &#176;
               </Typography>
               <Typography
-                className={classes.description}
+                display="inline-block"
                 variant="body2"
                 color="textSecondary"
               >
@@ -78,28 +59,40 @@ function WeatherCurrent({ current, day }: WeatherCurrentProps) {
             </Grid>
 
             <Grid item>
-              <Typography className={classes.label} variant="body2">
+              <Typography
+                display="inline-block"
+                fontWeight="medium"
+                variant="body2"
+              >
                 Humidity:&nbsp;
               </Typography>
-              <Typography className={classes.description} variant="body2">
+              <Typography display="inline-block" variant="body2">
                 {current.humidity && (current.humidity * 100).toFixed(0)}%
               </Typography>
             </Grid>
 
             <Grid item>
-              <Typography className={classes.label} variant="body2">
+              <Typography
+                display="inline-block"
+                fontWeight="medium"
+                variant="body2"
+              >
                 Wind:&nbsp;
               </Typography>
-              <Typography className={classes.description} variant="body2">
+              <Typography display="inline-block" variant="body2">
                 {current.windSpeed && current.windSpeed.toFixed(0)} mph
               </Typography>
             </Grid>
 
             <Grid item>
-              <Typography className={classes.label} variant="body2">
+              <Typography
+                display="inline-block"
+                fontWeight="medium"
+                variant="body2"
+              >
                 Rain:&nbsp;
               </Typography>
-              <Typography className={classes.description} variant="body2">
+              <Typography display="inline-block" variant="body2">
                 {day.precipProbability &&
                   (day.precipProbability * 100).toFixed(0)}
                 %

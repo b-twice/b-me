@@ -20,13 +20,13 @@ import {
   FoodProductApi,
 } from "../common/client/FoodApi";
 import EditSchemaContextProps from "../core/components/forms/EditSchemaContextProps.interface";
-import { Omit } from "@material-ui/types";
+import { DistributiveOmit } from "@mui/types";
 import getLookupName from "../core/components/forms/lookups/getLookupName";
 import { SchemaTableConfig } from "../core/components/tables/SchemaTable";
 import { UserApi } from "../common/client/AdminApi";
 
 export interface RecipeFilter
-  extends Omit<
+  extends DistributiveOmit<
     Recipe,
     "user" | "recipeCategory" | "cookbook" | "recipeIngredients"
   > {
@@ -36,7 +36,7 @@ export interface RecipeFilter
   recipeIngredients: FoodProduct[];
 }
 
-export interface RecipesTableConfig extends Omit<SchemaTableConfig, "filter"> {
+export interface RecipesTableConfig extends DistributiveOmit<SchemaTableConfig, "filter"> {
   filter: RecipeFilter;
 }
 

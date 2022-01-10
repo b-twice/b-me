@@ -1,22 +1,18 @@
 import React, { useImperativeHandle, forwardRef } from "react";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
-import Modal from "@material-ui/core/Modal";
+import Modal from "@mui/material/Modal";
 import SchemaForm, { FormSchema } from "./SchemaForm";
 import { ObjectEntity } from "./ObjectEntityType";
+import { styled } from "@mui/system";
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    paper: {
-      position: "absolute",
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      backgroundColor: theme.palette.background.paper,
-      boxShadow: theme.shadows[5],
-    },
-  })
-);
+const Paper = styled("div")(({ theme }) => ({
+  position: "absolute",
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  backgroundColor: theme.palette.background.paper,
+  boxShadow: (theme.shadows as any)[5],
+}));
 
 export interface EditModalProps<T> {
   schema: FormSchema<T>;
@@ -37,7 +33,6 @@ const EditModal = forwardRef(
     { schema, onSaveSuccess, onChange, saveText }: EditModalProps<T>,
     ref: any
   ) => {
-    const classes = useStyles();
     // getModalStyle is not a pure function, we roll the style only on the first render
     const [modalStyle] = React.useState({});
 
@@ -58,7 +53,7 @@ const EditModal = forwardRef(
 
     return (
       <Modal open={open} onClose={handleClose}>
-        <div style={modalStyle} className={classes.paper}>
+        <Paper style={modalStyle}>
           <SchemaForm
             schema={schema}
             onCancel={handleClose}
@@ -66,7 +61,7 @@ const EditModal = forwardRef(
             saveText={saveText}
             onChange={onChange}
           />
-        </div>
+        </Paper>
       </Modal>
     );
   }

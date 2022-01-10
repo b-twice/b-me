@@ -4,33 +4,22 @@ import {
   Input,
   FormControl,
   InputLabel,
-  Theme,
   Button,
   Container,
   Paper,
   Typography,
-} from "@material-ui/core";
-import { makeStyles, createStyles } from "@material-ui/styles";
+} from "@mui/material";
 import { AuthContext } from "./Auth";
 import { Navigate, useLocation } from "react-router-dom";
+import { styled } from "@mui/system";
 
-const useLoginStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    form: {
-      display: "flex",
-      flexDirection: "column",
-    },
-    formControl: {
-      margin: theme.spacing(1),
-    },
-    paper: {
-      padding: theme.spacing(3, 2),
-    },
-    submit: {
-      margin: theme.spacing(2, 0, 0, 0),
-    },
-  })
-);
+const LoginForm = styled("form")({
+  display: "flex",
+  flexDirection: "column",
+});
+const LoginFormControl = styled(FormControl)(({ theme }) => ({
+  margin: theme.spacing(1),
+}));
 
 export default function Login(): JSX.Element {
   const location = useLocation();
@@ -39,7 +28,6 @@ export default function Login(): JSX.Element {
   const [error, setError] = useState(false);
   const [disabled, setDisabled] = useState(false);
   let { from } = (location.state as any) || { from: { pathname: "/" } };
-  const classes = useLoginStyles();
 
   function onLogin(err: any, result: any): void {
     if (err) {
@@ -63,7 +51,7 @@ export default function Login(): JSX.Element {
         <Navigate to={from} />
       ) : (
         <Container maxWidth="sm">
-          <Paper className={classes.paper}>
+          <Paper sx={{ px: 2, py: 3 }}>
             {error && (
               <Typography variant="overline" color="error">
                 Login failed.
@@ -72,33 +60,33 @@ export default function Login(): JSX.Element {
             <Typography variant="h5" component="h3">
               Login
             </Typography>
-            <form className={classes.form} onSubmit={handleSubmit}>
-              <FormControl className={classes.formControl} variant="filled">
+            <LoginForm onSubmit={handleSubmit}>
+              <LoginFormControl variant="filled">
                 <InputLabel htmlFor="username">Username</InputLabel>
                 <Input
                   id="username"
                   onChange={(e) => setUsername(e.target.value.trim())}
                 />
-              </FormControl>
-              <FormControl className={classes.formControl} variant="filled">
+              </LoginFormControl>
+              <LoginFormControl variant="filled">
                 <InputLabel htmlFor="password">Password</InputLabel>
                 <Input
                   id="password"
                   onChange={(e) => setPw(e.target.value.trim())}
                   type="password"
                 />
-              </FormControl>
+              </LoginFormControl>
               <Button
                 type="submit"
                 variant="contained"
                 onClick={handleSubmit}
                 color="secondary"
                 disabled={disabled}
-                className={classes.submit}
+                sx={{ mt: 2, mr: 0, ml: 0, mb: 0 }}
               >
                 Submit
               </Button>
-            </form>
+            </LoginForm>
           </Paper>
         </Container>
       )}

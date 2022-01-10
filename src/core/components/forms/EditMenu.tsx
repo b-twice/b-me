@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import { IconButton, Menu, MenuItem } from "@material-ui/core";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { IconButton, Menu, MenuItem } from "@mui/material";
 
 interface EditMenuProps {
   onDelete(): void;

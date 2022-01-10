@@ -16,25 +16,18 @@ import SchemaTable, {
 import { TransactionApi, FinanceApi } from "../common/client/FinanceApi";
 import { FormSchema } from "../core/components/forms/SchemaForm";
 import { ObjectEntity } from "../core/components/forms/ObjectEntityType";
-import { makeStyles, createStyles } from "@material-ui/styles";
-import { Theme } from "@material-ui/core";
 import currencyFormatter from "../core/components/formatters/CurrencyFormatter";
+import { styled } from "@mui/system";
 
-const useStyles = makeStyles((theme: Theme) => {
-  return createStyles({
-    total: {
-      display: "flex",
-      flexDirection: "row",
-      justifyContent: "flex-end",
-    },
-  });
+const DisplayTotal = styled("div")({
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "flex-end",
 });
 
 export type PaginatedFinanceResult = PaginatedResult & { amountTotal: number };
 
 function Transactions() {
-  const classes = useStyles();
-
   const schemaContext = useContext(TransactionSchemaContext);
 
   const [filterSchema, setFilterSchema] = useState<
@@ -147,10 +140,10 @@ function Transactions() {
 
   return (
     <Fragment>
-      <div className={classes.total}>
+      <DisplayTotal>
         <strong>Total:</strong>&nbsp;
         {currencyFormatter.format(page.amountTotal)}
-      </div>
+      </DisplayTotal>
       <SchemaTable
         filterSchema={filterSchema as FormSchema<ObjectEntity>}
         getEntitySchema={handleGetEntitySchema}

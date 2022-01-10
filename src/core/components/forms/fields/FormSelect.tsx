@@ -1,28 +1,7 @@
-import React, { useState, useEffect, CSSProperties } from "react";
-import { useTheme } from "@material-ui/core/styles";
-import Select from "react-select";
+import React, { useState, useEffect } from "react";
+import TextField from "@mui/material/TextField";
 import FormOptionType from "../FormOptionType";
-import { ValueType } from "react-select/src/types";
-import {
-  Control,
-  Menu,
-  SingleValue,
-  NoOptionsMessage,
-  Option,
-  Placeholder,
-  ValueContainer,
-  useSelectStyles,
-} from "./SelectComponents";
-
-const components = {
-  Control,
-  Menu,
-  NoOptionsMessage,
-  Option,
-  Placeholder,
-  SingleValue,
-  ValueContainer,
-};
+import Autocomplete from "@mui/material/Autocomplete";
 
 interface SelectProps {
   label: string;
@@ -51,20 +30,7 @@ export default function FormSelect({
   helperText,
   disabled,
 }: SelectProps) {
-  const classes = useSelectStyles();
-  const theme = useTheme();
-
-  const [option, setOption] = useState<ValueType<FormOptionType>>(null);
-  const selectStyles = {
-    input: (base: CSSProperties) => ({
-      ...base,
-      color: theme.palette.text.primary,
-      "& input": {
-        font: "inherit",
-      },
-    }),
-  };
-
+  const [option, setOption] = useState<FormOptionType | null>(null);
   useEffect(() => {
     if (obj !== undefined && obj !== null) {
       let label = obj[labelProperty];
@@ -76,41 +42,45 @@ export default function FormSelect({
         value: obj[valueProperty],
         label: label,
       } as FormOptionType);
+    } else {
+      setOption(null);
     }
   }, [obj, valueProperty, labelProperty, options]);
 
-  function handleChange(selected: any): void {
-    selected = selected as FormOptionType;
-    onChange({
-      ...selected,
-      [labelProperty]: selected.label,
-      [valueProperty]: selected.value,
-    });
+  function handleChange(selected: any, newValue: any): void {
+    onChange(
+      newValue === null
+        ? newValue
+        : {
+            ...newValue,
+          }
+    );
   }
 
+  const isEqual = (option: FormOptionType, selected: FormOptionType) => {
+    return option?.value === selected?.value;
+  };
+
   return (
-    <Select
-      classes={classes}
-      styles={selectStyles}
-      inputId={id}
-      isDisabled={disabled}
-      TextFieldProps={{
-        disabled: disabled,
-        label: label,
-        variant: "filled",
-        error: !!error,
-        helperText: helperText,
-        InputLabelProps: {
-          htmlFor: id,
-          shrink: true,
-        },
-      }}
-      placeholder={label}
+    <Autocomplete
+      disablePortal
+      id={id}
+      disabled={disabled}
       options={options}
-      components={components}
-      value={option}
+      placeholder={label}
       onChange={handleChange}
-      required={required}
+      value={option}
+      isOptionEqualToValue={isEqual}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          label={label}
+          variant="filled"
+          error={!!error}
+          helperText={helperText}
+          required={required}
+        />
+      )}
     />
   );
 }
