@@ -11,7 +11,7 @@ export default function SchemaFormRating({
   obj,
   onChange,
   error,
-}: SchemaFieldProps<RatingFieldSchema>) {
+}: SchemaFieldProps<any, RatingFieldSchema>) {
   const handleChange = (event: any, value: number | null) => {
     setValue(value);
     onChange({ [property]: value });

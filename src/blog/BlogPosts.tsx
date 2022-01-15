@@ -1,83 +1,51 @@
 import React, { Fragment, useContext, useState, useEffect } from "react";
+import {
+  BlogPostSchemaContext,
+  BlogPostSchemaContextProvider,
+  PostFilter,
+} from "./schemas/BlogPostSchemaContext";
+import { Post } from "../common/client";
 import withProvider from "../core/components/withProvider";
 import SchemaTable, {
   PaginatedResult,
-  SchemaTableConfig,
-  schemaTableConfig,
+  createSchemaTableConfig,
 } from "../core/components/tables/SchemaTable";
-import { FormSchema } from "../core/components/forms/SchemaForm";
-import { ObjectEntity } from "../core/components/forms/ObjectEntityType";
-import {
-  BlogPostSchemaContextProvider,
-  BlogPostSchemaContext,
-  PostsTableConfig,
-  PostFilter,
-} from "./BlogPostSchemaContext";
-import { Post } from "../common/client";
-import { LookupEntityFilter } from "../core/components/forms/lookups/LookupEntity.interface";
 import { BlogPostApi } from "../common/client/BlogPostApi";
 
 function Posts() {
   const schemaContext = useContext(BlogPostSchemaContext);
 
-  const [filterSchema, setFilterSchema] = useState<
-    FormSchema<LookupEntityFilter>
-  >(() => schemaContext.get({ type: "FILTER" }));
-  const [page, setPage] = React.useState<PaginatedResult>({
+  const [page, setPage] = useState<PaginatedResult<Post>>({
     items: [],
     count: 0,
-  } as PaginatedResult);
-  const [config, setConfig] = React.useState<PostsTableConfig>({
-    ...schemaTableConfig,
-    filter: schemaContext.get<PostFilter>({ type: "FILTER" }).object,
-    sort: "date_desc",
-    orderBy: "date",
-    order: "asc",
   });
+  const [config, setConfig] = useState(createSchemaTableConfig<PostFilter>());
 
   useEffect(() => {
-    BlogPostApi.getBlogPostPage(
+    BlogPostApi.getPage(
       config.sort,
       config.pageNumber + 1,
       config.rowsPerPage,
       config.filter.title,
       config.filter.description,
-      config.filter.postGroup.map((b) => b.id as number)
-    ).then((result) => setPage(result as PaginatedResult));
+      config.filter.groups
+    ).then((result) => setPage(result));
   }, [config]);
 
-  // the use effect will catch async lookups that need to be bound to the schema
-  useEffect(() => {
-    setFilterSchema(schemaContext.get({ type: "FILTER" }));
-  }, [schemaContext]);
-
-  const handleGetEntitySchema = (obj?: ObjectEntity) =>
-    obj !== undefined
-      ? (schemaContext.get({
-          type: "EDIT",
-          obj: obj as Post,
-        }) as FormSchema<ObjectEntity>)
-      : (schemaContext.get({ type: "ADD" }) as FormSchema<ObjectEntity>);
-  const handleDeleteEntity = (obj: ObjectEntity) =>
-    BlogPostApi.deleteBlogPost(obj.id);
-  const handleOnPage = (pageConfig: SchemaTableConfig) =>
-    setConfig(pageConfig as PostsTableConfig);
-  const handleOnFilter = (obj: ObjectEntity) => {
-    setConfig({ ...config, pageNumber: 0, filter: obj as PostFilter });
-    setFilterSchema({ ...filterSchema, object: obj as PostFilter });
+  const handleOnFilter = (obj: PostFilter) => {
+    setConfig({ ...config, pageNumber: 0, filter: obj });
   };
 
   return (
     <Fragment>
-      <SchemaTable
-        filterSchema={filterSchema as FormSchema<ObjectEntity>}
+      <SchemaTable<Post, PostFilter>
+        filterSchema={schemaContext.filter}
+        schema={schemaContext.schema}
         onFilter={handleOnFilter}
-        getEntitySchema={handleGetEntitySchema}
-        deleteEntity={handleDeleteEntity}
         page={page}
-        onPage={handleOnPage}
+        onPage={setConfig}
         config={config}
-        title="Content"
+        title={schemaContext.title}
       />
     </Fragment>
   );

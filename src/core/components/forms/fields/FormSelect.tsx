@@ -1,63 +1,50 @@
 import React, { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
-import FormOptionType from "../FormOptionType";
+import FormOption from "../FormOptionType";
 import Autocomplete from "@mui/material/Autocomplete";
 
 interface SelectProps {
   label: string;
   id: string;
-  options: FormOptionType[];
-  obj: { [key: string]: any } | undefined;
+  options: FormOption[];
+  value: number | string | undefined;
   valueProperty: string;
-  labelProperty: string;
   required: boolean;
   error: string;
   helperText?: string;
   disabled?: boolean;
-  onChange(obj: { [key: string]: any }): void;
+  onChange(value: any): void;
 }
 
 export default function FormSelect({
   label,
   id,
   options,
-  obj,
+  value,
   valueProperty,
-  labelProperty,
   required,
   onChange,
   error,
   helperText,
   disabled,
 }: SelectProps) {
-  const [option, setOption] = useState<FormOptionType | null>(null);
+  const [option, setOption] = useState<FormOption | null>(null);
   useEffect(() => {
-    if (obj !== undefined && obj !== null) {
-      let label = obj[labelProperty];
-      if (label === undefined) {
-        label = options.find((o) => o.value === obj[valueProperty])?.label;
-      }
-      setOption({
-        ...obj,
-        value: obj[valueProperty],
-        label: label,
-      } as FormOptionType);
+    if (value !== undefined && value !== null) {
+      setOption(options.find((o) => o.value === value) ?? null);
     } else {
       setOption(null);
     }
-  }, [obj, valueProperty, labelProperty, options]);
+  }, [value, valueProperty, options]);
 
-  function handleChange(selected: any, newValue: any): void {
-    onChange(
-      newValue === null
-        ? newValue
-        : {
-            ...newValue,
-          }
-    );
+  function handleChange(
+    selectionEvent: unknown,
+    selected: FormOption | null
+  ): void {
+    onChange(selected?.value ?? null);
   }
 
-  const isEqual = (option: FormOptionType, selected: FormOptionType) => {
+  const isEqual = (option: FormOption, selected: FormOption) => {
     return option?.value === selected?.value;
   };
 

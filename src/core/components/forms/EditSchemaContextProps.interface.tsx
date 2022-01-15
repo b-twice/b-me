@@ -1,7 +1,13 @@
-import { FormSchema } from "./SchemaForm";
+import { TableFilter } from "../tables/SchemaTable";
+import { FormSchema, ListFormSchema } from "./SchemaForm";
 
-export default interface EditSchemaContextProps<T> {
-  get<T>(action: Action<T>): FormSchema<T>;
+export interface TableSchemaContextProps<T, F = TableFilter> {
+  title: string;
+  schema: FormSchema<T>;
+  filter?: FormSchema<F>;
 }
 
-type Action<T> = { type: "EDIT"; obj: T } | { type: "ADD" | "FILTER"; obj?: T };
+export interface ListSchemaContextProps<T> {
+  title: string;
+  schema: ListFormSchema<T>;
+}

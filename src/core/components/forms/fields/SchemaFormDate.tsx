@@ -9,7 +9,7 @@ export default function SchemaFormDate({
   obj,
   onChange,
   error,
-}: SchemaFieldProps<DateFieldSchema>) {
+}: SchemaFieldProps<any, DateFieldSchema>) {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     onChange({ [property]: event.target.value });
 
@@ -24,7 +24,7 @@ export default function SchemaFormDate({
       disabled={schema.disabled}
       onChange={handleChange}
       variant="filled"
-      type="Date"
+      type="datetime-local"
       InputLabelProps={{
         shrink: true,
       }}

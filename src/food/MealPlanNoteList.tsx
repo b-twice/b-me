@@ -1,57 +1,36 @@
 import React, { Fragment, useContext, useEffect, useState } from "react";
 import { MealPlan, MealPlanNote } from "../common/client";
-import { MealPlanNoteApi } from "../common/client/FoodApi";
-
 import withProvider from "../core/components/withProvider";
-import { ListObjectEntity } from "../core/components/forms/ObjectEntityType";
-import { FormSchema } from "../core/components/forms/SchemaForm";
+import { SchemaFormStates } from "../core/components/forms/SchemaForm";
 import SchemaList from "../core/components/lists/SchemaList";
 import {
   MealPlanNoteSchemaContext,
   MealPlanNoteSchemaContextProvider,
-} from "./MealPlanNoteSchemaContext";
-
-type MealPlanNoteEdit = MealPlanNote & ListObjectEntity;
+} from "./schemas/MealPlanNoteSchemaContext";
 
 function MealPlanNoteList({ mealPlan }: { mealPlan: MealPlan }) {
   const schemaContext = useContext(MealPlanNoteSchemaContext);
-  const [rows, setRows] = useState<MealPlanNoteEdit[]>([]);
+  const [rows, setRows] = useState<MealPlanNote[]>([]);
 
   useEffect(() => {
-    const editRows: MealPlanNoteEdit[] = (mealPlan?.mealPlanNotes ?? []).map(
-      (r) => setNewRow(r as MealPlanNoteEdit)
-    );
+    const editRows: MealPlanNote[] = mealPlan?.mealPlanNotes ?? [];
     setRows(editRows);
   }, [mealPlan]);
 
-  const setNewRow = (r: MealPlanNoteEdit) =>
-    ({
-      ...r,
-      name: r.content,
-    } as MealPlanNoteEdit);
-
-  const handleDelete = (mr: MealPlanNoteEdit) => MealPlanNoteApi.delete(mr.id!);
-
-  function getEntitySchema(obj?: MealPlanNoteEdit) {
-    return obj !== undefined
-      ? (schemaContext.get({
-          type: "EDIT",
-          obj: { ...obj, mealPlan: { ...mealPlan } },
-        }) as FormSchema<MealPlanNoteEdit>)
-      : (schemaContext.get({
-          type: "ADD",
-          obj: { mealPlanId: mealPlan?.id, mealPlan: { ...mealPlan } },
-        }) as FormSchema<MealPlanNoteEdit>);
+  function onRowEdit(state: SchemaFormStates, obj: MealPlanNote): MealPlanNote {
+    if (state === "ADD") {
+      return { ...obj, mealPlanId: mealPlan.id };
+    }
+    return obj;
   }
 
   return (
     <Fragment>
-      <SchemaList
-        title="Notes"
-        getEntitySchema={getEntitySchema}
+      <SchemaList<MealPlanNote>
+        title={schemaContext.title}
+        schema={schemaContext.schema}
         rows={rows}
-        setNewRow={setNewRow}
-        deleteEntity={handleDelete}
+        onRowEdit={onRowEdit}
       />
     </Fragment>
   );

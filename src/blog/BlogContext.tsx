@@ -21,10 +21,7 @@ function BlogProvider(props: any) {
   const [groups, setGroups] = useState<PostGroup[]>([]);
 
   useEffect(() => {
-    Promise.all([
-      BlogPostApi.getBlogPosts(100),
-      BlogPostApi.getBlogPostGroups(),
-    ])
+    Promise.all([BlogPostApi.getAll(100), BlogPostApi.getGroups()])
       .then(([posts, groups]) => {
         setRoutes(posts.map((p) => ({ ...p, path: formatPostUrl(p.path!) })));
         setGroups(groups);

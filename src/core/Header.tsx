@@ -93,6 +93,7 @@ function Header() {
             onClick={handleDrawerClose}
             items={[
               { path: "admin/content", title: "Content" },
+              { path: "admin/crypto", title: "Crypto" },
               { path: "admin/food", title: "Food" },
               { path: "admin/reading", title: "Reading" },
             ]}
@@ -116,6 +117,7 @@ function Header() {
             items={[
               { path: "finance/dashboard", title: "Dashboard" },
               { path: "finance/transactions", title: "Transactions" },
+              { path: "finance/crypto", title: "Crypto" },
             ]}
             nested={true}
           />
@@ -132,7 +134,7 @@ function Header() {
         <AppLink to="/reading" onClick={handleDrawerClose}>
           <ListItem button>
             <ListItemText
-              primary="Content"
+              primary="Reading List"
               sx={{ fontWeight: "bold" }}
               disableTypography={true}
             />

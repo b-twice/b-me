@@ -9,9 +9,8 @@ export default function SchemaFormSwitch({
   obj,
   onChange,
   error,
-}: SchemaFieldProps<SwitchFieldSchema>) {
+}: SchemaFieldProps<any, SwitchFieldSchema>) {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.checked);
     onChange({ [property]: event.target.checked ? 1 : 0 });
   };
   return (

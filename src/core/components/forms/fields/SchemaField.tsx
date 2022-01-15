@@ -10,6 +10,7 @@ import {
   SwitchFieldSchema,
   NumberFieldSchema,
   RatingFieldSchema,
+  DateTimeFieldSchema,
 } from "../SchemaForm";
 import SchemaFormSelect from "./SchemaFormSelect";
 import SchemaFormText from "./SchemaFormText";
@@ -20,21 +21,25 @@ import SchemaFormSelectMenu from "./SchemaFormSelectMenu";
 import SchemaFormSwitch from "./SchemaFormSwitch";
 import SchemaFormNumber from "./SchemaFormNumber";
 import SchemaFormRating from "./SchemaFormRating";
+import SchemaFormDateTime from "./SchemaFormDateTime";
 
-export interface SchemaFieldProps<T> {
+export interface SchemaFieldProps<T, S> {
   property: string;
-  schema: T;
-  obj: { [key: string]: any };
+  schema: S;
+  obj: T;
   error: string;
-  onChange: (obj: { [key: string]: any }) => void;
+  onChange: (obj: Partial<T>) => void;
 }
 
-export default function SchemaFormField(
+export default function SchemaFormField<T>(
   props: SchemaFieldProps<
+    T,
     | TextFieldSchema
     | MultiSelectFieldSchema
     | SelectFieldSchema
     | DateFieldSchema
+    | DateTimeFieldSchema
+    | NumberFieldSchema
     | FieldSchema
     | CurrencyFieldSchema
     | RatingFieldSchema
@@ -45,44 +50,58 @@ export default function SchemaFormField(
   switch (props.schema.type) {
     case "text":
       return (
-        <SchemaFormText {...(props as SchemaFieldProps<TextFieldSchema>)} />
+        <SchemaFormText {...(props as SchemaFieldProps<T, TextFieldSchema>)} />
       );
     case "number":
       return (
-        <SchemaFormNumber {...(props as SchemaFieldProps<NumberFieldSchema>)} />
+        <SchemaFormNumber
+          {...(props as SchemaFieldProps<T, NumberFieldSchema>)}
+        />
       );
     case "switch":
       return (
-        <SchemaFormSwitch {...(props as SchemaFieldProps<SwitchFieldSchema>)} />
+        <SchemaFormSwitch
+          {...(props as SchemaFieldProps<T, SwitchFieldSchema>)}
+        />
       );
     case "currency":
       return (
         <SchemaFormCurrency
-          {...(props as SchemaFieldProps<CurrencyFieldSchema>)}
+          {...(props as SchemaFieldProps<T, CurrencyFieldSchema>)}
         />
       );
     case "rating":
       return (
-        <SchemaFormRating {...(props as SchemaFieldProps<RatingFieldSchema>)} />
+        <SchemaFormRating
+          {...(props as SchemaFieldProps<T, RatingFieldSchema>)}
+        />
       );
     case "date":
       return (
-        <SchemaFormDate {...(props as SchemaFieldProps<DateFieldSchema>)} />
+        <SchemaFormDate {...(props as SchemaFieldProps<T, DateFieldSchema>)} />
+      );
+    case "datetime":
+      return (
+        <SchemaFormDateTime
+          {...(props as SchemaFieldProps<T, DateTimeFieldSchema>)}
+        />
       );
     case "select":
       return (
-        <SchemaFormSelect {...(props as SchemaFieldProps<SelectFieldSchema>)} />
+        <SchemaFormSelect
+          {...(props as SchemaFieldProps<T, SelectFieldSchema>)}
+        />
       );
     case "select-menu":
       return (
         <SchemaFormSelectMenu
-          {...(props as SchemaFieldProps<SelectMenuFieldSchema>)}
+          {...(props as SchemaFieldProps<T, SelectMenuFieldSchema>)}
         />
       );
     case "multiselect":
       return (
         <SchemaFormMultiSelect
-          {...(props as SchemaFieldProps<MultiSelectFieldSchema>)}
+          {...(props as SchemaFieldProps<T, MultiSelectFieldSchema>)}
         />
       );
   }

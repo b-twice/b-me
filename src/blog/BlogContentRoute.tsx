@@ -4,7 +4,6 @@ import BlogContent from "./BlogContent";
 
 const BlogContentRoute = () => {
   let params = useParams();
-  console.log(params);
   return <BlogContent url={params["*"]!} />;
 };
 // <BlogContent url={params.match.url} />

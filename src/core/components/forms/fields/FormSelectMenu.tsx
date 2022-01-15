@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import FormOptionType from "../FormOptionType";
+import FormOption from "../FormOptionType";
 import { MenuItem, FormControl, InputLabel } from "@mui/material";
 
 interface SelectProps {
   label: string;
   id: string;
-  options: FormOptionType[];
+  options: FormOption[];
   obj: { [key: string]: any } | undefined;
   valueProperty: string;
   labelProperty: string;
@@ -14,7 +14,7 @@ interface SelectProps {
   error: string;
   helperText?: string;
   disabled?: boolean;
-  onChange(obj: FormOptionType): void;
+  onChange(obj: FormOption): void;
 }
 
 export default function FormSelectMenu({
@@ -49,7 +49,7 @@ export default function FormSelectMenu({
     onChange({
       [labelProperty]: event.target.name,
       [valueProperty]: event.target.value,
-    } as FormOptionType);
+    } as FormOption);
   }
 
   return (

@@ -26,11 +26,12 @@ function RecipeView() {
         {!recipe?.url && recipe?.name}
       </Typography>
       <Typography variant="subtitle1" gutterBottom>
-        <em>{recipe?.cookbook?.name}</em>&nbsp;&nbsp;|&nbsp;&nbsp;
-        <span>Serves {recipe?.servings}</span>
+        <em>{recipe?.cookbook?.name}</em>
         {recipe?.pageNumber !== undefined && recipe.pageNumber > 0 && (
-          <span>&nbsp;&nbsp;|&nbsp;&nbsp;Page {recipe?.pageNumber}</span>
+          <span> pg. {recipe?.pageNumber}</span>
         )}
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        <span>Serves {recipe?.servings}</span>
       </Typography>
       <Grid direction="column" container spacing={4}>
         <Grid item>

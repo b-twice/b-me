@@ -1,5 +1,5 @@
 import moment from "moment";
-import FormOptionType from "./FormOptionType";
+import FormOption from "./FormOptionType";
 
 const yearOptions = () => {
   const startYear = 2014;
@@ -12,6 +12,5 @@ const yearOptions = () => {
   return years;
 };
 export default yearOptions().map(
-  (year) =>
-    ({ value: year.toString(), label: year.toString() } as FormOptionType)
+  (year) => ({ value: year.toString(), label: year.toString() } as FormOption)
 );

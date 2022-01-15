@@ -1,102 +1,75 @@
 import React, { Fragment, useContext, useEffect, useState } from "react";
-import { FoodProduct, Recipe, RecipeIngredient } from "../common/client";
-import {
-  FoodQuantityTypeApi,
-  FoodUnitApi,
-  RecipeIngredientApi,
-} from "../common/client/FoodApi";
-
+import { Recipe, RecipeIngredient } from "../common/client";
 import withProvider from "../core/components/withProvider";
-import { ListObjectEntity } from "../core/components/forms/ObjectEntityType";
-import { FormSchema } from "../core/components/forms/SchemaForm";
+import {
+  FieldConstructor,
+  ListFormSchema,
+  NumberFieldSchema,
+  SchemaFormStates,
+} from "../core/components/forms/SchemaForm";
 import SchemaList from "../core/components/lists/SchemaList";
 import {
   RecipeIngredientSchemaContext,
   RecipeIngredientSchemaContextProvider,
-} from "./RecipeIngredientSchemaContext";
-
-type RecipeIngredientEdit = RecipeIngredient & ListObjectEntity;
+} from "./schemas/RecipeIngredientSchemaContext";
+import { FoodProductApi } from "../common/client/FoodApi";
 
 function RecipeIngredientList({ recipe }: { recipe: Recipe }) {
-  const propertyOfRecipeIngredient = (e: keyof RecipeIngredient) => e;
-
   const schemaContext = useContext(RecipeIngredientSchemaContext);
-  const [rows, setRows] = useState<RecipeIngredientEdit[]>([]);
+  const [rows, setRows] = useState<RecipeIngredient[]>([]);
 
   useEffect(() => {
-    const editRows: RecipeIngredientEdit[] = (
-      recipe?.recipeIngredients ?? []
-    ).map((r) => setNewRow(r as RecipeIngredientEdit));
+    const editRows: RecipeIngredient[] = recipe?.recipeIngredients ?? [];
     setRows(editRows);
   }, [recipe]);
 
-  const setNewRow = (r: RecipeIngredientEdit) =>
-    ({
-      ...r,
-      name: `${r.measurement} ${r.foodProduct?.name}`,
-    } as RecipeIngredientEdit);
-
-  const handleDelete = (mr: RecipeIngredientEdit) =>
-    RecipeIngredientApi.delete(mr.id!);
-
-  function getEntitySchema(obj?: RecipeIngredientEdit) {
-    return obj !== undefined
-      ? (schemaContext.get({
-          type: "EDIT",
-          obj: { ...obj, recipe: { ...recipe } },
-        }) as FormSchema<RecipeIngredientEdit>)
-      : (schemaContext.get({
-          type: "ADD",
-          obj: { recipeId: recipe?.id, recipe: { ...recipe } },
-        }) as FormSchema<RecipeIngredientEdit>);
+  function onRowEdit(
+    state: SchemaFormStates,
+    obj: RecipeIngredient
+  ): RecipeIngredient {
+    if (state === "ADD") {
+      return { ...obj, recipeId: recipe.id };
+    }
+    return obj;
   }
 
   const addSuggestedQuantityToSchema = (
-    schema: FormSchema<ListObjectEntity>,
-    product: FoodProduct,
-    obj: { [key: string]: any }
-  ): Promise<FormSchema<ListObjectEntity>> => {
-    return Promise.all([
-      FoodQuantityTypeApi.get(product.foodQuantityTypeId!),
-      FoodUnitApi.get(product.foodUnitId!),
-    ]).then(
-      ([quantity, unit]) =>
+    schema: ListFormSchema<RecipeIngredient>,
+    foodProductId: number
+  ): Promise<ListFormSchema<RecipeIngredient>> => {
+    return Promise.all([FoodProductApi.get(foodProductId)]).then(
+      ([{ foodQuantityType, measurement, foodUnit }]) =>
         new Promise((resolve) => {
-          let newSchema = {
+          let newSchema: ListFormSchema<RecipeIngredient> = {
             ...schema,
-            object: obj,
             properties: {
               ...schema.properties,
-              [propertyOfRecipeIngredient("weight")]: {
-                ...schema.properties[propertyOfRecipeIngredient("weight")],
-                visible: quantity.name === "Weight",
+              weight: FieldConstructor.number({
+                ...(schema.properties.weight as NumberFieldSchema),
+                visible: foodQuantityType?.name === "Weight",
                 helperText:
-                  quantity.name === "Weight"
-                    ? product.measurement || `Measured in ${unit.name}`
+                  foodQuantityType?.name === "Weight"
+                    ? measurement || `Measured in ${foodUnit?.name}`
                     : "",
-              },
-              [propertyOfRecipeIngredient("count")]: {
-                ...schema.properties[propertyOfRecipeIngredient("count")],
-                visible: quantity.name === "Count",
-              },
+              }),
+              count: FieldConstructor.number({
+                ...(schema.properties.count as NumberFieldSchema),
+                visible: foodQuantityType?.name === "Count",
+              }),
             },
-          } as FormSchema<ListObjectEntity>;
+          };
           resolve(newSchema);
         })
     );
   };
 
   const handleOnChange = (
-    schema: FormSchema<ListObjectEntity>,
-    obj: { [key: string]: any },
-    changeObj: { [key: string]: any }
-  ): Promise<FormSchema<ListObjectEntity> | undefined> => {
-    if (changeObj[propertyOfRecipeIngredient("foodProduct")]) {
-      return addSuggestedQuantityToSchema(
-        schema,
-        changeObj[propertyOfRecipeIngredient("foodProduct")],
-        obj
-      ).then(
+    schema: ListFormSchema<RecipeIngredient>,
+    obj: RecipeIngredient,
+    changeObj: Partial<RecipeIngredient>
+  ): Promise<ListFormSchema<RecipeIngredient> | undefined> => {
+    if (changeObj.foodProductId) {
+      return addSuggestedQuantityToSchema(schema, changeObj.foodProductId).then(
         (newSchema) =>
           new Promise((resolve) => {
             resolve(newSchema);
@@ -105,15 +78,15 @@ function RecipeIngredientList({ recipe }: { recipe: Recipe }) {
     }
     return new Promise((resolve) => resolve(undefined));
   };
+
   return (
     <Fragment>
-      <SchemaList
-        title="Ingredients"
-        getEntitySchema={getEntitySchema}
+      <SchemaList<RecipeIngredient>
+        title={schemaContext.title}
+        schema={schemaContext.schema}
         rows={rows}
-        setNewRow={setNewRow}
+        onRowEdit={onRowEdit}
         onChange={handleOnChange}
-        deleteEntity={handleDelete}
       />
     </Fragment>
   );

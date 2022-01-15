@@ -38,7 +38,7 @@ function SchemaTableCell({ property, fieldSchema, row }: SchemaTableCellProps) {
       <TableCell>
         <Link to={path}>
           {fieldSchema.getVal
-            ? fieldSchema.getVal(row[property])
+            ? fieldSchema.getVal(row[property], row)
             : row[property]}
         </Link>
       </TableCell>
@@ -75,7 +75,9 @@ function SchemaTableCell({ property, fieldSchema, row }: SchemaTableCellProps) {
   } else
     return (
       <TableCell>
-        {fieldSchema.getVal ? fieldSchema.getVal(row[property]) : row[property]}
+        {fieldSchema.getVal
+          ? fieldSchema.getVal(row[property], row)
+          : row[property]}
       </TableCell>
     );
 }

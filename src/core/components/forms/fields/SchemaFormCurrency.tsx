@@ -9,7 +9,7 @@ export default function SchemaFormCurrency({
   obj,
   onChange,
   error,
-}: SchemaFieldProps<CurrencyFieldSchema>) {
+}: SchemaFieldProps<any, CurrencyFieldSchema>) {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     onChange({ [property]: +event.target.value });
   return (
@@ -19,7 +19,7 @@ export default function SchemaFormCurrency({
       helperText={schema.helperText}
       id={property}
       label={schema.title}
-      value={obj[property] || ""}
+      value={obj[property] ?? ""}
       onChange={handleChange}
       disabled={schema.disabled}
       variant="filled"

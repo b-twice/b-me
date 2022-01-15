@@ -1,11 +1,13 @@
 import React, { useState, useEffect, Fragment } from "react";
 import FormAppBar from "./FormAppBar";
-import FormOptionType from "./FormOptionType";
+import FormOption from "./FormOptionType";
 import SchemaFormField from "./fields/SchemaField";
 import AppSnackbar from "../AppSnackbar";
-import { ObjectEntity } from "./ObjectEntityType";
 import { styled } from "@mui/system";
 import { Stack } from "@mui/material";
+import numberFormatter from "../formatters/NumberFormatter";
+import getLookupName from "./lookups/getLookupName";
+import currencyFormatter from "../formatters/CurrencyFormatter";
 
 const Root = styled("div")({
   flexGrow: 1,
@@ -13,12 +15,17 @@ const Root = styled("div")({
   height: "100%",
 });
 
+export interface ListFormSchema<T> extends FormSchema<T> {
+  display(obj: T): { id: string | number; name: string; path?: string };
+}
+
 export interface FormSchema<T> {
-  type: "EDIT" | "ADD" | "FILTER";
-  title: string;
-  properties: { [key: string]: FieldSchema };
-  object: T;
-  save(obj: { [key: string]: any }): Promise<any>;
+  properties: Partial<Record<keyof T, FieldSchema>>;
+  readonly?: boolean;
+  repeatAdd?: boolean;
+  create?(obj: T): Promise<T>;
+  update?(obj: T): Promise<T>;
+  delete?(obj: T): Promise<void>;
 }
 
 type FieldType =
@@ -27,26 +34,91 @@ type FieldType =
   | "select"
   | "multiselect"
   | "date"
+  | "datetime"
   | "currency"
   | "select-menu"
   | "rating"
   | "switch";
 
+export const FieldConstructor = {
+  option: (obj: any, label: string, value: string | number | undefined) =>
+    ({ ...obj, label: label, value: value } as FormOption),
+  currency: (props: FieldConstructorOptions): FieldSchema => ({
+    required: false,
+    sortable: false,
+    getVal: (value) => currencyFormatter.format(value),
+    ...props,
+    type: "currency",
+  }),
+  date: (props: FieldConstructorOptions): FieldSchema => ({
+    required: false,
+    ...props,
+    type: "date",
+  }),
+  datetime: (props: FieldConstructorOptions): FieldSchema => ({
+    required: false,
+    ...props,
+    type: "datetime",
+  }),
+  rating: (props: RatingFieldConstructorOptions): FieldSchema => ({
+    required: false,
+    ...props,
+    type: "rating",
+  }),
+  switch: (props: FieldConstructorOptions): FieldSchema => ({
+    required: false,
+    ...props,
+    type: "switch",
+  }),
+  multiSelect: (props: SelectFieldConstructorOptions): FieldSchema => ({
+    required: false,
+    getVal: getLookupName,
+    ...props,
+    type: "multiselect",
+  }),
+  number: (props: FieldConstructorOptions): FieldSchema => ({
+    required: false,
+    getVal: (value) => numberFormatter.format(value),
+    ...props,
+    type: "number",
+  }),
+  select: (props: SelectFieldConstructorOptions): FieldSchema => ({
+    required: false,
+    ...props,
+    type: "select",
+  }),
+  selectMenu: (
+    props: SelectFieldConstructorOptions
+  ): SelectMenuFieldSchema => ({
+    required: false,
+    ...props,
+    type: "select-menu",
+  }),
+  text: (props: TextFieldConstructorOptions): FieldSchema => ({
+    required: false,
+    ...props,
+    type: "text",
+  }),
+};
+
+export type FieldConstructorOptions = Omit<FieldSchema, "type">;
+export type SelectFieldConstructorOptions = Omit<SelectFieldSchema, "type">;
+export type TextFieldConstructorOptions = Omit<TextFieldSchema, "type">;
+export type RatingFieldConstructorOptions = Omit<RatingFieldSchema, "type">;
+
 export interface FieldSchema {
   title: string;
   type: FieldType;
-  required: boolean;
+  sortable?: boolean;
+  required?: boolean;
   error?: string;
   helperText?: string;
   disabled?: boolean;
   visible?: boolean;
   // method to retrieve value
-  getVal?(value: any): any;
+  getVal?(value: any, row: any): any;
   // modify values on load/save
-  load?(value: any): any; // optional set value on load
-  transform?(
-    changeObj: ObjectEntity | ObjectEntity[]
-  ): string | number | string[] | number[]; // optional transform value on submit
+  transform?(changeObj: any[]): string | number | string[] | number[]; // optional transform value on submit
 }
 
 export interface TextFieldSchema extends FieldSchema {
@@ -77,61 +149,67 @@ export interface DateFieldSchema extends FieldSchema {
   type: "date";
 }
 
+export interface DateTimeFieldSchema extends FieldSchema {
+  type: "datetime";
+}
+
 export interface SelectFieldSchema extends FieldSchema {
   type: "select";
-  options: FormOptionType[];
+  options: FormOption[];
 }
 
 export interface SelectMenuFieldSchema extends FieldSchema {
   type: "select-menu";
-  options: FormOptionType[];
+  options: FormOption[];
 }
 
 export interface MultiSelectFieldSchema extends FieldSchema {
   type: "multiselect";
-  options: FormOptionType[];
+  options: FormOption[];
 }
 
+export type SchemaFormStates = "EDIT" | "ADD" | "FILTER";
+
 interface SchemaFormProps<T> {
+  state: SchemaFormStates;
+  inputObject: T;
   schema: FormSchema<T>;
   onCancel(): void;
-  onSaveSuccess(obj: { [key: string]: any }): void;
-  onChange?(
-    obj: { [key: string]: any },
-    changeObj: { [key: string]: any }
-  ): void;
+  onSaveSuccess(obj: T): void;
+  onChange?(obj: T, changeObj: Partial<T>): void;
   saveText?: string;
 }
 
-export default function SchemaForm<T extends ObjectEntity>({
+const titles: Record<SchemaFormStates, string> = {
+  EDIT: "Edit",
+  ADD: "New",
+  FILTER: "Filter",
+};
+
+export default function SchemaForm<T>({
+  state,
   schema,
+  inputObject,
   onCancel,
   onSaveSuccess,
   onChange,
   saveText,
 }: SchemaFormProps<T>) {
   const [obj, setObject] = useState<T>({} as T);
+  const [properties, setProperties] = useState<Record<string, FieldSchema>>({});
   const [error, setError] = useState<{ [key: string]: string }>({});
   const [isSaving, setIsSaving] = useState(false);
   const [appMessage, setAppMessage] = React.useState("");
 
   useEffect(() => {
-    // Modify value on load, if needed
-    const load = (): T => {
-      let result = { ...schema.object };
-      Object.entries(schema.properties).forEach(([prop, fieldSchema]) => {
-        if (fieldSchema.load) {
-          (result as ObjectEntity)[prop] = fieldSchema.load(
-            schema.object[prop]
-          );
-        }
-      });
-      return result;
-    };
-    setObject(load());
-  }, [schema.object, schema.properties]);
+    setObject(inputObject);
+  }, [inputObject]);
 
-  const handleChange = (changeObj: { [key: string]: any }) => {
+  useEffect(() => {
+    setProperties(schema.properties as Record<string, FieldSchema>);
+  }, [schema.properties]);
+
+  const handleChange = (changeObj: Partial<T>) => {
     const updatedObj = { ...obj, ...changeObj };
     setObject(updatedObj);
     // propogate changes up, in the case we need to update schema on value change
@@ -149,31 +227,47 @@ export default function SchemaForm<T extends ObjectEntity>({
       return;
     }
     const saveObj = transform();
-    schema
-      .save(saveObj)
-      .then((result) => {
-        onSaveSuccess(result || saveObj);
-      })
-      .catch((err) => {
-        console.error(err);
-        setAppMessage("Failed to save, unexpected error.");
-        setIsSaving(false);
-      });
+    if (state === "ADD" && schema.create) {
+      schema
+        .create(saveObj)
+        .then((result) => {
+          onSaveSuccess(result || saveObj);
+        })
+        .catch((err) => {
+          console.error(err);
+          setAppMessage("Failed to save, unexpected error.");
+          setIsSaving(false);
+        });
+    } else if (state === "EDIT" && schema.update) {
+      schema
+        .update(saveObj)
+        .then((result) => {
+          onSaveSuccess(result || saveObj);
+        })
+        .catch((err) => {
+          console.error(err);
+          setAppMessage("Failed to save, unexpected error.");
+          setIsSaving(false);
+        });
+    } else {
+      onSaveSuccess(saveObj);
+    }
   };
 
   const validate = (): boolean => {
-    let errors: { [key: string]: any } = {};
-    Object.entries(schema.properties)
+    let errors: Record<string, any> = {};
+    let op: Record<string, any> = obj;
+    Object.entries(properties)
       .filter(([prop, fieldSchema]) => fieldSchema.visible !== false)
       .forEach(([prop, fieldSchema]) => {
         if (
           fieldSchema.required &&
-          (obj[prop] === undefined || obj[prop] === null || obj[prop] === "")
+          (op[prop] === undefined || op[prop] === null || op[prop] === "")
         ) {
           errors[prop] = `${fieldSchema.title} is required.`;
         } else if (
           (fieldSchema.type === "currency" || fieldSchema.type === "number") &&
-          !!isNaN(obj[prop] - parseFloat(obj[prop]))
+          !!isNaN(op[prop] - parseFloat(op[prop]))
         ) {
           errors[prop] = `${fieldSchema.title} must be a number.`;
         }
@@ -184,15 +278,19 @@ export default function SchemaForm<T extends ObjectEntity>({
 
   // Modify value on submit, if needed
   const transform = (): T => {
-    let result = { ...obj };
-    Object.entries(schema.properties).forEach(([prop, fieldSchema]) => {
-      if (fieldSchema.visible === false) {
-        (result as ObjectEntity)[prop] = null;
-      } else if (fieldSchema.transform) {
-        (result as ObjectEntity)[prop] = fieldSchema.transform(obj[prop]);
+    let result: Record<string, any> = { ...obj };
+    (Object.entries(schema.properties) as [string, FieldSchema][]).forEach(
+      ([prop, fieldSchema]) => {
+        if (fieldSchema.visible === false) {
+          result[prop] = null;
+        } else if (fieldSchema.transform) {
+          result[prop] = fieldSchema.transform(
+            (obj as Record<string, any>)[prop]
+          );
+        }
       }
-    });
-    return result;
+    );
+    return result as T;
   };
 
   return (
@@ -200,14 +298,14 @@ export default function SchemaForm<T extends ObjectEntity>({
       <Root>
         <form onSubmit={handleSubmit} noValidate={true}>
           <FormAppBar
-            title={schema.title}
+            title={titles[state]}
             onCancel={onCancel}
             isSaving={isSaving}
             saveText={saveText}
           />
           <Stack spacing={2} sx={{ p: 2 }}>
-            {Object.entries(schema.properties).map(([k, v]) => (
-              <SchemaFormField
+            {Object.entries(properties).map(([k, v]) => (
+              <SchemaFormField<T>
                 property={k}
                 obj={obj}
                 schema={v}

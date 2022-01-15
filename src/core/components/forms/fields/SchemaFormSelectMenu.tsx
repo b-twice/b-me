@@ -9,13 +9,13 @@ export default function SchemaFormSelectMenu({
   obj,
   onChange,
   error,
-}: SchemaFieldProps<SelectMenuFieldSchema>) {
+}: SchemaFieldProps<any, SelectMenuFieldSchema>) {
   const handleChange = (selectObj: any) => onChange({ [property]: selectObj });
   return (
     <FormSelectMenu
       label={schema.title}
       error={error}
-      required={schema.required}
+      required={schema.required || false}
       id={property}
       options={schema.options}
       disabled={schema.disabled}

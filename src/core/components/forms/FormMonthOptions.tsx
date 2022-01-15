@@ -1,4 +1,4 @@
-import FormOptionType from "./FormOptionType";
+import FormOption from "./FormOptionType";
 
 export default [
   ["January", "01"],
@@ -13,4 +13,4 @@ export default [
   ["October", "10"],
   ["November", "11"],
   ["December", "12"],
-].map(([label, value]) => ({ value: value, label: label } as FormOptionType));
+].map(([label, value]) => ({ value: value, label: label } as FormOption));

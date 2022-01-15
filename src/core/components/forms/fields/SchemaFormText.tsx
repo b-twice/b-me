@@ -9,7 +9,7 @@ export default function SchemaFormText({
   obj,
   onChange,
   error,
-}: SchemaFieldProps<TextFieldSchema>) {
+}: SchemaFieldProps<any, TextFieldSchema>) {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     onChange({ [property]: event.target.value });
   return (

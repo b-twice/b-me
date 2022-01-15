@@ -9,9 +9,14 @@ export default function SchemaFormNumber({
   obj,
   onChange,
   error,
-}: SchemaFieldProps<NumberFieldSchema>) {
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
-    onChange({ [property]: event.target.value });
+}: SchemaFieldProps<any, NumberFieldSchema>) {
+  const handleChange = ({
+    target: { value },
+  }: React.ChangeEvent<HTMLInputElement>) =>
+    onChange({
+      [property]: value !== null && value !== undefined ? +value : value,
+    });
+
   return (
     <TextField
       type="number"
@@ -20,7 +25,7 @@ export default function SchemaFormNumber({
       id={property}
       label={schema.title}
       disabled={schema.disabled}
-      value={obj[property] || ""}
+      value={obj[property] ?? ""}
       onChange={handleChange}
       helperText={schema.helperText}
       variant="filled"

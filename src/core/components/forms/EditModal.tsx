@@ -1,7 +1,6 @@
 import React, { useImperativeHandle, forwardRef } from "react";
 import Modal from "@mui/material/Modal";
-import SchemaForm, { FormSchema } from "./SchemaForm";
-import { ObjectEntity } from "./ObjectEntityType";
+import SchemaForm, { FormSchema, SchemaFormStates } from "./SchemaForm";
 import { styled } from "@mui/system";
 
 const Paper = styled("div")(({ theme }) => ({
@@ -16,11 +15,10 @@ const Paper = styled("div")(({ theme }) => ({
 
 export interface EditModalProps<T> {
   schema: FormSchema<T>;
-  onSaveSuccess(obj: { [key: string]: any }): void;
-  onChange?(
-    obj: { [key: string]: any },
-    changeObj: { [key: string]: any }
-  ): void;
+  obj: T;
+  editState: SchemaFormStates;
+  onSaveSuccess(obj: Record<string, any>): void;
+  onChange?(obj: T, changeObj: Record<string, any>): void;
   saveText?: string;
 }
 
@@ -29,8 +27,15 @@ export interface EditModalRef {
 }
 
 const EditModal = forwardRef(
-  <T extends ObjectEntity>(
-    { schema, onSaveSuccess, onChange, saveText }: EditModalProps<T>,
+  <T extends {}>(
+    {
+      schema,
+      obj,
+      editState,
+      onSaveSuccess,
+      onChange,
+      saveText,
+    }: EditModalProps<T>,
     ref: any
   ) => {
     // getModalStyle is not a pure function, we roll the style only on the first render
@@ -56,6 +61,8 @@ const EditModal = forwardRef(
         <Paper style={modalStyle}>
           <SchemaForm
             schema={schema}
+            state={editState}
+            inputObject={obj}
             onCancel={handleClose}
             onSaveSuccess={handleSave}
             saveText={saveText}

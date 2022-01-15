@@ -93,7 +93,7 @@ export class BlogPostClient extends ApiClientBase {
         this.baseUrl = this.getBaseUrl("", baseUrl);
     }
 
-    getBlogPostPage(sortName?: string | null | undefined, pageNumber?: number | undefined, pageSize?: number | undefined, title?: string | null | undefined, description?: string | null | undefined, groups?: number[] | null | undefined, authenticate?: number | null | undefined, star?: number | null | undefined): Promise<PaginatedResultOfPost> {
+    getPage(sortName?: string | null | undefined, pageNumber?: number | undefined, pageSize?: number | undefined, title?: string | null | undefined, description?: string | null | undefined, groups?: number[] | null | undefined, authenticate?: number | null | undefined, star?: number | null | undefined): Promise<PaginatedResultOfPost> {
         let url_ = this.baseUrl + "/v1/blog/posts/page?";
         if (sortName !== undefined && sortName !== null)
             url_ += "sortName=" + encodeURIComponent("" + sortName) + "&";
@@ -127,11 +127,11 @@ export class BlogPostClient extends ApiClientBase {
         return this.transformOptions(options_).then(transformedOptions_ => {
             return this.http.fetch(url_, transformedOptions_);
         }).then((_response: Response) => {
-            return this.processGetBlogPostPage(_response);
+            return this.processGetPage(_response);
         });
     }
 
-    protected processGetBlogPostPage(response: Response): Promise<PaginatedResultOfPost> {
+    protected processGetPage(response: Response): Promise<PaginatedResultOfPost> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -155,7 +155,7 @@ export class BlogPostClient extends ApiClientBase {
         }
     }
 
-    getBlogPosts(size?: number | undefined): Promise<Post[]> {
+    getAll(size?: number | undefined): Promise<Post[]> {
         let url_ = this.baseUrl + "/v1/blog/posts?";
         if (size === null)
             throw new Error("The parameter 'size' cannot be null.");
@@ -173,11 +173,11 @@ export class BlogPostClient extends ApiClientBase {
         return this.transformOptions(options_).then(transformedOptions_ => {
             return this.http.fetch(url_, transformedOptions_);
         }).then((_response: Response) => {
-            return this.processGetBlogPosts(_response);
+            return this.processGetAll(_response);
         });
     }
 
-    protected processGetBlogPosts(response: Response): Promise<Post[]> {
+    protected processGetAll(response: Response): Promise<Post[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -201,7 +201,7 @@ export class BlogPostClient extends ApiClientBase {
         }
     }
 
-    createBlogPost(item: Post): Promise<Post> {
+    create(item: Post): Promise<Post> {
         let url_ = this.baseUrl + "/v1/blog/posts";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -219,11 +219,11 @@ export class BlogPostClient extends ApiClientBase {
         return this.transformOptions(options_).then(transformedOptions_ => {
             return this.http.fetch(url_, transformedOptions_);
         }).then((_response: Response) => {
-            return this.processCreateBlogPost(_response);
+            return this.processCreate(_response);
         });
     }
 
-    protected processCreateBlogPost(response: Response): Promise<Post> {
+    protected processCreate(response: Response): Promise<Post> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 201) {
@@ -247,7 +247,7 @@ export class BlogPostClient extends ApiClientBase {
         }
     }
 
-    getBlogPostGroups(size?: number | undefined): Promise<PostGroup[]> {
+    getGroups(size?: number | undefined): Promise<PostGroup[]> {
         let url_ = this.baseUrl + "/groups?";
         if (size === null)
             throw new Error("The parameter 'size' cannot be null.");
@@ -265,11 +265,11 @@ export class BlogPostClient extends ApiClientBase {
         return this.transformOptions(options_).then(transformedOptions_ => {
             return this.http.fetch(url_, transformedOptions_);
         }).then((_response: Response) => {
-            return this.processGetBlogPostGroups(_response);
+            return this.processGetGroups(_response);
         });
     }
 
-    protected processGetBlogPostGroups(response: Response): Promise<PostGroup[]> {
+    protected processGetGroups(response: Response): Promise<PostGroup[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -293,7 +293,7 @@ export class BlogPostClient extends ApiClientBase {
         }
     }
 
-    getBlogPost(id: number): Promise<Post> {
+    get(id: number): Promise<Post> {
         let url_ = this.baseUrl + "/v1/blog/posts/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -310,11 +310,11 @@ export class BlogPostClient extends ApiClientBase {
         return this.transformOptions(options_).then(transformedOptions_ => {
             return this.http.fetch(url_, transformedOptions_);
         }).then((_response: Response) => {
-            return this.processGetBlogPost(_response);
+            return this.processGet(_response);
         });
     }
 
-    protected processGetBlogPost(response: Response): Promise<Post> {
+    protected processGet(response: Response): Promise<Post> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -338,7 +338,7 @@ export class BlogPostClient extends ApiClientBase {
         }
     }
 
-    updateBlogPost(id: number, item: Post): Promise<void> {
+    update(id: number, item: Post): Promise<Post> {
         let url_ = this.baseUrl + "/v1/blog/posts/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -352,20 +352,205 @@ export class BlogPostClient extends ApiClientBase {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                "Accept": "application/json"
             }
         };
 
         return this.transformOptions(options_).then(transformedOptions_ => {
             return this.http.fetch(url_, transformedOptions_);
         }).then((_response: Response) => {
-            return this.processUpdateBlogPost(_response);
+            return this.processUpdate(_response);
         });
     }
 
-    protected processUpdateBlogPost(response: Response): Promise<void> {
+    protected processUpdate(response: Response): Promise<Post> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 204) {
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <Post>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<Post>(<any>null);
+    }
+
+    delete(id: number): Promise<void> {
+        let url_ = this.baseUrl + "/v1/blog/posts/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "DELETE",
+            headers: {
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processDelete(_response);
+        });
+    }
+
+    protected processDelete(response: Response): Promise<void> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            return;
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            });
+        } else if (status === 400) {
+            return response.text().then((_responseText) => {
+            let result400: any = null;
+            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            });
+        } else {
+            return response.text().then((_responseText) => {
+            let resultdefault: any = null;
+            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            });
+        }
+    }
+}
+
+export class CryptoCoinClient extends ApiClientBase {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
+        this.http = http ? http : <any>window;
+        this.baseUrl = this.getBaseUrl("", baseUrl);
+    }
+
+    update(id: number, item: CryptoCoin): Promise<CryptoCoin> {
+        let url_ = this.baseUrl + "/v1/food/cryptoCoins/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(item);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processUpdate(_response);
+        });
+    }
+
+    protected processUpdate(response: Response): Promise<CryptoCoin> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <CryptoCoin>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<CryptoCoin>(<any>null);
+    }
+
+    get(id: number): Promise<CryptoCoin> {
+        let url_ = this.baseUrl + "/v1/food/cryptoCoins/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processGet(_response);
+        });
+    }
+
+    protected processGet(response: Response): Promise<CryptoCoin> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <CryptoCoin>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            });
+        } else {
+            return response.text().then((_responseText) => {
+            let resultdefault: any = null;
+            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            });
+        }
+    }
+
+    delete(id: number): Promise<void> {
+        let url_ = this.baseUrl + "/v1/food/cryptoCoins/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "DELETE",
+            headers: {
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processDelete(_response);
+        });
+    }
+
+    protected processDelete(response: Response): Promise<void> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
             return response.text().then((_responseText) => {
             return;
             });
@@ -390,8 +575,439 @@ export class BlogPostClient extends ApiClientBase {
         }
     }
 
-    deleteBlogPost(id: number): Promise<void> {
-        let url_ = this.baseUrl + "/v1/blog/posts/{id}";
+    getAll(): Promise<CryptoCoin[]> {
+        let url_ = this.baseUrl + "/v1/food/cryptoCoins";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processGetAll(_response);
+        });
+    }
+
+    protected processGetAll(response: Response): Promise<CryptoCoin[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <CryptoCoin[]>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            });
+        } else {
+            return response.text().then((_responseText) => {
+            let resultdefault: any = null;
+            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            });
+        }
+    }
+
+    create(item: CryptoCoin): Promise<CryptoCoin> {
+        let url_ = this.baseUrl + "/v1/food/cryptoCoins";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(item);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processCreate(_response);
+        });
+    }
+
+    protected processCreate(response: Response): Promise<CryptoCoin> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 201) {
+            return response.text().then((_responseText) => {
+            let result201: any = null;
+            result201 = _responseText === "" ? null : <CryptoCoin>JSON.parse(_responseText, this.jsonParseReviver);
+            return result201;
+            });
+        } else if (status === 400) {
+            return response.text().then((_responseText) => {
+            let result400: any = null;
+            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            });
+        } else {
+            return response.text().then((_responseText) => {
+            let resultdefault: any = null;
+            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            });
+        }
+    }
+
+    getPage(sortName?: string | null | undefined, pageNumber?: number | undefined, pageSize?: number | undefined, name?: string | null | undefined): Promise<PaginatedResultOfCryptoCoin> {
+        let url_ = this.baseUrl + "/v1/food/cryptoCoins/page?";
+        if (sortName !== undefined && sortName !== null)
+            url_ += "sortName=" + encodeURIComponent("" + sortName) + "&";
+        if (pageNumber === null)
+            throw new Error("The parameter 'pageNumber' cannot be null.");
+        else if (pageNumber !== undefined)
+            url_ += "pageNumber=" + encodeURIComponent("" + pageNumber) + "&";
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "pageSize=" + encodeURIComponent("" + pageSize) + "&";
+        if (name !== undefined && name !== null)
+            url_ += "name=" + encodeURIComponent("" + name) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processGetPage(_response);
+        });
+    }
+
+    protected processGetPage(response: Response): Promise<PaginatedResultOfCryptoCoin> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <PaginatedResultOfCryptoCoin>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            });
+        } else {
+            return response.text().then((_responseText) => {
+            let resultdefault: any = null;
+            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            });
+        }
+    }
+}
+
+export class CryptoHoldingClient extends ApiClientBase {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
+        this.http = http ? http : <any>window;
+        this.baseUrl = this.getBaseUrl("", baseUrl);
+    }
+
+    getPage(sortName?: string | null | undefined, pageNumber?: number | undefined, pageSize?: number | undefined): Promise<PaginatedResultOfCryptoHolding> {
+        let url_ = this.baseUrl + "/v1/crypto/holdings/page?";
+        if (sortName !== undefined && sortName !== null)
+            url_ += "sortName=" + encodeURIComponent("" + sortName) + "&";
+        if (pageNumber === null)
+            throw new Error("The parameter 'pageNumber' cannot be null.");
+        else if (pageNumber !== undefined)
+            url_ += "pageNumber=" + encodeURIComponent("" + pageNumber) + "&";
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "pageSize=" + encodeURIComponent("" + pageSize) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processGetPage(_response);
+        });
+    }
+
+    protected processGetPage(response: Response): Promise<PaginatedResultOfCryptoHolding> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <PaginatedResultOfCryptoHolding>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            });
+        } else {
+            return response.text().then((_responseText) => {
+            let resultdefault: any = null;
+            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            });
+        }
+    }
+
+    getAll(size?: number | undefined): Promise<CryptoHolding[]> {
+        let url_ = this.baseUrl + "/v1/crypto/holdings?";
+        if (size === null)
+            throw new Error("The parameter 'size' cannot be null.");
+        else if (size !== undefined)
+            url_ += "size=" + encodeURIComponent("" + size) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processGetAll(_response);
+        });
+    }
+
+    protected processGetAll(response: Response): Promise<CryptoHolding[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <CryptoHolding[]>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            });
+        } else {
+            return response.text().then((_responseText) => {
+            let resultdefault: any = null;
+            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            });
+        }
+    }
+
+    create(item: CryptoHolding): Promise<CryptoHolding> {
+        let url_ = this.baseUrl + "/v1/crypto/holdings";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(item);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processCreate(_response);
+        });
+    }
+
+    protected processCreate(response: Response): Promise<CryptoHolding> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 201) {
+            return response.text().then((_responseText) => {
+            let result201: any = null;
+            result201 = _responseText === "" ? null : <CryptoHolding>JSON.parse(_responseText, this.jsonParseReviver);
+            return result201;
+            });
+        } else if (status === 400) {
+            return response.text().then((_responseText) => {
+            let result400: any = null;
+            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            });
+        } else {
+            return response.text().then((_responseText) => {
+            let resultdefault: any = null;
+            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            });
+        }
+    }
+
+    getAvailable(size?: number | undefined): Promise<CryptoHolding[]> {
+        let url_ = this.baseUrl + "/v1/crypto/holdings/available?";
+        if (size === null)
+            throw new Error("The parameter 'size' cannot be null.");
+        else if (size !== undefined)
+            url_ += "size=" + encodeURIComponent("" + size) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processGetAvailable(_response);
+        });
+    }
+
+    protected processGetAvailable(response: Response): Promise<CryptoHolding[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <CryptoHolding[]>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            });
+        } else {
+            return response.text().then((_responseText) => {
+            let resultdefault: any = null;
+            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            });
+        }
+    }
+
+    get(id: number): Promise<CryptoHolding> {
+        let url_ = this.baseUrl + "/v1/crypto/holdings/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processGet(_response);
+        });
+    }
+
+    protected processGet(response: Response): Promise<CryptoHolding> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <CryptoHolding>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            });
+        } else {
+            return response.text().then((_responseText) => {
+            let resultdefault: any = null;
+            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            });
+        }
+    }
+
+    update(id: number, item: CryptoHolding): Promise<CryptoHolding> {
+        let url_ = this.baseUrl + "/v1/crypto/holdings/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(item);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processUpdate(_response);
+        });
+    }
+
+    protected processUpdate(response: Response): Promise<CryptoHolding> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <CryptoHolding>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<CryptoHolding>(<any>null);
+    }
+
+    delete(id: number): Promise<void> {
+        let url_ = this.baseUrl + "/v1/crypto/holdings/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -406,11 +1022,414 @@ export class BlogPostClient extends ApiClientBase {
         return this.transformOptions(options_).then(transformedOptions_ => {
             return this.http.fetch(url_, transformedOptions_);
         }).then((_response: Response) => {
-            return this.processDeleteBlogPost(_response);
+            return this.processDelete(_response);
         });
     }
 
-    protected processDeleteBlogPost(response: Response): Promise<void> {
+    protected processDelete(response: Response): Promise<void> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            return;
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            });
+        } else if (status === 400) {
+            return response.text().then((_responseText) => {
+            let result400: any = null;
+            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            });
+        } else {
+            return response.text().then((_responseText) => {
+            let resultdefault: any = null;
+            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            });
+        }
+    }
+}
+
+export class CryptoInvestmentClient extends ApiClientBase {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
+        this.http = http ? http : <any>window;
+        this.baseUrl = this.getBaseUrl("", baseUrl);
+    }
+
+    getInvestments(): Promise<CryptoInvestment[]> {
+        let url_ = this.baseUrl + "/v1/cryptoInvestments/summary";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processGetInvestments(_response);
+        });
+    }
+
+    protected processGetInvestments(response: Response): Promise<CryptoInvestment[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <CryptoInvestment[]>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            });
+        } else {
+            return response.text().then((_responseText) => {
+            let resultdefault: any = null;
+            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            });
+        }
+    }
+
+    getPage(sortName?: string | null | undefined, pageNumber?: number | undefined, pageSize?: number | undefined, coins?: string[] | null | undefined, yearsSold?: string[] | null | undefined, holdingStatus?: string | null | undefined): Promise<PaginatedResultOfCryptoInvestment> {
+        let url_ = this.baseUrl + "/v1/cryptoInvestments/page?";
+        if (sortName !== undefined && sortName !== null)
+            url_ += "sortName=" + encodeURIComponent("" + sortName) + "&";
+        if (pageNumber === null)
+            throw new Error("The parameter 'pageNumber' cannot be null.");
+        else if (pageNumber !== undefined)
+            url_ += "pageNumber=" + encodeURIComponent("" + pageNumber) + "&";
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "pageSize=" + encodeURIComponent("" + pageSize) + "&";
+        if (coins !== undefined && coins !== null)
+            coins && coins.forEach(item => { url_ += "coins=" + encodeURIComponent("" + item) + "&"; });
+        if (yearsSold !== undefined && yearsSold !== null)
+            yearsSold && yearsSold.forEach(item => { url_ += "yearsSold=" + encodeURIComponent("" + item) + "&"; });
+        if (holdingStatus !== undefined && holdingStatus !== null)
+            url_ += "holdingStatus=" + encodeURIComponent("" + holdingStatus) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processGetPage(_response);
+        });
+    }
+
+    protected processGetPage(response: Response): Promise<PaginatedResultOfCryptoInvestment> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <PaginatedResultOfCryptoInvestment>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            });
+        } else {
+            return response.text().then((_responseText) => {
+            let resultdefault: any = null;
+            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            });
+        }
+    }
+}
+
+export class CryptoSaleClient extends ApiClientBase {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
+        this.http = http ? http : <any>window;
+        this.baseUrl = this.getBaseUrl("", baseUrl);
+    }
+
+    getPage(sortName?: string | null | undefined, pageNumber?: number | undefined, pageSize?: number | undefined): Promise<PaginatedResultOfCryptoSale> {
+        let url_ = this.baseUrl + "/v1/crypto/sales/page?";
+        if (sortName !== undefined && sortName !== null)
+            url_ += "sortName=" + encodeURIComponent("" + sortName) + "&";
+        if (pageNumber === null)
+            throw new Error("The parameter 'pageNumber' cannot be null.");
+        else if (pageNumber !== undefined)
+            url_ += "pageNumber=" + encodeURIComponent("" + pageNumber) + "&";
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "pageSize=" + encodeURIComponent("" + pageSize) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processGetPage(_response);
+        });
+    }
+
+    protected processGetPage(response: Response): Promise<PaginatedResultOfCryptoSale> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <PaginatedResultOfCryptoSale>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            });
+        } else {
+            return response.text().then((_responseText) => {
+            let resultdefault: any = null;
+            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            });
+        }
+    }
+
+    getAll(size?: number | undefined): Promise<CryptoSale[]> {
+        let url_ = this.baseUrl + "/v1/crypto/sales?";
+        if (size === null)
+            throw new Error("The parameter 'size' cannot be null.");
+        else if (size !== undefined)
+            url_ += "size=" + encodeURIComponent("" + size) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processGetAll(_response);
+        });
+    }
+
+    protected processGetAll(response: Response): Promise<CryptoSale[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <CryptoSale[]>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            });
+        } else {
+            return response.text().then((_responseText) => {
+            let resultdefault: any = null;
+            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            });
+        }
+    }
+
+    create(item: CryptoSale): Promise<CryptoSale> {
+        let url_ = this.baseUrl + "/v1/crypto/sales";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(item);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processCreate(_response);
+        });
+    }
+
+    protected processCreate(response: Response): Promise<CryptoSale> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 201) {
+            return response.text().then((_responseText) => {
+            let result201: any = null;
+            result201 = _responseText === "" ? null : <CryptoSale>JSON.parse(_responseText, this.jsonParseReviver);
+            return result201;
+            });
+        } else if (status === 400) {
+            return response.text().then((_responseText) => {
+            let result400: any = null;
+            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            });
+        } else {
+            return response.text().then((_responseText) => {
+            let resultdefault: any = null;
+            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            });
+        }
+    }
+
+    get(id: number): Promise<CryptoSale> {
+        let url_ = this.baseUrl + "/v1/crypto/sales/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processGet(_response);
+        });
+    }
+
+    protected processGet(response: Response): Promise<CryptoSale> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <CryptoSale>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            });
+        } else {
+            return response.text().then((_responseText) => {
+            let resultdefault: any = null;
+            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            });
+        }
+    }
+
+    update(id: number, item: CryptoSale): Promise<CryptoSale> {
+        let url_ = this.baseUrl + "/v1/crypto/sales/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(item);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processUpdate(_response);
+        });
+    }
+
+    protected processUpdate(response: Response): Promise<CryptoSale> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <CryptoSale>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<CryptoSale>(<any>null);
+    }
+
+    delete(id: number): Promise<void> {
+        let url_ = this.baseUrl + "/v1/crypto/sales/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "DELETE",
+            headers: {
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processDelete(_response);
+        });
+    }
+
+    protected processDelete(response: Response): Promise<void> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -448,6 +1467,141 @@ export class BankClient extends ApiClientBase {
         super();
         this.http = http ? http : <any>window;
         this.baseUrl = this.getBaseUrl("", baseUrl);
+    }
+
+    update(id: number, item: Bank): Promise<Bank> {
+        let url_ = this.baseUrl + "/v1/food/banks/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(item);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processUpdate(_response);
+        });
+    }
+
+    protected processUpdate(response: Response): Promise<Bank> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <Bank>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<Bank>(<any>null);
+    }
+
+    get(id: number): Promise<Bank> {
+        let url_ = this.baseUrl + "/v1/food/banks/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processGet(_response);
+        });
+    }
+
+    protected processGet(response: Response): Promise<Bank> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <Bank>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            });
+        } else {
+            return response.text().then((_responseText) => {
+            let resultdefault: any = null;
+            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            });
+        }
+    }
+
+    delete(id: number): Promise<void> {
+        let url_ = this.baseUrl + "/v1/food/banks/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "DELETE",
+            headers: {
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processDelete(_response);
+        });
+    }
+
+    protected processDelete(response: Response): Promise<void> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            return;
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            });
+        } else if (status === 400) {
+            return response.text().then((_responseText) => {
+            let result400: any = null;
+            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            });
+        } else {
+            return response.text().then((_responseText) => {
+            let resultdefault: any = null;
+            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            });
+        }
     }
 
     getAll(): Promise<Bank[]> {
@@ -582,151 +1736,6 @@ export class BankClient extends ApiClientBase {
             let result404: any = null;
             result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
-            });
-        }
-    }
-
-    get(id: number): Promise<Bank> {
-        let url_ = this.baseUrl + "/v1/food/banks/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <RequestInit>{
-            method: "GET",
-            headers: {
-                "Accept": "application/json"
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.processGet(_response);
-        });
-    }
-
-    protected processGet(response: Response): Promise<Bank> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : <Bank>JSON.parse(_responseText, this.jsonParseReviver);
-            return result200;
-            });
-        } else if (status === 404) {
-            return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
-            });
-        }
-    }
-
-    update(id: number, item: Bank): Promise<void> {
-        let url_ = this.baseUrl + "/v1/food/banks/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(item);
-
-        let options_ = <RequestInit>{
-            body: content_,
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.processUpdate(_response);
-        });
-    }
-
-    protected processUpdate(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 204) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status === 404) {
-            return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-            let result400: any = null;
-            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
-            });
-        }
-    }
-
-    delete(id: number): Promise<void> {
-        let url_ = this.baseUrl + "/v1/food/banks/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <RequestInit>{
-            method: "DELETE",
-            headers: {
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.processDelete(_response);
-        });
-    }
-
-    protected processDelete(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status === 404) {
-            return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-            let result400: any = null;
-            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
             });
         } else {
             return response.text().then((_responseText) => {
@@ -1333,7 +2342,7 @@ export class TransactionClient extends ApiClientBase {
         }
     }
 
-    update(id: number, item: TransactionRecord): Promise<void> {
+    update(id: number, item: TransactionRecord): Promise<TransactionRecord> {
         let url_ = this.baseUrl + "/v1/finance/transactions/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1347,6 +2356,7 @@ export class TransactionClient extends ApiClientBase {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                "Accept": "application/json"
             }
         };
 
@@ -1357,32 +2367,21 @@ export class TransactionClient extends ApiClientBase {
         });
     }
 
-    protected processUpdate(response: Response): Promise<void> {
+    protected processUpdate(response: Response): Promise<TransactionRecord> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 204) {
+        if (status === 200) {
             return response.text().then((_responseText) => {
-            return;
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <TransactionRecord>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
             });
-        } else if (status === 404) {
+        } else if (status !== 200 && status !== 204) {
             return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-            let result400: any = null;
-            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
+        return Promise.resolve<TransactionRecord>(<any>null);
     }
 
     delete(id: number): Promise<void> {
@@ -1443,6 +2442,141 @@ export class TransactionCategoryClient extends ApiClientBase {
         super();
         this.http = http ? http : <any>window;
         this.baseUrl = this.getBaseUrl("", baseUrl);
+    }
+
+    update(id: number, item: TransactionCategory): Promise<TransactionCategory> {
+        let url_ = this.baseUrl + "/v1/food/transactionCategories/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(item);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processUpdate(_response);
+        });
+    }
+
+    protected processUpdate(response: Response): Promise<TransactionCategory> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <TransactionCategory>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<TransactionCategory>(<any>null);
+    }
+
+    get(id: number): Promise<TransactionCategory> {
+        let url_ = this.baseUrl + "/v1/food/transactionCategories/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processGet(_response);
+        });
+    }
+
+    protected processGet(response: Response): Promise<TransactionCategory> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <TransactionCategory>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            });
+        } else {
+            return response.text().then((_responseText) => {
+            let resultdefault: any = null;
+            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            });
+        }
+    }
+
+    delete(id: number): Promise<void> {
+        let url_ = this.baseUrl + "/v1/food/transactionCategories/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "DELETE",
+            headers: {
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processDelete(_response);
+        });
+    }
+
+    protected processDelete(response: Response): Promise<void> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            return;
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            });
+        } else if (status === 400) {
+            return response.text().then((_responseText) => {
+            let result400: any = null;
+            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            });
+        } else {
+            return response.text().then((_responseText) => {
+            let resultdefault: any = null;
+            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            });
+        }
     }
 
     getAll(): Promise<TransactionCategory[]> {
@@ -1586,9 +2720,63 @@ export class TransactionCategoryClient extends ApiClientBase {
             });
         }
     }
+}
 
-    get(id: number): Promise<TransactionCategory> {
-        let url_ = this.baseUrl + "/v1/food/transactionCategories/{id}";
+export class TransactionTagClient extends ApiClientBase {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
+        this.http = http ? http : <any>window;
+        this.baseUrl = this.getBaseUrl("", baseUrl);
+    }
+
+    update(id: number, item: TransactionTag): Promise<TransactionTag> {
+        let url_ = this.baseUrl + "/v1/food/transactionTags/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(item);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processUpdate(_response);
+        });
+    }
+
+    protected processUpdate(response: Response): Promise<TransactionTag> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <TransactionTag>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<TransactionTag>(<any>null);
+    }
+
+    get(id: number): Promise<TransactionTag> {
+        let url_ = this.baseUrl + "/v1/food/transactionTags/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -1608,13 +2796,13 @@ export class TransactionCategoryClient extends ApiClientBase {
         });
     }
 
-    protected processGet(response: Response): Promise<TransactionCategory> {
+    protected processGet(response: Response): Promise<TransactionTag> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : <TransactionCategory>JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = _responseText === "" ? null : <TransactionTag>JSON.parse(_responseText, this.jsonParseReviver);
             return result200;
             });
         } else if (status === 404) {
@@ -1632,60 +2820,8 @@ export class TransactionCategoryClient extends ApiClientBase {
         }
     }
 
-    update(id: number, item: TransactionCategory): Promise<void> {
-        let url_ = this.baseUrl + "/v1/food/transactionCategories/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(item);
-
-        let options_ = <RequestInit>{
-            body: content_,
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.processUpdate(_response);
-        });
-    }
-
-    protected processUpdate(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 204) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status === 404) {
-            return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-            let result400: any = null;
-            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
-            });
-        }
-    }
-
     delete(id: number): Promise<void> {
-        let url_ = this.baseUrl + "/v1/food/transactionCategories/{id}";
+        let url_ = this.baseUrl + "/v1/food/transactionTags/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -1730,18 +2866,6 @@ export class TransactionCategoryClient extends ApiClientBase {
             return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
             });
         }
-    }
-}
-
-export class TransactionTagClient extends ApiClientBase {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        super();
-        this.http = http ? http : <any>window;
-        this.baseUrl = this.getBaseUrl("", baseUrl);
     }
 
     getAll(): Promise<TransactionTag[]> {
@@ -1876,151 +3000,6 @@ export class TransactionTagClient extends ApiClientBase {
             let result404: any = null;
             result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
-            });
-        }
-    }
-
-    get(id: number): Promise<TransactionTag> {
-        let url_ = this.baseUrl + "/v1/food/transactionTags/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <RequestInit>{
-            method: "GET",
-            headers: {
-                "Accept": "application/json"
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.processGet(_response);
-        });
-    }
-
-    protected processGet(response: Response): Promise<TransactionTag> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : <TransactionTag>JSON.parse(_responseText, this.jsonParseReviver);
-            return result200;
-            });
-        } else if (status === 404) {
-            return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
-            });
-        }
-    }
-
-    update(id: number, item: TransactionTag): Promise<void> {
-        let url_ = this.baseUrl + "/v1/food/transactionTags/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(item);
-
-        let options_ = <RequestInit>{
-            body: content_,
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.processUpdate(_response);
-        });
-    }
-
-    protected processUpdate(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 204) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status === 404) {
-            return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-            let result400: any = null;
-            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
-            });
-        }
-    }
-
-    delete(id: number): Promise<void> {
-        let url_ = this.baseUrl + "/v1/food/transactionTags/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <RequestInit>{
-            method: "DELETE",
-            headers: {
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.processDelete(_response);
-        });
-    }
-
-    protected processDelete(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status === 404) {
-            return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-            let result400: any = null;
-            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
             });
         } else {
             return response.text().then((_responseText) => {
@@ -2236,7 +3215,7 @@ export class CookbookClient extends ApiClientBase {
         }
     }
 
-    update(id: number, item: Cookbook): Promise<void> {
+    update(id: number, item: Cookbook): Promise<Cookbook> {
         let url_ = this.baseUrl + "/v1/food/cookbooks/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -2250,6 +3229,7 @@ export class CookbookClient extends ApiClientBase {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                "Accept": "application/json"
             }
         };
 
@@ -2260,32 +3240,21 @@ export class CookbookClient extends ApiClientBase {
         });
     }
 
-    protected processUpdate(response: Response): Promise<void> {
+    protected processUpdate(response: Response): Promise<Cookbook> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 204) {
+        if (status === 200) {
             return response.text().then((_responseText) => {
-            return;
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <Cookbook>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
             });
-        } else if (status === 404) {
+        } else if (status !== 200 && status !== 204) {
             return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-            let result400: any = null;
-            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
+        return Promise.resolve<Cookbook>(<any>null);
     }
 
     delete(id: number): Promise<void> {
@@ -2346,6 +3315,141 @@ export class CookbookAuthorClient extends ApiClientBase {
         super();
         this.http = http ? http : <any>window;
         this.baseUrl = this.getBaseUrl("", baseUrl);
+    }
+
+    update(id: number, item: CookbookAuthor): Promise<CookbookAuthor> {
+        let url_ = this.baseUrl + "/v1/food/cookbookauthors/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(item);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processUpdate(_response);
+        });
+    }
+
+    protected processUpdate(response: Response): Promise<CookbookAuthor> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <CookbookAuthor>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<CookbookAuthor>(<any>null);
+    }
+
+    get(id: number): Promise<CookbookAuthor> {
+        let url_ = this.baseUrl + "/v1/food/cookbookauthors/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processGet(_response);
+        });
+    }
+
+    protected processGet(response: Response): Promise<CookbookAuthor> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <CookbookAuthor>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            });
+        } else {
+            return response.text().then((_responseText) => {
+            let resultdefault: any = null;
+            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            });
+        }
+    }
+
+    delete(id: number): Promise<void> {
+        let url_ = this.baseUrl + "/v1/food/cookbookauthors/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "DELETE",
+            headers: {
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processDelete(_response);
+        });
+    }
+
+    protected processDelete(response: Response): Promise<void> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            return;
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            });
+        } else if (status === 400) {
+            return response.text().then((_responseText) => {
+            let result400: any = null;
+            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            });
+        } else {
+            return response.text().then((_responseText) => {
+            let resultdefault: any = null;
+            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            });
+        }
     }
 
     getAll(): Promise<CookbookAuthor[]> {
@@ -2489,9 +3593,63 @@ export class CookbookAuthorClient extends ApiClientBase {
             });
         }
     }
+}
 
-    get(id: number): Promise<CookbookAuthor> {
-        let url_ = this.baseUrl + "/v1/food/cookbookauthors/{id}";
+export class FoodCategoryClient extends ApiClientBase {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
+        this.http = http ? http : <any>window;
+        this.baseUrl = this.getBaseUrl("", baseUrl);
+    }
+
+    update(id: number, item: FoodCategory): Promise<FoodCategory> {
+        let url_ = this.baseUrl + "/v1/food/foodcategories/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(item);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processUpdate(_response);
+        });
+    }
+
+    protected processUpdate(response: Response): Promise<FoodCategory> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <FoodCategory>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<FoodCategory>(<any>null);
+    }
+
+    get(id: number): Promise<FoodCategory> {
+        let url_ = this.baseUrl + "/v1/food/foodcategories/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -2511,13 +3669,13 @@ export class CookbookAuthorClient extends ApiClientBase {
         });
     }
 
-    protected processGet(response: Response): Promise<CookbookAuthor> {
+    protected processGet(response: Response): Promise<FoodCategory> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : <CookbookAuthor>JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = _responseText === "" ? null : <FoodCategory>JSON.parse(_responseText, this.jsonParseReviver);
             return result200;
             });
         } else if (status === 404) {
@@ -2535,60 +3693,8 @@ export class CookbookAuthorClient extends ApiClientBase {
         }
     }
 
-    update(id: number, item: CookbookAuthor): Promise<void> {
-        let url_ = this.baseUrl + "/v1/food/cookbookauthors/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(item);
-
-        let options_ = <RequestInit>{
-            body: content_,
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.processUpdate(_response);
-        });
-    }
-
-    protected processUpdate(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 204) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status === 404) {
-            return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-            let result400: any = null;
-            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
-            });
-        }
-    }
-
     delete(id: number): Promise<void> {
-        let url_ = this.baseUrl + "/v1/food/cookbookauthors/{id}";
+        let url_ = this.baseUrl + "/v1/food/foodcategories/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -2633,18 +3739,6 @@ export class CookbookAuthorClient extends ApiClientBase {
             return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
             });
         }
-    }
-}
-
-export class FoodCategoryClient extends ApiClientBase {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        super();
-        this.http = http ? http : <any>window;
-        this.baseUrl = this.getBaseUrl("", baseUrl);
     }
 
     getAll(): Promise<FoodCategory[]> {
@@ -2779,151 +3873,6 @@ export class FoodCategoryClient extends ApiClientBase {
             let result404: any = null;
             result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
-            });
-        }
-    }
-
-    get(id: number): Promise<FoodCategory> {
-        let url_ = this.baseUrl + "/v1/food/foodcategories/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <RequestInit>{
-            method: "GET",
-            headers: {
-                "Accept": "application/json"
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.processGet(_response);
-        });
-    }
-
-    protected processGet(response: Response): Promise<FoodCategory> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : <FoodCategory>JSON.parse(_responseText, this.jsonParseReviver);
-            return result200;
-            });
-        } else if (status === 404) {
-            return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
-            });
-        }
-    }
-
-    update(id: number, item: FoodCategory): Promise<void> {
-        let url_ = this.baseUrl + "/v1/food/foodcategories/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(item);
-
-        let options_ = <RequestInit>{
-            body: content_,
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.processUpdate(_response);
-        });
-    }
-
-    protected processUpdate(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 204) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status === 404) {
-            return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-            let result400: any = null;
-            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
-            });
-        }
-    }
-
-    delete(id: number): Promise<void> {
-        let url_ = this.baseUrl + "/v1/food/foodcategories/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <RequestInit>{
-            method: "DELETE",
-            headers: {
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.processDelete(_response);
-        });
-    }
-
-    protected processDelete(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status === 404) {
-            return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-            let result400: any = null;
-            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
             });
         } else {
             return response.text().then((_responseText) => {
@@ -3141,7 +4090,7 @@ export class FoodProductClient extends ApiClientBase {
         }
     }
 
-    update(id: number, item: FoodProduct): Promise<void> {
+    update(id: number, item: FoodProduct): Promise<FoodProduct> {
         let url_ = this.baseUrl + "/v1/food/products/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -3155,6 +4104,7 @@ export class FoodProductClient extends ApiClientBase {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                "Accept": "application/json"
             }
         };
 
@@ -3165,32 +4115,21 @@ export class FoodProductClient extends ApiClientBase {
         });
     }
 
-    protected processUpdate(response: Response): Promise<void> {
+    protected processUpdate(response: Response): Promise<FoodProduct> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 204) {
+        if (status === 200) {
             return response.text().then((_responseText) => {
-            return;
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <FoodProduct>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
             });
-        } else if (status === 404) {
+        } else if (status !== 200 && status !== 204) {
             return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-            let result400: any = null;
-            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
+        return Promise.resolve<FoodProduct>(<any>null);
     }
 
     delete(id: number): Promise<void> {
@@ -3251,6 +4190,141 @@ export class FoodQuantityTypeClient extends ApiClientBase {
         super();
         this.http = http ? http : <any>window;
         this.baseUrl = this.getBaseUrl("", baseUrl);
+    }
+
+    update(id: number, item: FoodQuantityType): Promise<FoodQuantityType> {
+        let url_ = this.baseUrl + "/v1/food/foodquantitytype/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(item);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processUpdate(_response);
+        });
+    }
+
+    protected processUpdate(response: Response): Promise<FoodQuantityType> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <FoodQuantityType>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<FoodQuantityType>(<any>null);
+    }
+
+    get(id: number): Promise<FoodQuantityType> {
+        let url_ = this.baseUrl + "/v1/food/foodquantitytype/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processGet(_response);
+        });
+    }
+
+    protected processGet(response: Response): Promise<FoodQuantityType> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <FoodQuantityType>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            });
+        } else {
+            return response.text().then((_responseText) => {
+            let resultdefault: any = null;
+            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            });
+        }
+    }
+
+    delete(id: number): Promise<void> {
+        let url_ = this.baseUrl + "/v1/food/foodquantitytype/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "DELETE",
+            headers: {
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processDelete(_response);
+        });
+    }
+
+    protected processDelete(response: Response): Promise<void> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            return;
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            });
+        } else if (status === 400) {
+            return response.text().then((_responseText) => {
+            let result400: any = null;
+            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            });
+        } else {
+            return response.text().then((_responseText) => {
+            let resultdefault: any = null;
+            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            });
+        }
     }
 
     getAll(): Promise<FoodQuantityType[]> {
@@ -3394,9 +4468,63 @@ export class FoodQuantityTypeClient extends ApiClientBase {
             });
         }
     }
+}
 
-    get(id: number): Promise<FoodQuantityType> {
-        let url_ = this.baseUrl + "/v1/food/foodquantitytype/{id}";
+export class FoodUnitClient extends ApiClientBase {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
+        this.http = http ? http : <any>window;
+        this.baseUrl = this.getBaseUrl("", baseUrl);
+    }
+
+    update(id: number, item: FoodUnit): Promise<FoodUnit> {
+        let url_ = this.baseUrl + "/v1/food/foodunit/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(item);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processUpdate(_response);
+        });
+    }
+
+    protected processUpdate(response: Response): Promise<FoodUnit> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <FoodUnit>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<FoodUnit>(<any>null);
+    }
+
+    get(id: number): Promise<FoodUnit> {
+        let url_ = this.baseUrl + "/v1/food/foodunit/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -3416,13 +4544,13 @@ export class FoodQuantityTypeClient extends ApiClientBase {
         });
     }
 
-    protected processGet(response: Response): Promise<FoodQuantityType> {
+    protected processGet(response: Response): Promise<FoodUnit> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : <FoodQuantityType>JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = _responseText === "" ? null : <FoodUnit>JSON.parse(_responseText, this.jsonParseReviver);
             return result200;
             });
         } else if (status === 404) {
@@ -3440,60 +4568,8 @@ export class FoodQuantityTypeClient extends ApiClientBase {
         }
     }
 
-    update(id: number, item: FoodQuantityType): Promise<void> {
-        let url_ = this.baseUrl + "/v1/food/foodquantitytype/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(item);
-
-        let options_ = <RequestInit>{
-            body: content_,
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.processUpdate(_response);
-        });
-    }
-
-    protected processUpdate(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 204) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status === 404) {
-            return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-            let result400: any = null;
-            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
-            });
-        }
-    }
-
     delete(id: number): Promise<void> {
-        let url_ = this.baseUrl + "/v1/food/foodquantitytype/{id}";
+        let url_ = this.baseUrl + "/v1/food/foodunit/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -3538,18 +4614,6 @@ export class FoodQuantityTypeClient extends ApiClientBase {
             return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
             });
         }
-    }
-}
-
-export class FoodUnitClient extends ApiClientBase {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        super();
-        this.http = http ? http : <any>window;
-        this.baseUrl = this.getBaseUrl("", baseUrl);
     }
 
     getAll(): Promise<FoodUnit[]> {
@@ -3684,151 +4748,6 @@ export class FoodUnitClient extends ApiClientBase {
             let result404: any = null;
             result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
-            });
-        }
-    }
-
-    get(id: number): Promise<FoodUnit> {
-        let url_ = this.baseUrl + "/v1/food/foodunit/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <RequestInit>{
-            method: "GET",
-            headers: {
-                "Accept": "application/json"
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.processGet(_response);
-        });
-    }
-
-    protected processGet(response: Response): Promise<FoodUnit> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : <FoodUnit>JSON.parse(_responseText, this.jsonParseReviver);
-            return result200;
-            });
-        } else if (status === 404) {
-            return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
-            });
-        }
-    }
-
-    update(id: number, item: FoodUnit): Promise<void> {
-        let url_ = this.baseUrl + "/v1/food/foodunit/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(item);
-
-        let options_ = <RequestInit>{
-            body: content_,
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.processUpdate(_response);
-        });
-    }
-
-    protected processUpdate(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 204) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status === 404) {
-            return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-            let result400: any = null;
-            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
-            });
-        }
-    }
-
-    delete(id: number): Promise<void> {
-        let url_ = this.baseUrl + "/v1/food/foodunit/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <RequestInit>{
-            method: "DELETE",
-            headers: {
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.processDelete(_response);
-        });
-    }
-
-    protected processDelete(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status === 404) {
-            return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-            let result400: any = null;
-            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
             });
         } else {
             return response.text().then((_responseText) => {
@@ -4115,6 +5034,51 @@ export class GroceryClient extends ApiClientBase {
         }
     }
 
+    getRecipeNotes(id: number): Promise<RecipeNote[]> {
+        let url_ = this.baseUrl + "/v1/food/groceries/recipes/{id}/notes";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processGetRecipeNotes(_response);
+        });
+    }
+
+    protected processGetRecipeNotes(response: Response): Promise<RecipeNote[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <RecipeNote[]>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            });
+        } else {
+            return response.text().then((_responseText) => {
+            let resultdefault: any = null;
+            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            });
+        }
+    }
+
     getRecipeIngredients(id: number): Promise<void> {
         let url_ = this.baseUrl + "/v1/food/groceries/recipes/{id}/ingredients";
         if (id === undefined || id === null)
@@ -4323,48 +5287,6 @@ export class MealPlanClient extends ApiClientBase {
         }
     }
 
-    getLatest(): Promise<MealPlan[]> {
-        let url_ = this.baseUrl + "/v1/food/mealplans/latest";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <RequestInit>{
-            method: "GET",
-            headers: {
-                "Accept": "application/json"
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.processGetLatest(_response);
-        });
-    }
-
-    protected processGetLatest(response: Response): Promise<MealPlan[]> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : <MealPlan[]>JSON.parse(_responseText, this.jsonParseReviver);
-            return result200;
-            });
-        } else if (status === 404) {
-            return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
-            });
-        }
-    }
-
     get(id: number): Promise<MealPlan> {
         let url_ = this.baseUrl + "/v1/food/mealplans/{id}";
         if (id === undefined || id === null)
@@ -4410,7 +5332,7 @@ export class MealPlanClient extends ApiClientBase {
         }
     }
 
-    update(id: number, item: MealPlan): Promise<void> {
+    update(id: number, item: MealPlan): Promise<MealPlan> {
         let url_ = this.baseUrl + "/v1/food/mealplans/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -4424,6 +5346,7 @@ export class MealPlanClient extends ApiClientBase {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                "Accept": "application/json"
             }
         };
 
@@ -4434,32 +5357,21 @@ export class MealPlanClient extends ApiClientBase {
         });
     }
 
-    protected processUpdate(response: Response): Promise<void> {
+    protected processUpdate(response: Response): Promise<MealPlan> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 204) {
+        if (status === 200) {
             return response.text().then((_responseText) => {
-            return;
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <MealPlan>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
             });
-        } else if (status === 404) {
+        } else if (status !== 200 && status !== 204) {
             return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-            let result400: any = null;
-            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
+        return Promise.resolve<MealPlan>(<any>null);
     }
 
     delete(id: number): Promise<void> {
@@ -4500,96 +5412,6 @@ export class MealPlanClient extends ApiClientBase {
             let result400: any = null;
             result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result400);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
-            });
-        }
-    }
-
-    getGroceries(id: number): Promise<MealPlanGrocery[]> {
-        let url_ = this.baseUrl + "/v1/food/mealplans/{id}/groceries";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <RequestInit>{
-            method: "GET",
-            headers: {
-                "Accept": "application/json"
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.processGetGroceries(_response);
-        });
-    }
-
-    protected processGetGroceries(response: Response): Promise<MealPlanGrocery[]> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : <MealPlanGrocery[]>JSON.parse(_responseText, this.jsonParseReviver);
-            return result200;
-            });
-        } else if (status === 404) {
-            return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
-            });
-        }
-    }
-
-    getRecipes(id: number): Promise<MealPlanRecipe[]> {
-        let url_ = this.baseUrl + "/v1/food/mealplans/{id}/recipes";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <RequestInit>{
-            method: "GET",
-            headers: {
-                "Accept": "application/json"
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.processGetRecipes(_response);
-        });
-    }
-
-    protected processGetRecipes(response: Response): Promise<MealPlanRecipe[]> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : <MealPlanRecipe[]>JSON.parse(_responseText, this.jsonParseReviver);
-            return result200;
-            });
-        } else if (status === 404) {
-            return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
             });
         } else {
             return response.text().then((_responseText) => {
@@ -4658,7 +5480,7 @@ export class MealPlanNoteClient extends ApiClientBase {
         }
     }
 
-    update(id: number, item: MealPlanNote): Promise<void> {
+    update(id: number, item: MealPlanNote): Promise<MealPlanNote> {
         let url_ = this.baseUrl + "/v1/food/mealPlanNotes/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -4672,6 +5494,7 @@ export class MealPlanNoteClient extends ApiClientBase {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                "Accept": "application/json"
             }
         };
 
@@ -4682,32 +5505,21 @@ export class MealPlanNoteClient extends ApiClientBase {
         });
     }
 
-    protected processUpdate(response: Response): Promise<void> {
+    protected processUpdate(response: Response): Promise<MealPlanNote> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 204) {
+        if (status === 200) {
             return response.text().then((_responseText) => {
-            return;
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <MealPlanNote>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
             });
-        } else if (status === 404) {
+        } else if (status !== 200 && status !== 204) {
             return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-            let result400: any = null;
-            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
+        return Promise.resolve<MealPlanNote>(<any>null);
     }
 
     delete(id: number): Promise<void> {
@@ -4963,7 +5775,7 @@ export class MealPlanRecipeClient extends ApiClientBase {
         }
     }
 
-    update(id: number, item: MealPlanRecipe): Promise<void> {
+    update(id: number, item: MealPlanRecipe): Promise<MealPlanRecipe> {
         let url_ = this.baseUrl + "/v1/food/mealplanrecipes/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -4977,6 +5789,7 @@ export class MealPlanRecipeClient extends ApiClientBase {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                "Accept": "application/json"
             }
         };
 
@@ -4987,32 +5800,21 @@ export class MealPlanRecipeClient extends ApiClientBase {
         });
     }
 
-    protected processUpdate(response: Response): Promise<void> {
+    protected processUpdate(response: Response): Promise<MealPlanRecipe> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 204) {
+        if (status === 200) {
             return response.text().then((_responseText) => {
-            return;
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <MealPlanRecipe>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
             });
-        } else if (status === 404) {
+        } else if (status !== 200 && status !== 204) {
             return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-            let result400: any = null;
-            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
+        return Promise.resolve<MealPlanRecipe>(<any>null);
     }
 
     delete(id: number): Promise<void> {
@@ -5320,7 +6122,7 @@ export class RecipeClient extends ApiClientBase {
         }
     }
 
-    update(id: number, item: Recipe): Promise<void> {
+    update(id: number, item: Recipe): Promise<Recipe> {
         let url_ = this.baseUrl + "/v1/food/recipes/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -5334,6 +6136,7 @@ export class RecipeClient extends ApiClientBase {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                "Accept": "application/json"
             }
         };
 
@@ -5344,32 +6147,21 @@ export class RecipeClient extends ApiClientBase {
         });
     }
 
-    protected processUpdate(response: Response): Promise<void> {
+    protected processUpdate(response: Response): Promise<Recipe> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 204) {
+        if (status === 200) {
             return response.text().then((_responseText) => {
-            return;
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <Recipe>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
             });
-        } else if (status === 404) {
+        } else if (status !== 200 && status !== 204) {
             return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-            let result400: any = null;
-            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
+        return Promise.resolve<Recipe>(<any>null);
     }
 
     delete(id: number): Promise<void> {
@@ -5430,6 +6222,141 @@ export class RecipeCategoryClient extends ApiClientBase {
         super();
         this.http = http ? http : <any>window;
         this.baseUrl = this.getBaseUrl("", baseUrl);
+    }
+
+    update(id: number, item: RecipeCategory): Promise<RecipeCategory> {
+        let url_ = this.baseUrl + "/v1/food/recipecategories/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(item);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processUpdate(_response);
+        });
+    }
+
+    protected processUpdate(response: Response): Promise<RecipeCategory> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <RecipeCategory>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<RecipeCategory>(<any>null);
+    }
+
+    get(id: number): Promise<RecipeCategory> {
+        let url_ = this.baseUrl + "/v1/food/recipecategories/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processGet(_response);
+        });
+    }
+
+    protected processGet(response: Response): Promise<RecipeCategory> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <RecipeCategory>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            });
+        } else {
+            return response.text().then((_responseText) => {
+            let resultdefault: any = null;
+            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            });
+        }
+    }
+
+    delete(id: number): Promise<void> {
+        let url_ = this.baseUrl + "/v1/food/recipecategories/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "DELETE",
+            headers: {
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processDelete(_response);
+        });
+    }
+
+    protected processDelete(response: Response): Promise<void> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            return;
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            });
+        } else if (status === 400) {
+            return response.text().then((_responseText) => {
+            let result400: any = null;
+            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            });
+        } else {
+            return response.text().then((_responseText) => {
+            let resultdefault: any = null;
+            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            });
+        }
     }
 
     getAll(): Promise<RecipeCategory[]> {
@@ -5573,151 +6500,6 @@ export class RecipeCategoryClient extends ApiClientBase {
             });
         }
     }
-
-    get(id: number): Promise<RecipeCategory> {
-        let url_ = this.baseUrl + "/v1/food/recipecategories/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <RequestInit>{
-            method: "GET",
-            headers: {
-                "Accept": "application/json"
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.processGet(_response);
-        });
-    }
-
-    protected processGet(response: Response): Promise<RecipeCategory> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : <RecipeCategory>JSON.parse(_responseText, this.jsonParseReviver);
-            return result200;
-            });
-        } else if (status === 404) {
-            return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
-            });
-        }
-    }
-
-    update(id: number, item: RecipeCategory): Promise<void> {
-        let url_ = this.baseUrl + "/v1/food/recipecategories/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(item);
-
-        let options_ = <RequestInit>{
-            body: content_,
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.processUpdate(_response);
-        });
-    }
-
-    protected processUpdate(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 204) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status === 404) {
-            return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-            let result400: any = null;
-            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
-            });
-        }
-    }
-
-    delete(id: number): Promise<void> {
-        let url_ = this.baseUrl + "/v1/food/recipecategories/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <RequestInit>{
-            method: "DELETE",
-            headers: {
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.processDelete(_response);
-        });
-    }
-
-    protected processDelete(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status === 404) {
-            return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-            let result400: any = null;
-            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
-            });
-        }
-    }
 }
 
 export class RecipeIngredientClient extends ApiClientBase {
@@ -5777,7 +6559,7 @@ export class RecipeIngredientClient extends ApiClientBase {
         }
     }
 
-    update(id: number, item: RecipeIngredient): Promise<void> {
+    update(id: number, item: RecipeIngredient): Promise<RecipeIngredient> {
         let url_ = this.baseUrl + "/v1/food/recipeIngredients/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -5791,6 +6573,7 @@ export class RecipeIngredientClient extends ApiClientBase {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                "Accept": "application/json"
             }
         };
 
@@ -5801,32 +6584,21 @@ export class RecipeIngredientClient extends ApiClientBase {
         });
     }
 
-    protected processUpdate(response: Response): Promise<void> {
+    protected processUpdate(response: Response): Promise<RecipeIngredient> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 204) {
+        if (status === 200) {
             return response.text().then((_responseText) => {
-            return;
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <RecipeIngredient>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
             });
-        } else if (status === 404) {
+        } else if (status !== 200 && status !== 204) {
             return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-            let result400: any = null;
-            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
+        return Promise.resolve<RecipeIngredient>(<any>null);
     }
 
     delete(id: number): Promise<void> {
@@ -5935,7 +6707,7 @@ export class RecipeNoteClient extends ApiClientBase {
         }
     }
 
-    update(id: number, item: RecipeNote): Promise<void> {
+    update(id: number, item: RecipeNote): Promise<RecipeNote> {
         let url_ = this.baseUrl + "/v1/food/recipeNotes/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -5949,6 +6721,7 @@ export class RecipeNoteClient extends ApiClientBase {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                "Accept": "application/json"
             }
         };
 
@@ -5959,32 +6732,21 @@ export class RecipeNoteClient extends ApiClientBase {
         });
     }
 
-    protected processUpdate(response: Response): Promise<void> {
+    protected processUpdate(response: Response): Promise<RecipeNote> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 204) {
+        if (status === 200) {
             return response.text().then((_responseText) => {
-            return;
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <RecipeNote>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
             });
-        } else if (status === 404) {
+        } else if (status !== 200 && status !== 204) {
             return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-            let result400: any = null;
-            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
+        return Promise.resolve<RecipeNote>(<any>null);
     }
 
     delete(id: number): Promise<void> {
@@ -6045,6 +6807,141 @@ export class SupermarketClient extends ApiClientBase {
         super();
         this.http = http ? http : <any>window;
         this.baseUrl = this.getBaseUrl("", baseUrl);
+    }
+
+    update(id: number, item: Supermarket): Promise<Supermarket> {
+        let url_ = this.baseUrl + "/v1/food/supermarkets/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(item);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processUpdate(_response);
+        });
+    }
+
+    protected processUpdate(response: Response): Promise<Supermarket> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <Supermarket>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<Supermarket>(<any>null);
+    }
+
+    get(id: number): Promise<Supermarket> {
+        let url_ = this.baseUrl + "/v1/food/supermarkets/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processGet(_response);
+        });
+    }
+
+    protected processGet(response: Response): Promise<Supermarket> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <Supermarket>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            });
+        } else {
+            return response.text().then((_responseText) => {
+            let resultdefault: any = null;
+            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            });
+        }
+    }
+
+    delete(id: number): Promise<void> {
+        let url_ = this.baseUrl + "/v1/food/supermarkets/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "DELETE",
+            headers: {
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processDelete(_response);
+        });
+    }
+
+    protected processDelete(response: Response): Promise<void> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            return;
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            });
+        } else if (status === 400) {
+            return response.text().then((_responseText) => {
+            let result400: any = null;
+            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            });
+        } else {
+            return response.text().then((_responseText) => {
+            let resultdefault: any = null;
+            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            });
+        }
     }
 
     getAll(): Promise<Supermarket[]> {
@@ -6179,151 +7076,6 @@ export class SupermarketClient extends ApiClientBase {
             let result404: any = null;
             result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
-            });
-        }
-    }
-
-    get(id: number): Promise<Supermarket> {
-        let url_ = this.baseUrl + "/v1/food/supermarkets/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <RequestInit>{
-            method: "GET",
-            headers: {
-                "Accept": "application/json"
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.processGet(_response);
-        });
-    }
-
-    protected processGet(response: Response): Promise<Supermarket> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : <Supermarket>JSON.parse(_responseText, this.jsonParseReviver);
-            return result200;
-            });
-        } else if (status === 404) {
-            return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
-            });
-        }
-    }
-
-    update(id: number, item: Supermarket): Promise<void> {
-        let url_ = this.baseUrl + "/v1/food/supermarkets/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(item);
-
-        let options_ = <RequestInit>{
-            body: content_,
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.processUpdate(_response);
-        });
-    }
-
-    protected processUpdate(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 204) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status === 404) {
-            return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-            let result400: any = null;
-            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
-            });
-        }
-    }
-
-    delete(id: number): Promise<void> {
-        let url_ = this.baseUrl + "/v1/food/supermarkets/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <RequestInit>{
-            method: "DELETE",
-            headers: {
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.processDelete(_response);
-        });
-    }
-
-    protected processDelete(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status === 404) {
-            return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-            let result400: any = null;
-            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
             });
         } else {
             return response.text().then((_responseText) => {
@@ -6607,7 +7359,7 @@ export class BookClient extends ApiClientBase {
         }
     }
 
-    update(id: number, item: Book): Promise<void> {
+    update(id: number, item: Book): Promise<Book> {
         let url_ = this.baseUrl + "/v1/reading/books/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -6621,6 +7373,7 @@ export class BookClient extends ApiClientBase {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                "Accept": "application/json"
             }
         };
 
@@ -6631,32 +7384,21 @@ export class BookClient extends ApiClientBase {
         });
     }
 
-    protected processUpdate(response: Response): Promise<void> {
+    protected processUpdate(response: Response): Promise<Book> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 204) {
+        if (status === 200) {
             return response.text().then((_responseText) => {
-            return;
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <Book>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
             });
-        } else if (status === 404) {
+        } else if (status !== 200 && status !== 204) {
             return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-            let result400: any = null;
-            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
+        return Promise.resolve<Book>(<any>null);
     }
 
     delete(id: number): Promise<void> {
@@ -6717,6 +7459,141 @@ export class BookAuthorClient extends ApiClientBase {
         super();
         this.http = http ? http : <any>window;
         this.baseUrl = this.getBaseUrl("", baseUrl);
+    }
+
+    update(id: number, item: BookAuthor): Promise<BookAuthor> {
+        let url_ = this.baseUrl + "/v1/food/bookAuthors/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(item);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processUpdate(_response);
+        });
+    }
+
+    protected processUpdate(response: Response): Promise<BookAuthor> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <BookAuthor>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BookAuthor>(<any>null);
+    }
+
+    get(id: number): Promise<BookAuthor> {
+        let url_ = this.baseUrl + "/v1/food/bookAuthors/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processGet(_response);
+        });
+    }
+
+    protected processGet(response: Response): Promise<BookAuthor> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <BookAuthor>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            });
+        } else {
+            return response.text().then((_responseText) => {
+            let resultdefault: any = null;
+            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            });
+        }
+    }
+
+    delete(id: number): Promise<void> {
+        let url_ = this.baseUrl + "/v1/food/bookAuthors/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "DELETE",
+            headers: {
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processDelete(_response);
+        });
+    }
+
+    protected processDelete(response: Response): Promise<void> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            return;
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            });
+        } else if (status === 400) {
+            return response.text().then((_responseText) => {
+            let result400: any = null;
+            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            });
+        } else {
+            return response.text().then((_responseText) => {
+            let resultdefault: any = null;
+            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
+            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            });
+        }
     }
 
     getAll(): Promise<BookAuthor[]> {
@@ -6860,9 +7737,63 @@ export class BookAuthorClient extends ApiClientBase {
             });
         }
     }
+}
 
-    get(id: number): Promise<BookAuthor> {
-        let url_ = this.baseUrl + "/v1/food/bookAuthors/{id}";
+export class BookCategoryClient extends ApiClientBase {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
+        this.http = http ? http : <any>window;
+        this.baseUrl = this.getBaseUrl("", baseUrl);
+    }
+
+    update(id: number, item: BookCategory): Promise<BookCategory> {
+        let url_ = this.baseUrl + "/v1/food/bookCategories/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(item);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processUpdate(_response);
+        });
+    }
+
+    protected processUpdate(response: Response): Promise<BookCategory> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <BookCategory>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BookCategory>(<any>null);
+    }
+
+    get(id: number): Promise<BookCategory> {
+        let url_ = this.baseUrl + "/v1/food/bookCategories/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -6882,13 +7813,13 @@ export class BookAuthorClient extends ApiClientBase {
         });
     }
 
-    protected processGet(response: Response): Promise<BookAuthor> {
+    protected processGet(response: Response): Promise<BookCategory> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : <BookAuthor>JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = _responseText === "" ? null : <BookCategory>JSON.parse(_responseText, this.jsonParseReviver);
             return result200;
             });
         } else if (status === 404) {
@@ -6906,60 +7837,8 @@ export class BookAuthorClient extends ApiClientBase {
         }
     }
 
-    update(id: number, item: BookAuthor): Promise<void> {
-        let url_ = this.baseUrl + "/v1/food/bookAuthors/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(item);
-
-        let options_ = <RequestInit>{
-            body: content_,
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.processUpdate(_response);
-        });
-    }
-
-    protected processUpdate(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 204) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status === 404) {
-            return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-            let result400: any = null;
-            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
-            });
-        }
-    }
-
     delete(id: number): Promise<void> {
-        let url_ = this.baseUrl + "/v1/food/bookAuthors/{id}";
+        let url_ = this.baseUrl + "/v1/food/bookCategories/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -7004,18 +7883,6 @@ export class BookAuthorClient extends ApiClientBase {
             return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
             });
         }
-    }
-}
-
-export class BookCategoryClient extends ApiClientBase {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        super();
-        this.http = http ? http : <any>window;
-        this.baseUrl = this.getBaseUrl("", baseUrl);
     }
 
     getAll(): Promise<BookCategory[]> {
@@ -7159,9 +8026,63 @@ export class BookCategoryClient extends ApiClientBase {
             });
         }
     }
+}
 
-    get(id: number): Promise<BookCategory> {
-        let url_ = this.baseUrl + "/v1/food/bookCategories/{id}";
+export class BookStatusClient extends ApiClientBase {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
+        this.http = http ? http : <any>window;
+        this.baseUrl = this.getBaseUrl("", baseUrl);
+    }
+
+    update(id: number, item: BookStatus): Promise<BookStatus> {
+        let url_ = this.baseUrl + "/v1/food/bookStatuses/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(item);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processUpdate(_response);
+        });
+    }
+
+    protected processUpdate(response: Response): Promise<BookStatus> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <BookStatus>JSON.parse(_responseText, this.jsonParseReviver);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BookStatus>(<any>null);
+    }
+
+    get(id: number): Promise<BookStatus> {
+        let url_ = this.baseUrl + "/v1/food/bookStatuses/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -7181,13 +8102,13 @@ export class BookCategoryClient extends ApiClientBase {
         });
     }
 
-    protected processGet(response: Response): Promise<BookCategory> {
+    protected processGet(response: Response): Promise<BookStatus> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : <BookCategory>JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = _responseText === "" ? null : <BookStatus>JSON.parse(_responseText, this.jsonParseReviver);
             return result200;
             });
         } else if (status === 404) {
@@ -7205,60 +8126,8 @@ export class BookCategoryClient extends ApiClientBase {
         }
     }
 
-    update(id: number, item: BookCategory): Promise<void> {
-        let url_ = this.baseUrl + "/v1/food/bookCategories/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(item);
-
-        let options_ = <RequestInit>{
-            body: content_,
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.processUpdate(_response);
-        });
-    }
-
-    protected processUpdate(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 204) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status === 404) {
-            return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-            let result400: any = null;
-            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
-            });
-        }
-    }
-
     delete(id: number): Promise<void> {
-        let url_ = this.baseUrl + "/v1/food/bookCategories/{id}";
+        let url_ = this.baseUrl + "/v1/food/bookStatuses/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -7303,18 +8172,6 @@ export class BookCategoryClient extends ApiClientBase {
             return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
             });
         }
-    }
-}
-
-export class BookStatusClient extends ApiClientBase {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        super();
-        this.http = http ? http : <any>window;
-        this.baseUrl = this.getBaseUrl("", baseUrl);
     }
 
     getAll(): Promise<BookStatus[]> {
@@ -7449,151 +8306,6 @@ export class BookStatusClient extends ApiClientBase {
             let result404: any = null;
             result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
             return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
-            });
-        }
-    }
-
-    get(id: number): Promise<BookStatus> {
-        let url_ = this.baseUrl + "/v1/food/bookStatuses/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <RequestInit>{
-            method: "GET",
-            headers: {
-                "Accept": "application/json"
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.processGet(_response);
-        });
-    }
-
-    protected processGet(response: Response): Promise<BookStatus> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : <BookStatus>JSON.parse(_responseText, this.jsonParseReviver);
-            return result200;
-            });
-        } else if (status === 404) {
-            return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
-            });
-        }
-    }
-
-    update(id: number, item: BookStatus): Promise<void> {
-        let url_ = this.baseUrl + "/v1/food/bookStatuses/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(item);
-
-        let options_ = <RequestInit>{
-            body: content_,
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.processUpdate(_response);
-        });
-    }
-
-    protected processUpdate(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 204) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status === 404) {
-            return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-            let result400: any = null;
-            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
-            });
-        } else {
-            return response.text().then((_responseText) => {
-            let resultdefault: any = null;
-            resultdefault = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
-            });
-        }
-    }
-
-    delete(id: number): Promise<void> {
-        let url_ = this.baseUrl + "/v1/food/bookStatuses/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ = <RequestInit>{
-            method: "DELETE",
-            headers: {
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.processDelete(_response);
-        });
-    }
-
-    protected processDelete(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status === 404) {
-            return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
-            });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-            let result400: any = null;
-            result400 = _responseText === "" ? null : <ProblemDetails>JSON.parse(_responseText, this.jsonParseReviver);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
             });
         } else {
             return response.text().then((_responseText) => {
@@ -7768,24 +8480,24 @@ export class WeatherClient extends ApiClientBase {
 
 export interface PaginatedResultOfPost {
     items?: Post[] | undefined;
-    count?: number;
+    count: number;
 }
 
 export interface Post {
-    id?: number;
-    postGroupId?: number;
-    title?: string | undefined;
+    id: number;
+    postGroupId: number;
+    title: string;
     description?: string | undefined;
-    date?: string | undefined;
-    path?: string | undefined;
-    authenticate?: number;
-    star?: number;
+    date: string;
+    path: string;
+    authenticate: number;
+    star: number;
     postGroup?: PostGroup | undefined;
 }
 
 export interface PostGroup {
-    id?: number;
-    name?: string | undefined;
+    id: number;
+    name: string;
     posts?: Post[] | undefined;
 }
 
@@ -7795,203 +8507,98 @@ export interface ProblemDetails {
     status?: number | undefined;
     detail?: string | undefined;
     instance?: string | undefined;
-    extensions?: { [key: string]: any; };
 }
 
 export interface AppLookup {
-    id?: number;
+    id: number;
+    name: string;
+}
+
+export interface CryptoCoin extends AppLookup {
+    cryptoHoldings?: CryptoHolding[] | undefined;
+    cryptoPrices?: CryptoPrice[] | undefined;
+}
+
+export interface CryptoHolding {
+    id: number;
+    cryptoCoinId: number;
+    purchaseDate: string;
+    purchasePrice: number;
+    quantity: number;
+    cryptoCoin?: CryptoCoin | undefined;
+    cryptoSales?: CryptoSale[] | undefined;
+}
+
+export interface CryptoSale {
+    id: number;
+    cryptoHoldingId: number;
+    sellDate: string;
+    price: number;
+    quantity: number;
+    cryptoHolding?: CryptoHolding | undefined;
+}
+
+export interface CryptoPrice {
+    id: number;
+    cryptoCoinId: number;
+    price: number;
+    queryDate: string;
+    cryptoCoin?: CryptoCoin | undefined;
+}
+
+export interface PaginatedResultOfCryptoCoin {
+    items?: CryptoCoin[] | undefined;
+    count: number;
+}
+
+export interface PaginatedResultOfCryptoHolding {
+    items?: CryptoHolding[] | undefined;
+    count: number;
+}
+
+export interface CryptoInvestment {
+    id?: number | undefined;
     name?: string | undefined;
+    purchaseDate?: string | undefined;
+    purchasePrice?: number | undefined;
+    quantity: number;
+    purchaseValue: number;
+    marketValue?: number | undefined;
+    holdingStatus?: string | undefined;
+    sellPrice?: number | undefined;
+    sellValue?: number | undefined;
+    netGain?: number | undefined;
+    sellDate?: string | undefined;
+}
+
+export interface PaginatedResultOfCryptoInvestment {
+    items?: CryptoInvestment[] | undefined;
+    count: number;
+}
+
+export interface PaginatedResultOfCryptoSale {
+    items?: CryptoSale[] | undefined;
+    count: number;
 }
 
 export interface Bank extends AppLookup {
-    id?: number;
-    name?: string | undefined;
-    transactionRecords?: TransactionRecord[] | undefined;
-}
-
-export interface TransactionRecord {
-    id?: number;
-    bankId?: number;
-    userId?: number;
-    categoryId?: number;
-    date?: string | undefined;
-    description?: string | undefined;
-    amount?: number;
-    note?: string | undefined;
-    bank?: Bank | undefined;
-    category?: TransactionCategory | undefined;
-    user?: User | undefined;
-    transactionRecordTags?: TransactionRecordTag[] | undefined;
-}
-
-export interface TransactionCategory extends AppLookup {
-    id?: number;
-    name?: string | undefined;
-    transactionRecords?: TransactionRecord[] | undefined;
-    yearlyPlannedExpenses?: YearlyPlannedExpense[] | undefined;
-}
-
-export interface YearlyPlannedExpense {
-    id?: number;
-    date?: string | undefined;
-    categoryId?: number;
-    amount?: number;
-    category?: TransactionCategory | undefined;
-}
-
-export interface User {
-    name?: string | undefined;
-    id?: number;
-    firstName?: string | undefined;
-    lastName?: string | undefined;
-    email?: string | undefined;
-    phone?: string | undefined;
-    mealPlans?: MealPlan[] | undefined;
-    recipes?: Recipe[] | undefined;
-    transactionRecords?: TransactionRecord[] | undefined;
-}
-
-export interface MealPlan {
-    id?: number;
-    userId?: number;
-    name?: string | undefined;
-    date?: string | undefined;
-    user?: User | undefined;
-    mealPlanNotes?: MealPlanNote[] | undefined;
-    mealPlanRecipes?: MealPlanRecipe[] | undefined;
-}
-
-export interface MealPlanNote {
-    id?: number;
-    mealPlanId?: number;
-    content?: string | undefined;
-    mealPlan?: MealPlan | undefined;
-}
-
-export interface MealPlanRecipe {
-    id?: number;
-    mealPlanId?: number;
-    recipeId?: number;
-    count?: number;
-    mealPlan?: MealPlan | undefined;
-    recipe?: Recipe | undefined;
-}
-
-export interface Recipe {
-    id?: number;
-    userId?: number;
-    recipeCategoryId?: number;
-    cookbookId?: number;
-    name?: string | undefined;
-    servings?: number;
-    pageNumber?: number | undefined;
-    url?: string | undefined;
-    rating?: number | undefined;
-    complexity?: number | undefined;
-    cookbook?: Cookbook | undefined;
-    recipeCategory?: RecipeCategory | undefined;
-    user?: User | undefined;
-    mealPlanRecipes?: MealPlanRecipe[] | undefined;
-    recipeIngredients?: RecipeIngredient[] | undefined;
-    recipeNotes?: RecipeNote[] | undefined;
-}
-
-export interface Cookbook {
-    id?: number;
-    name?: string | undefined;
-    cookbookAuthorId?: number;
-    cookbookAuthor?: CookbookAuthor | undefined;
-    recipes?: Recipe[] | undefined;
-}
-
-export interface CookbookAuthor extends AppLookup {
-    id?: number;
-    name?: string | undefined;
-    cookbooks?: Cookbook[] | undefined;
-}
-
-export interface RecipeCategory extends AppLookup {
-    id?: number;
-    name?: string | undefined;
-    recipes?: Recipe[] | undefined;
-}
-
-export interface RecipeIngredient {
-    id?: number;
-    recipeId?: number;
-    foodProductId?: number;
-    count?: number | undefined;
-    weight?: number | undefined;
-    measurement?: string | undefined;
-    foodProduct?: FoodProduct | undefined;
-    recipe?: Recipe | undefined;
-}
-
-export interface FoodProduct {
-    id?: number;
-    foodCategoryId?: number;
-    name?: string | undefined;
-    foodUnitId?: number;
-    dirty?: number;
-    supermarketId?: number | undefined;
-    measurement?: string | undefined;
-    foodQuantityTypeId?: number;
-    foodCategory?: FoodCategory | undefined;
-    foodQuantityType?: FoodQuantityType | undefined;
-    foodUnit?: FoodUnit | undefined;
-    supermarket?: Supermarket | undefined;
-    recipeIngredients?: RecipeIngredient[] | undefined;
-}
-
-export interface FoodCategory extends AppLookup {
-    id?: number;
-    name?: string | undefined;
-    foodProducts?: FoodProduct[] | undefined;
-}
-
-export interface FoodQuantityType extends AppLookup {
-    id?: number;
-    name?: string | undefined;
-    foodProducts?: FoodProduct[] | undefined;
-}
-
-export interface FoodUnit extends AppLookup {
-    id?: number;
-    name?: string | undefined;
-    foodProducts?: FoodProduct[] | undefined;
-}
-
-export interface Supermarket extends AppLookup {
-    id?: number;
-    name?: string | undefined;
-    code?: string | undefined;
-    foodProducts?: FoodProduct[] | undefined;
-}
-
-export interface RecipeNote {
-    id?: number;
-    recipeId?: number;
-    content?: string | undefined;
-    recipe?: Recipe | undefined;
-}
-
-export interface TransactionRecordTag {
-    id?: number;
-    transactionRecordId?: number;
-    tagId?: number;
-    tag?: TransactionTag | undefined;
-    transactionRecord?: TransactionRecord | undefined;
-}
-
-export interface TransactionTag extends AppLookup {
-    id?: number;
-    name?: string | undefined;
-    transactionRecordTags?: TransactionRecordTag[] | undefined;
 }
 
 export interface PaginatedResultOfBank {
     items?: Bank[] | undefined;
-    count?: number;
+    count: number;
+}
+
+export interface TransactionCategory extends AppLookup {
+    yearlyPlannedExpenses?: YearlyPlannedExpense[] | undefined;
+}
+
+export interface YearlyPlannedExpense {
+    id: number;
+    date: string;
+    categoryId: number;
+    amount: number;
+    category?: TransactionCategory | undefined;
 }
 
 export interface FinancialSummary {
@@ -7999,121 +8606,202 @@ export interface FinancialSummary {
     investment?: Investment | undefined;
     debt?: Debt | undefined;
     earnings?: Earning | undefined;
-    netWorth?: number;
-    assetTotal?: number;
-    debtTotal?: number;
+    netWorth: number;
+    assetTotal: number;
+    debtTotal: number;
 }
 
 export interface Asset {
-    id?: number;
-    year?: string | undefined;
-    saving?: number;
-    hsa?: number;
-    retirement?: number;
-    stock?: number;
-    home?: number;
-    auto?: number;
+    id: number;
+    year: string;
+    saving: number;
+    hsa: number;
+    retirement: number;
+    stock: number;
+    home: number;
+    auto: number;
 }
 
 export interface Investment {
-    id?: number;
-    year?: string | undefined;
-    saving?: number;
-    hsa?: number;
-    ira?: number;
-    roth?: number;
-    stock?: number;
+    id: number;
+    year: string;
+    saving: number;
+    hsa: number;
+    ira: number;
+    roth: number;
+    stock: number;
 }
 
 export interface Debt {
-    id?: number;
-    year?: string | undefined;
-    home?: number;
-    auto?: number;
+    id: number;
+    year: string;
+    home: number;
+    auto: number;
 }
 
 export interface Earning {
-    id?: number;
-    year?: string | undefined;
-    gross?: number;
-    taxable?: number;
-    taxed?: number;
+    id: number;
+    year: string;
+    gross: number;
+    taxable: number;
+    taxed: number;
 }
 
 export interface TransactionTotal {
-    id?: number;
+    id: number;
     name?: string | undefined;
-    amount?: number;
+    amount: number;
 }
 
 export interface RecordCount {
     name?: string | undefined;
-    count?: number;
+    count: number;
 }
 
 export interface ExpenseSummary {
     expenses?: Expense[] | undefined;
-    plannedAmount?: number;
-    totalActualAmount?: number;
-    remainder?: number;
+    plannedAmount: number;
+    totalActualAmount: number;
+    remainder: number;
 }
 
 export interface Expense {
     date?: string | undefined;
     category?: TransactionCategory | undefined;
-    plannedAmount?: number;
-    actualAmount?: number;
-    remainder?: number;
+    plannedAmount: number;
+    actualAmount: number;
     categoryName?: string | undefined;
+    remainder: number;
 }
 
 export interface PaginatedResultOfTransactionRecord {
     items?: TransactionRecord[] | undefined;
-    count?: number;
+    count: number;
 }
 
 export interface PaginatedTransactionResult extends PaginatedResultOfTransactionRecord {
     amountTotal?: number;
 }
 
+export interface TransactionRecord {
+    id: number;
+    bankId: number;
+    userId: number;
+    categoryId: number;
+    date: string;
+    description: string;
+    amount: number;
+    note?: string | undefined;
+    bank?: Bank | undefined;
+    category?: TransactionCategory | undefined;
+    user?: User | undefined;
+    transactionRecordTags?: TransactionRecordTag[] | undefined;
+}
+
+export interface User {
+    id: number;
+    firstName: string;
+    lastName: string;
+    name?: string | undefined;
+    email: string;
+    phone: string;
+}
+
+export interface TransactionRecordTag {
+    id: number;
+    transactionRecordId: number;
+    tagId: number;
+    tag?: TransactionTag | undefined;
+}
+
+export interface TransactionTag extends AppLookup {
+}
+
 export interface PaginatedResultOfTransactionCategory {
     items?: TransactionCategory[] | undefined;
-    count?: number;
+    count: number;
 }
 
 export interface PaginatedResultOfTransactionTag {
     items?: TransactionTag[] | undefined;
-    count?: number;
+    count: number;
 }
 
 export interface PaginatedResultOfCookbook {
     items?: Cookbook[] | undefined;
-    count?: number;
+    count: number;
+}
+
+export interface Cookbook extends AppLookup {
+    cookbookAuthorId?: number;
+    cookbookAuthor?: CookbookAuthor | undefined;
+}
+
+export interface CookbookAuthor extends AppLookup {
 }
 
 export interface PaginatedResultOfCookbookAuthor {
     items?: CookbookAuthor[] | undefined;
-    count?: number;
+    count: number;
+}
+
+export interface FoodCategory extends AppLookup {
 }
 
 export interface PaginatedResultOfFoodCategory {
     items?: FoodCategory[] | undefined;
-    count?: number;
+    count: number;
 }
 
 export interface PaginatedResultOfFoodProduct {
     items?: FoodProduct[] | undefined;
-    count?: number;
+    count: number;
+}
+
+export interface FoodProduct {
+    id: number;
+    foodCategoryId: number;
+    name: string;
+    foodUnitId: number;
+    dirty: number;
+    supermarketId?: number | undefined;
+    measurement?: string | undefined;
+    foodQuantityTypeId: number;
+    foodCategory?: FoodCategory | undefined;
+    foodQuantityType?: FoodQuantityType | undefined;
+    foodUnit?: FoodUnit | undefined;
+    supermarket?: Supermarket | undefined;
+    recipeIngredients?: RecipeIngredient[] | undefined;
+}
+
+export interface FoodQuantityType extends AppLookup {
+}
+
+export interface FoodUnit extends AppLookup {
+}
+
+export interface Supermarket extends AppLookup {
+    code: string;
+}
+
+export interface RecipeIngredient {
+    id: number;
+    recipeId: number;
+    foodProductId: number;
+    count?: number | undefined;
+    weight?: number | undefined;
+    measurement: string;
+    foodProduct?: FoodProduct | undefined;
 }
 
 export interface PaginatedResultOfFoodQuantityType {
     items?: FoodQuantityType[] | undefined;
-    count?: number;
+    count: number;
 }
 
 export interface PaginatedResultOfFoodUnit {
     items?: FoodUnit[] | undefined;
-    count?: number;
+    count: number;
 }
 
 export interface MealPlanGrocery {
@@ -8121,12 +8809,64 @@ export interface MealPlanGrocery {
     mealPlanId?: number | undefined;
     name?: string | undefined;
     category?: string | undefined;
-    count?: number;
-    weight?: number;
+    count?: number | undefined;
+    weight?: number | undefined;
     unit?: string | undefined;
     dirty?: number | undefined;
     supermarket?: string | undefined;
     supermarketName?: string | undefined;
+}
+
+export interface MealPlan {
+    id: number;
+    userId: number;
+    name: string;
+    date?: string | undefined;
+    user?: User | undefined;
+    mealPlanNotes?: MealPlanNote[] | undefined;
+    mealPlanRecipes?: MealPlanRecipe[] | undefined;
+}
+
+export interface MealPlanNote {
+    id: number;
+    mealPlanId: number;
+    content: string;
+}
+
+export interface MealPlanRecipe {
+    id: number;
+    mealPlanId: number;
+    recipeId: number;
+    count: number;
+    mealPlan?: MealPlan | undefined;
+    recipe?: Recipe | undefined;
+}
+
+export interface Recipe {
+    id: number;
+    userId: number;
+    recipeCategoryId: number;
+    cookbookId: number;
+    name: string;
+    servings: number;
+    pageNumber?: number | undefined;
+    url?: string | undefined;
+    rating?: number | undefined;
+    complexity?: number | undefined;
+    cookbook?: Cookbook | undefined;
+    recipeCategory?: RecipeCategory | undefined;
+    user?: User | undefined;
+    recipeIngredients?: RecipeIngredient[] | undefined;
+    recipeNotes?: RecipeNote[] | undefined;
+}
+
+export interface RecipeCategory extends AppLookup {
+}
+
+export interface RecipeNote {
+    id: number;
+    recipeId: number;
+    content: string;
 }
 
 export interface MealPlanRecipesView {
@@ -8140,32 +8880,32 @@ export interface MealPlanRecipesView {
     pageNumber?: number | undefined;
     url?: string | undefined;
     count?: number | undefined;
-    servings?: string | undefined;
+    servings: number;
 }
 
 export interface PaginatedResultOfMealPlan {
     items?: MealPlan[] | undefined;
-    count?: number;
+    count: number;
 }
 
 export interface PaginatedResultOfMealPlanRecipe {
     items?: MealPlanRecipe[] | undefined;
-    count?: number;
+    count: number;
 }
 
 export interface PaginatedResultOfRecipe {
     items?: Recipe[] | undefined;
-    count?: number;
+    count: number;
 }
 
 export interface PaginatedResultOfRecipeCategory {
     items?: RecipeCategory[] | undefined;
-    count?: number;
+    count: number;
 }
 
 export interface PaginatedResultOfSupermarket {
     items?: Supermarket[] | undefined;
-    count?: number;
+    count: number;
 }
 
 export interface Address {
@@ -8389,37 +9129,31 @@ export enum ConfidenceLevel {
 }
 
 export interface Location {
-    lat?: number;
-    lng?: number;
+    latitude: number;
+    longitude: number;
 }
 
 export interface PaginatedResultOfBook {
     items?: Book[] | undefined;
-    count?: number;
+    count: number;
 }
 
 export interface Book {
-    id?: number;
-    name?: string | undefined;
-    bookAuthorId?: number;
-    bookCategoryId?: number;
-    bookStatusId?: number;
-    readDate?: string | undefined;
+    id: number;
+    name: string;
+    bookAuthorId: number;
+    bookCategoryId: number;
+    bookStatusId: number;
+    readDate: string;
     bookAuthor?: BookAuthor | undefined;
     bookCategory?: BookCategory | undefined;
     bookStatus?: BookStatus | undefined;
 }
 
 export interface BookAuthor extends AppLookup {
-    id?: number;
-    name?: string | undefined;
-    books?: Book[] | undefined;
 }
 
 export interface BookCategory extends AppLookup {
-    id?: number;
-    name?: string | undefined;
-    books?: Book[] | undefined;
 }
 
 export interface AppKeywordLookup extends AppLookup {
@@ -8427,32 +9161,28 @@ export interface AppKeywordLookup extends AppLookup {
 }
 
 export interface BookStatus extends AppKeywordLookup {
-    id?: number;
-    name?: string | undefined;
-    keyword?: string | undefined;
-    books?: Book[] | undefined;
 }
 
 export interface PaginatedResultOfBookAuthor {
     items?: BookAuthor[] | undefined;
-    count?: number;
+    count: number;
 }
 
 export interface PaginatedResultOfBookCategory {
     items?: BookCategory[] | undefined;
-    count?: number;
+    count: number;
 }
 
 export interface PaginatedResultOfBookStatus {
     items?: BookStatus[] | undefined;
-    count?: number;
+    count: number;
 }
 
 export interface DarkSkyResponse {
     attributionLine?: string | undefined;
     dataSource?: string | undefined;
     headers?: ResponseHeaders | undefined;
-    isSuccessStatus?: boolean;
+    isSuccessStatus: boolean;
     response?: Forecast | undefined;
     responseReasonPhrase?: string | undefined;
 }
@@ -8465,26 +9195,26 @@ export interface ResponseHeaders {
 }
 
 export interface CacheControlHeaderValue {
-    noCache?: boolean;
-    noCacheHeaders?: string[];
-    noStore?: boolean;
+    noCache: boolean;
+    noCacheHeaders: string[];
+    noStore: boolean;
     maxAge?: string | undefined;
     sharedMaxAge?: string | undefined;
-    maxStale?: boolean;
+    maxStale: boolean;
     maxStaleLimit?: string | undefined;
     minFresh?: string | undefined;
-    noTransform?: boolean;
-    onlyIfCached?: boolean;
-    public?: boolean;
-    private?: boolean;
-    privateHeaders?: string[];
-    mustRevalidate?: boolean;
-    proxyRevalidate?: boolean;
-    extensions?: NameValueHeaderValue[];
+    noTransform: boolean;
+    onlyIfCached: boolean;
+    public: boolean;
+    private: boolean;
+    privateHeaders: string[];
+    mustRevalidate: boolean;
+    proxyRevalidate: boolean;
+    extensions: NameValueHeaderValue[];
 }
 
 export interface NameValueHeaderValue {
-    name?: string;
+    name: string;
     value?: string | undefined;
 }
 
@@ -8494,23 +9224,23 @@ export interface Forecast {
     daily?: DataBlock | undefined;
     flags?: Flags | undefined;
     hourly?: DataBlock | undefined;
-    latitude?: number;
-    longitude?: number;
+    latitude: number;
+    longitude: number;
     minutely?: DataBlock | undefined;
     offset?: string | undefined;
-    timezone?: string | undefined;
+    timeZone?: string | undefined;
 }
 
 export interface Alert {
-    dateTime?: Date;
+    dateTime: Date;
     description?: string | undefined;
-    expiresDateTime?: Date;
+    expiresDateTime: Date;
     regions?: string[] | undefined;
     severity?: string | undefined;
     title?: string | undefined;
     uri?: string | undefined;
-    expires?: number;
-    time?: number;
+    unixExpires: number;
+    unixTime: number;
 }
 
 export interface DataPoint {
@@ -8524,10 +9254,10 @@ export interface DataPoint {
     apparentTemperatureMin?: number | undefined;
     apparentTemperatureMinDateTime?: Date | undefined;
     cloudCover?: number | undefined;
-    dateTime?: Date;
+    dateTime: Date;
     dewPoint?: number | undefined;
     humidity?: number | undefined;
-    icon?: Icon;
+    icon: Icon;
     moonPhase?: number | undefined;
     nearestStormBearing?: number | undefined;
     nearestStormDistance?: number | undefined;
@@ -8538,7 +9268,7 @@ export interface DataPoint {
     precipIntensityMax?: number | undefined;
     precipIntensityMaxDateTime?: Date | undefined;
     precipProbability?: number | undefined;
-    precipType?: PrecipitationType;
+    precipType: PrecipitationType;
     pressure?: number | undefined;
     summary?: string | undefined;
     sunriseDateTime?: Date | undefined;
@@ -8559,20 +9289,20 @@ export interface DataPoint {
     windGust?: number | undefined;
     windGustDateTime?: Date | undefined;
     windSpeed?: number | undefined;
-    apparentTemperatureHighTime?: number | undefined;
-    apparentTemperatureLowTime?: number | undefined;
-    apparentTemperatureMaxTime?: number | undefined;
-    apparentTemperatureMinTime?: number | undefined;
-    precipIntensityMaxTime?: number | undefined;
-    sunriseTime?: number | undefined;
-    sunsetTime?: number | undefined;
-    temperatureHighTime?: number | undefined;
-    temperatureLowTime?: number | undefined;
-    temperatureMaxTime?: number | undefined;
-    temperatureMinTime?: number | undefined;
-    time?: number;
-    uvIndexTime?: number | undefined;
-    windGustTime?: number | undefined;
+    apparentTemperatureHighTimeUnix?: number | undefined;
+    apparentTemperatureLowTimeUnix?: number | undefined;
+    apparentTemperatureMaxTimeUnix?: number | undefined;
+    apparentTemperatureMinTimeUnix?: number | undefined;
+    precipIntensityMaxTimeUnix?: number | undefined;
+    sunriseTimeUnix?: number | undefined;
+    sunsetTimeUnix?: number | undefined;
+    temperatureHighTimeUnix?: number | undefined;
+    temperatureLowTimeUnix?: number | undefined;
+    temperatureMaxTimeUnix?: number | undefined;
+    temperatureMinTimeUnix?: number | undefined;
+    timeUnix: number;
+    uvIndexTimeUnix?: number | undefined;
+    windGustTimeUnix?: number | undefined;
 }
 
 export enum Icon {
@@ -8603,8 +9333,9 @@ export interface DataBlock {
 }
 
 export interface Flags {
-    "darksky-unavailable"?: string | undefined;
-    "nearest-station"?: number | undefined;
+    additionalData?: { [key: string]: any; } | undefined;
+    darkskyUnavailable?: string | undefined;
+    nearestStation?: number | undefined;
     sources?: string[] | undefined;
     units?: string | undefined;
 }

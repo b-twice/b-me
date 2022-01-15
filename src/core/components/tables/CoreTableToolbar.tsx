@@ -2,7 +2,6 @@ import React from "react";
 import { Toolbar, Typography } from "@mui/material";
 import { FormSchema } from "../forms/SchemaForm";
 import CoreTableFilter from "./CoreTableFilter";
-import { ObjectEntity } from "../forms/ObjectEntityType";
 import { styled } from "@mui/system";
 
 const Spacer = styled("div")({
@@ -13,17 +12,17 @@ const Actions = styled("div")(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-interface CoreTableToolbarProps<T> {
+interface CoreTableToolbarProps<F> {
   title: string;
-  filterSchema?: FormSchema<T>;
-  onFilter?: (obj: T) => void;
+  filterSchema?: FormSchema<F>;
+  onFilter?: (obj: F) => void;
 }
 
-export default function CoreTableToolbar<T extends ObjectEntity>({
+export default function CoreTableToolbar<F>({
   title,
   filterSchema,
   onFilter,
-}: CoreTableToolbarProps<T>) {
+}: CoreTableToolbarProps<F>) {
   return (
     <Toolbar sx={{ pl: 2, pr: 1 }}>
       <Typography flex="0 0 auto" variant="h6" id="tableTitle">
@@ -32,7 +31,7 @@ export default function CoreTableToolbar<T extends ObjectEntity>({
       <Spacer />
       <Actions>
         {filterSchema && onFilter && (
-          <CoreTableFilter schema={filterSchema} onFilter={onFilter} />
+          <CoreTableFilter<F> schema={filterSchema} onFilter={onFilter} />
         )}
       </Actions>
     </Toolbar>

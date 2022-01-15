@@ -11,6 +11,7 @@ import BookStatuses from "./books/BookStatuses";
 import { RequireAuth } from "./core/Auth";
 import Transactions from "./finance/Transactions";
 import FinanceDashboard from "./finance/Dashboard";
+import CryptoInvestmentTable from "./finance/CryptoInvestmentTable";
 import BlogPosts from "./blog/BlogPosts";
 import CookbookAuthors from "./food/CookbookAuthors";
 import Supermarkets from "./food/Supermarkets";
@@ -25,6 +26,10 @@ import ReadingAdmin from "./books/ReadingAdmin";
 import MealPlanView from "./food/MealPlanView";
 import RecipeView from "./food/RecipeView";
 import BlogContentList from "./blog/BlogContentList";
+import CryptoCoins from "./finance/CryptoCoins";
+import CryptoAdmin from "./finance/CryptoAdmin";
+import CryptoHoldings from "./finance/CryptoHoldings";
+import CryptoSales from "./finance/CryptoSales";
 
 function Main() {
   return (
@@ -68,6 +73,13 @@ function Main() {
               >
                 <Route path="content" element={<BlogPosts />} />
 
+                <Route path="crypto" element={<Outlet />}>
+                  <Route path="coins" element={<CryptoCoins />} />
+                  <Route path="holdings" element={<CryptoHoldings />} />
+                  <Route path="sales" element={<CryptoSales />} />
+                  <Route path="" element={<CryptoAdmin />} />
+                </Route>
+
                 <Route path="reading" element={<Outlet />}>
                   <Route path="authors" element={<BookAuthors />} />
                   <Route path="categories" element={<BookCategories />} />
@@ -102,6 +114,7 @@ function Main() {
               >
                 <Route path="dashboard" element={<FinanceDashboard />} />
                 <Route path="transactions" element={<Transactions />} />
+                <Route path="crypto" element={<CryptoInvestmentTable />} />
               </Route>
 
               <Route path="reading" element={<Books />} />

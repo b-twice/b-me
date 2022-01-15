@@ -14,74 +14,79 @@ import {
   TableBody,
   TablePagination,
 } from "@mui/material";
-import { FormSchema } from "../forms/SchemaForm";
+import { FieldSchema, FormSchema, SchemaFormStates } from "../forms/SchemaForm";
 import CoreTableHead, { HeadRow, TableHeaderOrder } from "./CoreTableHead";
 import { AuthContext } from "../../Auth";
 import { EditModalRef, EditModal } from "../forms/EditModal";
 import EditMenu from "../forms/EditMenu";
 import AppSnackbar from "../AppSnackbar";
 import AddModal from "../forms/AddModal";
-import { ObjectEntity } from "../forms/ObjectEntityType";
 import schemaTableReducer from "./SchemaTableReducer";
 import CoreTableToolbar from "./CoreTableToolbar";
-import { LookupEntityFilter } from "../forms/lookups/LookupEntity.interface";
 import SchemaTableCell from "./SchemaTableCell";
 
-export type PaginatedResult = { count: number; items: ObjectEntity[] };
-export type TableFilter = { [key: string]: any };
-export interface SchemaTableConfig {
+export interface PaginatedResult<T> {
+  count: number;
+  items?: T[] | undefined;
+}
+export type TableFilter = Record<string, any>;
+export interface SchemaTableConfig<T> {
   pageNumber: number;
   order: TableHeaderOrder;
   orderBy: string;
   sort: string;
   rowsPerPage: number;
-  filter: TableFilter;
+  filter: T;
 }
 
-export const schemaTableConfig = {
-  pageNumber: 0,
-  sort: "id_desc",
-  orderBy: "id",
-  order: "desc",
-  rowsPerPage: 15,
-  filter: {} as LookupEntityFilter,
-} as SchemaTableConfig;
+export function createSchemaTableConfig<
+  T = TableFilter
+>(): SchemaTableConfig<T> {
+  return {
+    pageNumber: 0,
+    sort: "id_desc",
+    orderBy: "id",
+    order: "desc",
+    rowsPerPage: 15,
+    filter: {} as T,
+  };
+}
 
-interface SchemaTableProps<T> {
-  filterSchema?: FormSchema<T>;
-  page: PaginatedResult;
+interface SchemaTableProps<T, F> {
+  filterSchema?: FormSchema<F>;
+  schema: FormSchema<T>;
+  page: PaginatedResult<T>;
   title: string;
-  onPage: (config: SchemaTableConfig) => void;
-  onFilter?: (obj: T) => void;
-  config: SchemaTableConfig;
-  getEntitySchema(obj?: T): FormSchema<T>;
-  deleteEntity(obj: T): Promise<void>;
+  onPage: (config: SchemaTableConfig<F>) => void;
+  onFilter?: (obj: F) => void;
+  config: SchemaTableConfig<F>;
   onChange?: (
     schema: FormSchema<T>,
-    obj: { [key: string]: any },
-    changeObj: { [key: string]: any }
+    obj: T,
+    changeObj: Partial<T>
   ) => Promise<FormSchema<T> | undefined>;
 }
 
-function SchemaTable<T extends ObjectEntity>({
+function SchemaTable<T, F>({
   filterSchema,
   onFilter,
   onPage,
   onChange,
+  schema,
   title,
-  getEntitySchema,
-  deleteEntity,
   page,
   config,
-}: SchemaTableProps<T>) {
+}: SchemaTableProps<T, F>) {
   const reducer = schemaTableReducer<T>();
   const [state, dispatch] = useReducer(reducer, { rows: [], count: 0 });
+  const [editSchema, setEditSchema] = useState<FormSchema<T>>(() => schema);
+  const [editRow, setEditRow] = useState<T>({} as T);
+  const [editState, setEditState] = useState<SchemaFormStates | undefined>();
+
+  useEffect(() => setEditSchema(schema), [schema]);
 
   // table
   const [headRows, setHeadRows] = useState<HeadRow[]>([]);
-  const [schema, setEditSchema] = useState<FormSchema<ObjectEntity>>(() =>
-    getEntitySchema()
-  );
 
   useEffect(() => dispatch({ type: "LOAD", page: page }), [page]);
 
@@ -114,16 +119,19 @@ function SchemaTable<T extends ObjectEntity>({
 
   useEffect(() => {
     const createHeadRows = () => {
-      const rows = Object.entries(schema.properties).map(
+      const rows = (
+        Object.entries(schema.properties) as [string, FieldSchema][]
+      ).map(
         ([property, fieldSchema]) =>
           ({
             id: property,
             numeric: false,
             disablePadding: false,
             label: fieldSchema.title,
+            sortable: fieldSchema.sortable,
           } as HeadRow)
       );
-      if (authContext.authenticated) {
+      if (authContext.authenticated && schema.readonly !== true) {
         rows.push({
           id: "actions",
           numeric: false,
@@ -136,41 +144,47 @@ function SchemaTable<T extends ObjectEntity>({
     setHeadRows(createHeadRows);
   }, [schema, authContext.authenticated]);
 
-  function handleEdit(row?: T) {
+  async function startEdit(state: SchemaFormStates, row?: T) {
     if (row && onChange) {
-      const asyncNewSchema = onChange(getEntitySchema(row), row, row);
-      asyncNewSchema.then((newSchema) =>
-        newSchema ? setEditSchema(newSchema) : getEntitySchema(row)
-      );
-    } else {
-      setEditSchema(getEntitySchema(row));
+      const newSchema = await onChange(schema, row, row);
+      if (newSchema) {
+        setEditSchema(newSchema);
+      }
     }
+    setEditRow(row ?? ({} as T));
+    setEditState(state);
     if (modalRef && modalRef.current) {
       modalRef.current.handleOpen();
     }
   }
 
   function handleDelete(row: T) {
-    deleteEntity(row)
-      .then(() => {
-        setAppMessage("Entity deleted.");
-        dispatch({ type: "DELETE", row: row });
-      })
-      .catch((err) => {
-        console.error(err);
-        setAppMessage("Delete failed, unexpected error.");
-      });
+    if (schema.delete) {
+      schema
+        .delete(row)
+        .then(() => {
+          setAppMessage("Entity deleted.");
+          dispatch({ type: "DELETE", row: row });
+        })
+        .catch((err) => {
+          console.error(err);
+          setAppMessage("Delete failed, unexpected error.");
+        });
+    }
   }
 
   function handleOnEditSaveSuccess(row: T) {
-    if (schema.type === "ADD") {
+    if (editState === "ADD") {
       setAppMessage("Entity added.");
       dispatch({ type: "ADD", row: row });
-    } else if (schema.type === "EDIT") {
+    } else if (editState === "EDIT") {
       setAppMessage("Entity saved.");
       dispatch({ type: "EDIT", row: row });
     }
-    getEntitySchema();
+    setEditSchema(schema);
+    if (schema.repeatAdd && editState === "ADD") {
+      startEdit("ADD").then();
+    }
   }
 
   /**
@@ -179,14 +193,11 @@ function SchemaTable<T extends ObjectEntity>({
    * @param obj
    * @param changeObj
    */
-  function handleOnFormChange(
-    obj: { [key: string]: any },
-    changeObj: { [key: string]: any }
-  ): void {
+  function handleOnFormChange(obj: T, changeObj: Partial<T>): void {
     if (onChange) {
       const asyncNewSchema = onChange(schema as FormSchema<T>, obj, changeObj);
       asyncNewSchema.then((newSchema) =>
-        newSchema !== undefined ? setEditSchema(newSchema) : undefined
+        newSchema ? setEditSchema(newSchema) : newSchema
       );
     }
   }
@@ -194,7 +205,7 @@ function SchemaTable<T extends ObjectEntity>({
   return (
     <Fragment>
       <Paper sx={{ width: "100%", marginTop: 3, overflowX: "auto" }}>
-        <CoreTableToolbar
+        <CoreTableToolbar<F>
           title={title}
           filterSchema={filterSchema}
           onFilter={onFilter}
@@ -207,22 +218,22 @@ function SchemaTable<T extends ObjectEntity>({
             onRequestSort={handleRequestSort}
           />
           <TableBody>
-            {state.rows.map((row) => (
-              <TableRow key={row.id}>
-                {Object.entries(schema.properties).map(
-                  ([property, fieldSchema]) => (
-                    <SchemaTableCell
-                      key={property}
-                      property={property}
-                      fieldSchema={fieldSchema}
-                      row={row}
-                    />
-                  )
-                )}
-                {authContext.authenticated && (
+            {state.rows.map((row, idx) => (
+              <TableRow key={idx}>
+                {(
+                  Object.entries(schema.properties) as [string, FieldSchema][]
+                ).map(([property, fieldSchema]) => (
+                  <SchemaTableCell
+                    key={property}
+                    property={property}
+                    fieldSchema={fieldSchema}
+                    row={row}
+                  />
+                ))}
+                {authContext.authenticated && schema.readonly !== true && (
                   <TableCell>
                     <EditMenu
-                      onEdit={() => handleEdit(row)}
+                      onEdit={() => startEdit("EDIT", row).then()}
                       onDelete={() => handleDelete(row)}
                     />
                   </TableCell>
@@ -249,11 +260,15 @@ function SchemaTable<T extends ObjectEntity>({
       <AppSnackbar message={appMessage} onClose={() => setAppMessage("")} />
       <EditModal
         ref={modalRef}
-        schema={schema}
+        schema={editSchema}
+        editState={editState!}
+        obj={editRow}
         onSaveSuccess={handleOnEditSaveSuccess}
         onChange={handleOnFormChange}
       />
-      <AddModal onAdd={() => handleEdit()} />
+      {schema.readonly !== true && (
+        <AddModal onAdd={() => startEdit("ADD").then()} />
+      )}
     </Fragment>
   );
 }

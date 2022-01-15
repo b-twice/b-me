@@ -9,20 +9,19 @@ export default function SchemaFormMultiSelect({
   obj,
   onChange,
   error,
-}: SchemaFieldProps<SelectFieldSchema | MultiSelectFieldSchema>) {
-  const handleChange = (selectObj: any) => onChange({ [property]: selectObj });
+}: SchemaFieldProps<any, SelectFieldSchema | MultiSelectFieldSchema>) {
+  const handleChange = (values: any[]) => onChange({ [property]: values });
   return (
     <FormMultiSelect
       label={schema.title}
       error={error}
-      required={schema.required}
+      required={schema.required || false}
       id={property}
       helperText={schema.helperText}
       disabled={schema.disabled}
       options={schema.options}
       items={obj[property]}
       valueProperty="id"
-      labelProperty="name"
       onChange={handleChange}
     />
   );
