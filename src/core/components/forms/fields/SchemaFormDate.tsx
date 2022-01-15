@@ -24,7 +24,7 @@ export default function SchemaFormDate({
       disabled={schema.disabled}
       onChange={handleChange}
       variant="filled"
-      type="datetime-local"
+      type="date"
       InputLabelProps={{
         shrink: true,
       }}
