@@ -47,13 +47,13 @@ function Transactions() {
       config.pageNumber + 1,
       config.rowsPerPage,
       true,
-      config.filter.description,
-      config.filter.banks,
-      config.filter.users,
-      config.filter.categories,
-      config.filter.tags,
-      config.filter.years,
-      config.filter.months
+      config.filter?.description,
+      config.filter?.banks,
+      config.filter?.users,
+      config.filter?.categories,
+      config.filter?.tags,
+      config.filter?.years,
+      config.filter?.months
     ).then((result) =>
       setPage({
         ...result,
@@ -64,7 +64,7 @@ function Transactions() {
     );
   }, [config]);
 
-  const handleOnFilter = (obj: TransactionFilter) => {
+  const handleOnFilter = (obj?: TransactionFilter) => {
     setConfig({ ...config, pageNumber: 0, filter: obj });
   };
 

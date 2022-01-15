@@ -26,15 +26,15 @@ function Books() {
       config.sort,
       config.pageNumber + 1,
       config.rowsPerPage,
-      config.filter.name,
-      config.filter.bookAuthors,
-      config.filter.bookCategories,
-      config.filter.bookStatuses,
-      config.filter.readYears
+      config.filter?.name,
+      config.filter?.bookAuthors,
+      config.filter?.bookCategories,
+      config.filter?.bookStatuses,
+      config.filter?.readYears
     ).then((result) => setPage(result));
   }, [config]);
 
-  const handleOnFilter = (obj: BookFilter) => {
+  const handleOnFilter = (obj?: BookFilter) => {
     setConfig({ ...config, pageNumber: 0, filter: obj });
   };
 

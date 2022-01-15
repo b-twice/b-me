@@ -36,7 +36,7 @@ export interface SchemaTableConfig<T> {
   orderBy: string;
   sort: string;
   rowsPerPage: number;
-  filter: T;
+  filter: T | undefined;
 }
 
 export function createSchemaTableConfig<
@@ -58,7 +58,7 @@ interface SchemaTableProps<T, F> {
   page: PaginatedResult<T>;
   title: string;
   onPage: (config: SchemaTableConfig<F>) => void;
-  onFilter?: (obj: F) => void;
+  onFilter?: (obj: F | undefined) => void;
   config: SchemaTableConfig<F>;
   onChange?: (
     schema: FormSchema<T>,
@@ -208,6 +208,7 @@ function SchemaTable<T, F>({
         <CoreTableToolbar<F>
           title={title}
           filterSchema={filterSchema}
+          config={config}
           onFilter={onFilter}
         />
         <Table sx={{ minWidth: 650 }}>

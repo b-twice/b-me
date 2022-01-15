@@ -26,15 +26,15 @@ function Recipes() {
       config.sort,
       config.pageNumber + 1,
       config.rowsPerPage,
-      config.filter.name,
-      config.filter.users,
-      config.filter.recipeCategories,
-      config.filter.cookbooks,
-      config.filter.recipeIngredients
+      config.filter?.name,
+      config.filter?.users,
+      config.filter?.recipeCategories,
+      config.filter?.cookbooks,
+      config.filter?.recipeIngredients
     ).then((result) => setPage(result));
   }, [config]);
 
-  const handleOnFilter = (obj: RecipeFilter) => {
+  const handleOnFilter = (obj?: RecipeFilter) => {
     setConfig({ ...config, pageNumber: 0, filter: obj });
   };
 

@@ -26,13 +26,13 @@ function Posts() {
       config.sort,
       config.pageNumber + 1,
       config.rowsPerPage,
-      config.filter.title,
-      config.filter.description,
-      config.filter.groups
+      config.filter?.title,
+      config.filter?.description,
+      config.filter?.groups
     ).then((result) => setPage(result));
   }, [config]);
 
-  const handleOnFilter = (obj: PostFilter) => {
+  const handleOnFilter = (obj?: PostFilter) => {
     setConfig({ ...config, pageNumber: 0, filter: obj });
   };
 

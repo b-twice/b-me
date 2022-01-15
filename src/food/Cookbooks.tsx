@@ -28,12 +28,12 @@ function Cookbooks() {
       config.sort,
       config.pageNumber + 1,
       config.rowsPerPage,
-      config.filter.name,
-      config.filter.cookbookAuthors
+      config.filter?.name,
+      config.filter?.cookbookAuthors
     ).then((result) => setPage(result));
   }, [config]);
 
-  const handleOnFilter = (obj: CookbookFilter) => {
+  const handleOnFilter = (obj?: CookbookFilter) => {
     setConfig({ ...config, pageNumber: 0, filter: obj });
   };
 

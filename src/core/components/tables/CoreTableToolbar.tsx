@@ -3,6 +3,7 @@ import { Toolbar, Typography } from "@mui/material";
 import { FormSchema } from "../forms/SchemaForm";
 import CoreTableFilter from "./CoreTableFilter";
 import { styled } from "@mui/system";
+import { SchemaTableConfig } from "./SchemaTable";
 
 const Spacer = styled("div")({
   flex: "1 1 100%",
@@ -15,12 +16,14 @@ const Actions = styled("div")(({ theme }) => ({
 interface CoreTableToolbarProps<F> {
   title: string;
   filterSchema?: FormSchema<F>;
-  onFilter?: (obj: F) => void;
+  config: SchemaTableConfig<F>;
+  onFilter?: (obj: F | undefined) => void;
 }
 
 export default function CoreTableToolbar<F>({
   title,
   filterSchema,
+  config,
   onFilter,
 }: CoreTableToolbarProps<F>) {
   return (
@@ -31,7 +34,11 @@ export default function CoreTableToolbar<F>({
       <Spacer />
       <Actions>
         {filterSchema && onFilter && (
-          <CoreTableFilter<F> schema={filterSchema} onFilter={onFilter} />
+          <CoreTableFilter<F>
+            schema={filterSchema}
+            config={config}
+            onFilter={onFilter}
+          />
         )}
       </Actions>
     </Toolbar>

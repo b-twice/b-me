@@ -4,26 +4,22 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { FormSchema } from "../forms/SchemaForm";
 import { EditModalRef, EditModal } from "../forms/EditModal";
+import { SchemaTableConfig } from "./SchemaTable";
 
 interface CoreTableFilterProps<F> {
   schema: FormSchema<F>;
-  onFilter: (obj: F) => void;
+  config: SchemaTableConfig<F>;
+  onFilter: (obj: F | undefined) => void;
 }
 
 export default function CoreTableFilter<F>({
   schema,
+  config,
   onFilter,
 }: CoreTableFilterProps<F>) {
   const modalRef = useRef<EditModalRef>(null);
 
   const [isActive, setIsActive] = useState(false);
-  const [filterObject, setFilterObject] = useState<F | undefined>();
-
-  useEffect(() => {
-    if (filterObject) {
-      onFilter(filterObject);
-    }
-  }, [filterObject, onFilter]);
 
   function handleFilter() {
     if (modalRef && modalRef.current) {
@@ -32,11 +28,11 @@ export default function CoreTableFilter<F>({
   }
 
   function handleFilterSave(obj: F) {
-    setFilterObject(obj);
+    onFilter(obj);
   }
 
   function handleCancel() {
-    setFilterObject({} as F);
+    onFilter(undefined);
     setIsActive(false);
   }
 
@@ -64,8 +60,8 @@ export default function CoreTableFilter<F>({
       }
       return false;
     };
-    setIsActive(filterHasValue(filterObject));
-  }, [filterObject]);
+    setIsActive(filterHasValue(config.filter));
+  }, [config.filter]);
 
   return (
     <Fragment>
@@ -94,7 +90,7 @@ export default function CoreTableFilter<F>({
       </Stack>
       <EditModal
         ref={modalRef}
-        obj={filterObject ?? ({} as F)}
+        obj={config.filter ?? ({} as F)}
         schema={schema}
         editState={"FILTER"}
         onSaveSuccess={handleFilterSave}

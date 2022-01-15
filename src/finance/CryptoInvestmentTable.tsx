@@ -31,13 +31,13 @@ function CryptoInvestmentTable() {
       config.sort,
       config.pageNumber + 1,
       config.rowsPerPage,
-      config.filter.coins,
-      config.filter.yearsSold,
-      config.filter.status
+      config.filter?.coins,
+      config.filter?.yearsSold,
+      config.filter?.status
     ).then((result) => setPage({ ...result }));
   }, [config]);
 
-  const handleOnFilter = (obj: CryptoFilter) => {
+  const handleOnFilter = (obj?: CryptoFilter) => {
     setConfig({ ...config, pageNumber: 0, filter: obj });
   };
 

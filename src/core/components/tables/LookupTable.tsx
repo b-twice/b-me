@@ -36,14 +36,14 @@ export default function LookupTable({
         config.sort,
         config.pageNumber + 1,
         config.rowsPerPage,
-        config.filter.name
+        config.filter?.name
       )
       .then((result) => setPage(result));
   }, [api, config]);
 
   const handleOnPage = (pageConfig: SchemaTableConfig<TableFilter>) =>
     setConfig(pageConfig);
-  const handleOnFilter = (obj: TableFilter) => {
+  const handleOnFilter = (obj: TableFilter | undefined) => {
     setConfig({ ...config, pageNumber: 0, filter: obj });
   };
 

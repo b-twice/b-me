@@ -28,13 +28,13 @@ function FoodProducts() {
       config.sort,
       config.pageNumber + 1,
       config.rowsPerPage,
-      config.filter.name,
-      config.filter.foodCategories,
-      config.filter.supermarkets
+      config.filter?.name,
+      config.filter?.foodCategories,
+      config.filter?.supermarkets
     ).then((result) => setPage(result));
   }, [config]);
 
-  const handleOnFilter = (obj: FoodProductFilter) => {
+  const handleOnFilter = (obj?: FoodProductFilter) => {
     setConfig({ ...config, pageNumber: 0, filter: obj });
   };
 

@@ -28,15 +28,15 @@ function MealPlans() {
       config.sort,
       config.pageNumber + 1,
       config.rowsPerPage,
-      config.filter.name,
-      config.filter.users,
-      config.filter.recipes,
-      config.filter.years,
-      config.filter.months
+      config.filter?.name,
+      config.filter?.users,
+      config.filter?.recipes,
+      config.filter?.years,
+      config.filter?.months
     ).then((result) => setPage(result));
   }, [config]);
 
-  const handleOnFilter = (obj: MealPlanFilter) => {
+  const handleOnFilter = (obj: MealPlanFilter | undefined) => {
     setConfig({ ...config, pageNumber: 0, filter: obj });
   };
 

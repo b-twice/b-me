@@ -29,7 +29,7 @@ function CryptoHoldings() {
     ).then((result) => setPage(result));
   }, [config]);
 
-  const handleOnFilter = (obj: TableFilter) => {
+  const handleOnFilter = (obj?: TableFilter) => {
     setConfig({ ...config, pageNumber: 0, filter: obj });
   };
 
