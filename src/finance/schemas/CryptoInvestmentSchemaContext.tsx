@@ -6,14 +6,13 @@ import {
 import FormOption from "../../core/components/forms/FormOptionType";
 import { CryptoInvestment } from "../../common/client";
 import { TableSchemaContextProps } from "../../core/components/forms/EditSchemaContextProps.interface";
-import { Omit } from "@material-ui/types";
 import { CryptoCoinApi } from "../../common/client/CryptoApi";
 import FormYearOptions from "../../core/components/forms/FormYearOptions";
 import moment from "moment";
 import currencyFormatter from "../../core/components/formatters/CurrencyFormatter";
 
 type CryptoSchemaContext = TableSchemaContextProps<
-  CryptoInvestmentTableRecord,
+  CryptoInvestment,
   CryptoFilter
 >;
 
@@ -22,7 +21,6 @@ export type CryptoFilter = {
   status: string | undefined;
   yearsSold: string[];
 };
-export type CryptoInvestmentTableRecord = Omit<CryptoInvestment, "">;
 
 const Context = React.createContext<CryptoSchemaContext>({} as any);
 
@@ -48,7 +46,7 @@ function CryptoSchemaContextProvider({ children }: { children: JSX.Element }) {
       });
   }, []);
 
-  const schema: FormSchema<CryptoInvestmentTableRecord> = {
+  const schema: FormSchema<CryptoInvestment> = {
     readonly: true,
     properties: {
       name: FieldConstructor.text({

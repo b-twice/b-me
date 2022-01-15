@@ -7,18 +7,16 @@ import SchemaTable, {
 } from "../core/components/tables/SchemaTable";
 import {
   CryptoFilter,
-  CryptoInvestmentTableRecord,
   CryptoSchemaContext,
   CryptoSchemaContextProvider,
 } from "./schemas/CryptoInvestmentSchemaContext";
 import { CryptoInvestmentApi } from "../common/client/CryptoApi";
+import { CryptoInvestment } from "../common/client";
 
 function CryptoInvestmentTable() {
   const schemaContext = useContext(CryptoSchemaContext);
 
-  const [page, setPage] = useState<
-    PaginatedResult<CryptoInvestmentTableRecord>
-  >({
+  const [page, setPage] = useState<PaginatedResult<CryptoInvestment>>({
     items: [],
     count: 0,
   });
@@ -44,7 +42,7 @@ function CryptoInvestmentTable() {
   };
 
   return (
-    <SchemaTable<CryptoInvestmentTableRecord, CryptoFilter>
+    <SchemaTable<CryptoInvestment, CryptoFilter>
       filterSchema={schemaContext.filter}
       schema={schemaContext.schema}
       onFilter={handleOnFilter}
