@@ -16,7 +16,7 @@ export default function SchemaFormCurrency({
     <TextField
       required={schema.required}
       error={!!error}
-      helperText={schema.helperText}
+      helperText={error ?? schema.helperText}
       id={property}
       label={schema.title}
       value={obj[property] ?? ""}

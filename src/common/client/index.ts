@@ -8853,6 +8853,8 @@ export interface Recipe {
     url?: string | undefined;
     rating?: number | undefined;
     complexity?: number | undefined;
+    lastMade?: string | undefined;
+    makeCount?: number | undefined;
     cookbook?: Cookbook | undefined;
     recipeCategory?: RecipeCategory | undefined;
     user?: User | undefined;

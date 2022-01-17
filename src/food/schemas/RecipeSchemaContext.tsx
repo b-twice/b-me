@@ -87,14 +87,16 @@ function RecipeSchemaContextProvider({ children }: { children: JSX.Element }) {
         getVal: (v: number, o: Recipe) => o.cookbook?.name,
       }),
       servings: FieldConstructor.number({
-        title: "Servings",
+        title: "Serv.",
         required: true,
       }),
       pageNumber: FieldConstructor.number({
-        title: "Page Number",
+        title: "Page #",
       }),
       url: FieldConstructor.text({
         title: "URL",
+        path: (o: Recipe) => o.url,
+        getVal: (v: number, o: Recipe) => (o.url ? "Link" : ""),
       }),
       complexity: FieldConstructor.rating({
         title: "Complexity",
@@ -105,6 +107,14 @@ function RecipeSchemaContextProvider({ children }: { children: JSX.Element }) {
         title: "Rating",
         max: 5,
         icon: "favorite",
+      }),
+      makeCount: FieldConstructor.text({
+        title: "Times Made",
+        disabled: true,
+      }),
+      lastMade: FieldConstructor.text({
+        title: "Last Made",
+        disabled: true,
       }),
     },
   };

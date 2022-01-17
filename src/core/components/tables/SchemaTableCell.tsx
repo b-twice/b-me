@@ -1,7 +1,7 @@
 import TableCell from "@mui/material/TableCell";
 import React, { useEffect, useState } from "react";
 import CheckIcon from "@mui/icons-material/Check";
-import { FieldSchema, TextFieldSchema } from "../forms/SchemaForm";
+import { FieldSchema } from "../forms/SchemaForm";
 import { NavLink } from "react-router-dom";
 import { styled } from "@mui/system";
 import {
@@ -10,8 +10,9 @@ import {
 } from "../forms/fields/FieldGuards";
 import AppIcon from "../icons/AppIcon";
 import FormRating from "../forms/fields/FormRating";
+import Link from "@mui/material/Link";
 
-const Link = styled(NavLink)({
+const StyledLink = styled(NavLink)({
   color: "inherit",
 });
 
@@ -24,8 +25,12 @@ interface SchemaTableCellProps {
 function SchemaTableCell({ property, fieldSchema, row }: SchemaTableCellProps) {
   const [path, setPath] = useState("");
   useEffect(() => {
-    if (isTextFieldSchema(fieldSchema) && fieldSchema.path)
-      setPath((fieldSchema as TextFieldSchema).path!(row));
+    if (
+      isTextFieldSchema(fieldSchema) &&
+      fieldSchema.path &&
+      fieldSchema.path(row)
+    )
+      setPath(fieldSchema.path(row)!);
   }, [fieldSchema, row]);
   if (fieldSchema.type === "switch")
     return (
@@ -36,11 +41,20 @@ function SchemaTableCell({ property, fieldSchema, row }: SchemaTableCellProps) {
   else if (isTextFieldSchema(fieldSchema) && fieldSchema.path)
     return (
       <TableCell>
-        <Link to={path}>
-          {fieldSchema.getVal
-            ? fieldSchema.getVal(row[property], row)
-            : row[property]}
-        </Link>
+        {path.startsWith("http") && (
+          <Link color="secondary" href={path} underline="hover">
+            {fieldSchema.getVal
+              ? fieldSchema.getVal(row[property], row)
+              : row[property]}
+          </Link>
+        )}
+        {!path.startsWith("http") && (
+          <StyledLink to={path}>
+            {fieldSchema.getVal
+              ? fieldSchema.getVal(row[property], row)
+              : row[property]}
+          </StyledLink>
+        )}
       </TableCell>
     );
   else if (isRatingFieldSchema(fieldSchema)) {

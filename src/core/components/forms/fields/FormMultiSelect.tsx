@@ -61,7 +61,7 @@ export default function FormMultiSelect({
           label={label}
           variant="filled"
           error={!!error}
-          helperText={helperText}
+          helperText={error ?? helperText}
           required={required}
         />
       )}

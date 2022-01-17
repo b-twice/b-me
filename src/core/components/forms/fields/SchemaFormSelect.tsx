@@ -18,7 +18,7 @@ export default function SchemaFormSelect({
       required={schema.required || false}
       id={property}
       options={schema.options}
-      helperText={schema.helperText}
+      helperText={error ?? schema.helperText}
       value={obj[property]}
       disabled={schema.disabled}
       valueProperty="id"

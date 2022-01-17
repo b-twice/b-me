@@ -64,7 +64,7 @@ export default function FormSelect({
           label={label}
           variant="filled"
           error={!!error}
-          helperText={helperText}
+          helperText={error ?? helperText}
           required={required}
         />
       )}

@@ -123,7 +123,7 @@ export interface FieldSchema {
 
 export interface TextFieldSchema extends FieldSchema {
   type: "text";
-  path?: (o: any) => string; // url link
+  path?: (o: any) => string | undefined; // url link
 }
 
 export interface RatingFieldSchema extends FieldSchema {

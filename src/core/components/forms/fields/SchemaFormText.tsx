@@ -20,7 +20,7 @@ export default function SchemaFormText({
       label={schema.title}
       value={obj[property] || ""}
       onChange={handleChange}
-      helperText={schema.helperText}
+      helperText={error ?? schema.helperText}
       disabled={schema.disabled}
       variant="filled"
     />

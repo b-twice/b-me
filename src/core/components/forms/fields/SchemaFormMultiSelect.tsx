@@ -17,7 +17,7 @@ export default function SchemaFormMultiSelect({
       error={error}
       required={schema.required || false}
       id={property}
-      helperText={schema.helperText}
+      helperText={error ?? schema.helperText}
       disabled={schema.disabled}
       options={schema.options}
       items={obj[property]}

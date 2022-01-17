@@ -30,8 +30,20 @@ function RecipeView() {
         {recipe?.pageNumber !== undefined && recipe.pageNumber > 0 && (
           <span> pg. {recipe?.pageNumber}</span>
         )}
-        &nbsp;&nbsp;|&nbsp;&nbsp;
-        <span>Serves {recipe?.servings}</span>
+        <span>, Serves {recipe?.servings}</span>
+        {recipe?.makeCount && (
+          <Fragment>
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+            <span>
+              Made {recipe.makeCount} time{recipe.makeCount > 1 && "s"}
+            </span>
+          </Fragment>
+        )}
+        {recipe?.lastMade && (
+          <Fragment>
+            <span>, last on {recipe?.lastMade}</span>
+          </Fragment>
+        )}
       </Typography>
       <Grid direction="column" container spacing={4}>
         <Grid item>

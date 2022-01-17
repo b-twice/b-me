@@ -14,7 +14,8 @@ export default function SchemaFormNumber({
     target: { value },
   }: React.ChangeEvent<HTMLInputElement>) =>
     onChange({
-      [property]: value !== null && value !== undefined ? +value : value,
+      [property]:
+        value !== null && value !== undefined && value !== "" ? +value : null,
     });
 
   return (
@@ -27,7 +28,7 @@ export default function SchemaFormNumber({
       disabled={schema.disabled}
       value={obj[property] ?? ""}
       onChange={handleChange}
-      helperText={schema.helperText}
+      helperText={error ?? schema.helperText}
       variant="filled"
     />
   );
