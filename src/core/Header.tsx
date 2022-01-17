@@ -16,7 +16,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import AppLink from "./components/AppLink";
 import GroupRouteList from "./components/GroupRouteLists";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
 
 const drawerWidth = 240;
@@ -82,6 +82,8 @@ function Header() {
   const [open, setOpen] = useState(false);
   const handleDrawerToggle = () => setOpen(!open);
   const handleDrawerClose = () => setOpen(false);
+
+  let location = useLocation();
 
   const drawer = (
     <Fragment>
@@ -173,7 +175,7 @@ function Header() {
                 <ExitToAppIcon />
               </IconButton>
             ) : (
-              <AppLink to="login">
+              <AppLink to="login" state={{ from: location }}>
                 <IconButton color="inherit" aria-label="login" size="large">
                   <AccountCircleIcon />
                 </IconButton>

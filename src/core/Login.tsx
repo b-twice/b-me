@@ -27,7 +27,8 @@ export default function Login(): JSX.Element {
   const [pw, setPw] = useState("");
   const [error, setError] = useState(false);
   const [disabled, setDisabled] = useState(false);
-  let { from } = (location.state as any) || { from: { pathname: "/" } };
+
+  let from = (location.state as Record<string, any>)?.from?.pathname || "/";
 
   function onLogin(err: any, result: any): void {
     if (err) {
