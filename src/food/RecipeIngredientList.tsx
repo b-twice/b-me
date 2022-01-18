@@ -33,50 +33,35 @@ function RecipeIngredientList({ recipe }: { recipe: Recipe }) {
     return obj;
   }
 
-  const addSuggestedQuantityToSchema = (
-    schema: ListFormSchema<RecipeIngredient>,
-    foodProductId: number
-  ): Promise<ListFormSchema<RecipeIngredient>> => {
-    return Promise.all([FoodProductApi.get(foodProductId)]).then(
-      ([{ foodQuantityType, measurement, foodUnit }]) =>
-        new Promise((resolve) => {
-          let newSchema: ListFormSchema<RecipeIngredient> = {
-            ...schema,
-            properties: {
-              ...schema.properties,
-              weight: FieldConstructor.number({
-                ...(schema.properties.weight as NumberFieldSchema),
-                visible: foodQuantityType?.name === "Weight",
-                helperText:
-                  foodQuantityType?.name === "Weight"
-                    ? measurement || `Measured in ${foodUnit?.name}`
-                    : "",
-              }),
-              count: FieldConstructor.number({
-                ...(schema.properties.count as NumberFieldSchema),
-                visible: foodQuantityType?.name === "Count",
-              }),
-            },
-          };
-          resolve(newSchema);
-        })
-    );
-  };
-
-  const handleOnChange = (
+  const handleOnChange = async (
     schema: ListFormSchema<RecipeIngredient>,
     obj: RecipeIngredient,
     changeObj: Partial<RecipeIngredient>
   ): Promise<ListFormSchema<RecipeIngredient> | undefined> => {
     if (changeObj.foodProductId) {
-      return addSuggestedQuantityToSchema(schema, changeObj.foodProductId).then(
-        (newSchema) =>
-          new Promise((resolve) => {
-            resolve(newSchema);
-          })
-      );
+      const { foodQuantityType, measurement, foodUnit } =
+        await FoodProductApi.get(changeObj.foodProductId);
+      let newSchema: ListFormSchema<RecipeIngredient> = {
+        ...schema,
+        properties: {
+          ...schema.properties,
+          weight: FieldConstructor.number({
+            ...(schema.properties.weight as NumberFieldSchema),
+            visible: foodQuantityType?.name === "Weight",
+            helperText:
+              foodQuantityType?.name === "Weight"
+                ? measurement || `Measured in ${foodUnit?.name}`
+                : "",
+          }),
+          count: FieldConstructor.number({
+            ...(schema.properties.count as NumberFieldSchema),
+            visible: foodQuantityType?.name === "Count",
+          }),
+        },
+      };
+      return newSchema;
     }
-    return new Promise((resolve) => resolve(undefined));
+    return undefined;
   };
 
   return (

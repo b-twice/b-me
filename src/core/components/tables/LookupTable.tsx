@@ -27,7 +27,7 @@ export default function LookupTable({
         config.rowsPerPage,
         config.filter?.name
       ),
-    []
+    [api]
   );
 
   return (

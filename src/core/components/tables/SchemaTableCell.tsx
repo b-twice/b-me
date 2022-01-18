@@ -24,6 +24,13 @@ interface SchemaTableCellProps {
 
 function SchemaTableCell({ property, fieldSchema, row }: SchemaTableCellProps) {
   const [path, setPath] = useState("");
+  const styles = fieldSchema.getDisplayStyle
+    ? fieldSchema.getDisplayStyle(row[property], row)
+    : undefined;
+
+  const value = fieldSchema.getVal
+    ? fieldSchema.getVal(row[property], row)
+    : row[property];
   useEffect(() => {
     if (
       isTextFieldSchema(fieldSchema) &&
@@ -43,18 +50,10 @@ function SchemaTableCell({ property, fieldSchema, row }: SchemaTableCellProps) {
       <TableCell>
         {path.startsWith("http") && (
           <Link color="secondary" href={path} underline="hover">
-            {fieldSchema.getVal
-              ? fieldSchema.getVal(row[property], row)
-              : row[property]}
+            {value}
           </Link>
         )}
-        {!path.startsWith("http") && (
-          <StyledLink to={path}>
-            {fieldSchema.getVal
-              ? fieldSchema.getVal(row[property], row)
-              : row[property]}
-          </StyledLink>
-        )}
+        {!path.startsWith("http") && <StyledLink to={path}>{value}</StyledLink>}
       </TableCell>
     );
   else if (isRatingFieldSchema(fieldSchema)) {
@@ -86,14 +85,7 @@ function SchemaTableCell({ property, fieldSchema, row }: SchemaTableCellProps) {
         />
       </TableCell>
     );
-  } else
-    return (
-      <TableCell>
-        {fieldSchema.getVal
-          ? fieldSchema.getVal(row[property], row)
-          : row[property]}
-      </TableCell>
-    );
+  } else return <TableCell sx={styles}>{value}</TableCell>;
 }
 
 export default SchemaTableCell;

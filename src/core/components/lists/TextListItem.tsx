@@ -13,9 +13,7 @@ export default function TextListItem({
       {...props}
       sx={[...(Array.isArray(props.sx) ? props.sx : [props.sx])]}
     >
-      <ListItemText
-        primary={<React.Fragment>{content}</React.Fragment>}
-      ></ListItemText>
+      <ListItemText primary={<>{content}</>}></ListItemText>
       {side}
     </ListItem>
   );

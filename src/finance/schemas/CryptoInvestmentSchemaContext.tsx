@@ -87,6 +87,12 @@ function CryptoSchemaContextProvider({ children }: { children: JSX.Element }) {
       }),
       netGain: FieldConstructor.currency({
         title: "Net Gain",
+        getDisplayStyle: (value: number, row: CryptoInvestment) =>
+          value < 0
+            ? { color: "red" }
+            : value === null
+            ? undefined
+            : { color: "green" },
       }),
     },
   };

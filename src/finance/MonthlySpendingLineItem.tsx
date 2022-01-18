@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState } from "react";
 import Collapse from "@mui/material/Collapse";
 import currencyFormatter from "../core/components/formatters/CurrencyFormatter";
 import { TransactionTotal } from "../common/client";

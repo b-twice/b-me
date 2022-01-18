@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
@@ -7,7 +7,6 @@ import Collapse from "@mui/material/Collapse";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import ListItemLink from "./ListItemLink";
-import { BlogContext } from "../../blog/BlogContext";
 import { useLocation } from "react-router-dom";
 
 export type RouteItem = {
@@ -30,8 +29,6 @@ function GroupRouteList({
 }: GroupRouteListProps) {
   const location = useLocation();
 
-  const blogContext = useContext(BlogContext);
-
   const [open, setOpen] = React.useState(false);
 
   function handleClick() {
@@ -48,8 +45,17 @@ function GroupRouteList({
     } else {
       setOpen(false);
     }
-  }, [blogContext, location.pathname, items]);
+  }, [location.pathname, items]);
 
+  const listItems = items.map((item) => (
+    <ListItemLink
+      key={item.path}
+      path={item.path}
+      name={item.title}
+      onClick={onClick}
+      nested={nested}
+    />
+  ));
   return (
     <List disablePadding component="div">
       <ListItem button onClick={handleClick}>
@@ -60,15 +66,7 @@ function GroupRouteList({
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
-        {items.map((item) => (
-          <ListItemLink
-            key={item.path}
-            path={item.path}
-            name={item.title}
-            onClick={onClick}
-            nested={nested}
-          />
-        ))}
+        {listItems}
       </Collapse>
     </List>
   );

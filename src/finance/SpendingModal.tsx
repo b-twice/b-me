@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useState, Fragment } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
 import Modal from "@mui/material/Modal";
 import { TransactionTotal } from "../common/client";
 import Toolbar from "@mui/material/Toolbar";

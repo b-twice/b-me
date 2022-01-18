@@ -1,10 +1,10 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 import FormAppBar from "./FormAppBar";
 import FormOption from "./FormOptionType";
 import SchemaFormField from "./fields/SchemaField";
 import AppSnackbar from "../AppSnackbar";
 import { styled } from "@mui/system";
-import { Stack } from "@mui/material";
+import { Stack, Theme, SxProps } from "@mui/material";
 import numberFormatter from "../formatters/NumberFormatter";
 import getLookupName from "./lookups/getLookupName";
 import currencyFormatter from "../formatters/CurrencyFormatter";
@@ -117,6 +117,8 @@ export interface FieldSchema {
   visible?: boolean;
   // method to retrieve value
   getVal?(value: any, row: any): any;
+  // custom style on cell
+  getDisplayStyle?(value: any, row: any): SxProps<Theme> | undefined;
   // modify values on load/save
   transform?(changeObj: any[]): string | number | string[] | number[]; // optional transform value on submit
 }

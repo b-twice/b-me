@@ -42,7 +42,7 @@ function WeatherListDay({ day }: WeatherListDayProps) {
         </ListItemAvatar>
         <ListItemText
           primary={
-            <React.Fragment>
+            <>
               <Typography variant="subtitle2" color="textPrimary">
                 <Grid
                   container
@@ -66,7 +66,7 @@ function WeatherListDay({ day }: WeatherListDayProps) {
               <Typography variant="subtitle2" color="textSecondary">
                 {day.summary}
               </Typography>
-            </React.Fragment>
+            </>
           }
         ></ListItemText>
         {open ? <ExpandLess /> : <ExpandMore />}

@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Grid, Typography } from "@mui/material";
 import RecentBooksCard from "../books/RecentBooksCard";
 import WeatherCard from "../weather/WeatherCard";

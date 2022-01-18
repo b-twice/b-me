@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Typography, Grid } from "@mui/material";
 import { DataPoint } from "../common/client";
 import WeatherIcon from "./WeatherIcon";

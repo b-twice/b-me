@@ -1,6 +1,5 @@
 import { AuthProvider } from "./core/Auth";
 
-import { BlogProvider } from "./blog/BlogContext";
 import { CssBaseline } from "@mui/material";
 import Main from "./Main";
 
@@ -25,9 +24,7 @@ function App() {
       <>
         <CssBaseline />
         <AuthProvider>
-          <BlogProvider>
-            <Main></Main>
-          </BlogProvider>
+          <Main></Main>
         </AuthProvider>
       </>
     </ThemeProvider>

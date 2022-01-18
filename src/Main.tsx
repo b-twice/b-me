@@ -30,6 +30,7 @@ import CryptoCoins from "./finance/CryptoCoins";
 import CryptoAdmin from "./finance/CryptoAdmin";
 import CryptoHoldings from "./finance/CryptoHoldings";
 import CryptoSales from "./finance/CryptoSales";
+import { BlogProvider } from "./blog/BlogContext";
 
 function Main() {
   return (
@@ -56,18 +57,25 @@ function Main() {
           <Box my={4}>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="content" element={<Outlet />}>
+              <Route
+                path="content"
+                element={
+                  <BlogProvider>
+                    <Outlet />
+                  </BlogProvider>
+                }
+              >
                 <Route path="*" element={<BlogContentRoute />} />
                 <Route path="" element={<BlogContentList />} />
               </Route>
-
-              <Route path="content" element={<BlogPosts />} />
 
               <Route
                 path="admin"
                 element={
                   <RequireAuth>
-                    <Outlet />
+                    <BlogProvider>
+                      <Outlet />
+                    </BlogProvider>
                   </RequireAuth>
                 }
               >
