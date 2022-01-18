@@ -1,16 +1,15 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useMemo, useCallback } from "react";
 import {
   TransactionSchemaContext,
   TransactionFilter,
   TransactionSchemaContextProvider,
-  TransactionTableConfig,
   transactionUtility,
   TransactionTableRecord,
-  PaginatedFinanceResult,
 } from "./schemas/TransactionSchemaContext";
 import withProvider from "../core/components/withProvider";
 import SchemaTable, {
-  createSchemaTableConfig,
+  PaginatedResult,
+  SchemaTableConfig,
 } from "../core/components/tables/SchemaTable";
 import { FinanceApi, TransactionApi } from "../common/client/FinanceApi";
 import {
@@ -30,99 +29,78 @@ const DisplayTotal = styled("div")({
 function Transactions() {
   const schemaContext = useContext(TransactionSchemaContext);
 
-  const [page, setPage] = useState<PaginatedFinanceResult>({
-    items: [],
-    count: 0,
-    amountTotal: 0,
-  });
-  const [config, setConfig] = useState<TransactionTableConfig>({
-    ...createSchemaTableConfig<TransactionFilter>(),
-    sort: "date_desc",
-    orderBy: "date",
-  });
+  const [amountTotal, setAmountTotal] = useState<number | undefined>();
+  const configOptions = useMemo<Partial<SchemaTableConfig<TransactionFilter>>>(
+    () => ({ sort: "date_desc", orderBy: "date" }),
+    []
+  );
 
-  useEffect(() => {
-    TransactionApi.getPage(
-      config.sort,
-      config.pageNumber + 1,
-      config.rowsPerPage,
-      true,
-      config.filter?.description,
-      config.filter?.banks,
-      config.filter?.users,
-      config.filter?.categories,
-      config.filter?.tags,
-      config.filter?.years,
-      config.filter?.months
-    ).then((result) =>
-      setPage({
-        ...result,
-        items: result?.items?.map((i) =>
+  const handleOnPage = useCallback(
+    async (config: SchemaTableConfig<TransactionFilter>) => {
+      const page = await TransactionApi.getPage(
+        config.sort,
+        config.pageNumber + 1,
+        config.rowsPerPage,
+        true,
+        config.filter?.description,
+        config.filter?.banks,
+        config.filter?.users,
+        config.filter?.categories,
+        config.filter?.tags,
+        config.filter?.years,
+        config.filter?.months
+      );
+      const items: PaginatedResult<TransactionTableRecord> = {
+        ...page,
+        items: page?.items?.map((i) =>
           transactionUtility.mapToTransactionTableRecord(i)
         ),
-      })
-    );
-  }, [config]);
+      };
+      setAmountTotal(page.amountTotal);
+      return items;
+    },
+    []
+  );
 
-  const handleOnFilter = (obj?: TransactionFilter) => {
-    setConfig({ ...config, pageNumber: 0, filter: obj });
-  };
-
-  const addSuggestedTagsToSchema = (
-    schema: FormSchema<TransactionTableRecord>,
-    categoryId: number
-  ): Promise<FormSchema<TransactionTableRecord>> => {
-    return FinanceApi.getFrequentCategoryTags(categoryId).then(
-      (tagCounts) =>
-        new Promise((resolve) => {
-          const tagNames = tagCounts
-            .sort((a, b) => ((a?.count || 0) > (b?.count || 0) ? 1 : -1))
-            .map((o) => o.name);
-          let newSchema: FormSchema<TransactionTableRecord> = {
-            ...schema,
-            properties: {
-              ...schema.properties,
-              tags: FieldConstructor.multiSelect({
-                ...(schema.properties.tags as MultiSelectFieldSchema),
-                helperText: `Suggested tags: ${tagNames.join(", ")}`,
-              }),
-            },
-          };
-          resolve(newSchema);
-        })
-    );
-  };
-
-  const handleOnChange = (
+  async function handleOnChange(
     schema: FormSchema<TransactionTableRecord>,
     obj: TransactionTableRecord,
     changeObj: Partial<TransactionTableRecord>
-  ): Promise<FormSchema<TransactionTableRecord> | undefined> => {
+  ): Promise<FormSchema<TransactionTableRecord> | undefined> {
     if (changeObj.categoryId) {
-      return addSuggestedTagsToSchema(schema, changeObj.categoryId).then(
-        (newSchema) =>
-          new Promise((resolve) => {
-            resolve(newSchema);
-          })
+      const tagCounts = await FinanceApi.getFrequentCategoryTags(
+        changeObj.categoryId
       );
+      const tagNames = tagCounts
+        .sort((a, b) => ((a?.count || 0) > (b?.count || 0) ? 1 : -1))
+        .map((o) => o.name);
+      let newSchema: FormSchema<TransactionTableRecord> = {
+        ...schema,
+        properties: {
+          ...schema.properties,
+          tags: FieldConstructor.multiSelect({
+            ...(schema.properties.tags as MultiSelectFieldSchema),
+            helperText: `Suggested tags: ${tagNames.join(", ")}`,
+          }),
+        },
+      };
+      return newSchema;
     }
-    return new Promise((resolve) => resolve(undefined));
-  };
+    return undefined;
+  }
 
   return (
     <>
       <DisplayTotal>
         <strong>Total:</strong>&nbsp;
-        {currencyFormatter.format(page.amountTotal || 0)}
+        {currencyFormatter.format(amountTotal ?? 0)}
       </DisplayTotal>
       <SchemaTable<TransactionTableRecord, TransactionFilter>
         filterSchema={schemaContext.filter}
         schema={schemaContext.schema}
-        onFilter={handleOnFilter}
-        page={page}
-        onPage={setConfig}
+        onPage={handleOnPage}
         onChange={handleOnChange}
-        config={config}
+        configOptions={configOptions}
         title={schemaContext.title}
       />
     </>

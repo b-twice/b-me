@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useCallback, useContext } from "react";
 import {
   BookSchemaContext,
   BookSchemaContextProvider,
@@ -7,46 +7,34 @@ import {
 import { Book } from "../common/client";
 import withProvider from "../core/components/withProvider";
 import SchemaTable, {
-  PaginatedResult,
-  createSchemaTableConfig,
+  SchemaTableConfig,
 } from "../core/components/tables/SchemaTable";
 import { BookApi } from "../common/client/BookApi";
 
 function Books() {
   const schemaContext = useContext(BookSchemaContext);
 
-  const [page, setPage] = useState<PaginatedResult<Book>>({
-    items: [],
-    count: 0,
-  });
-  const [config, setConfig] = useState(createSchemaTableConfig<BookFilter>());
-
-  useEffect(() => {
-    BookApi.getPage(
-      config.sort,
-      config.pageNumber + 1,
-      config.rowsPerPage,
-      config.filter?.name,
-      config.filter?.bookAuthors,
-      config.filter?.bookCategories,
-      config.filter?.bookStatuses,
-      config.filter?.readYears
-    ).then((result) => setPage(result));
-  }, [config]);
-
-  const handleOnFilter = (obj?: BookFilter) => {
-    setConfig({ ...config, pageNumber: 0, filter: obj });
-  };
+  const handleOnPage = useCallback(
+    async (config: SchemaTableConfig<BookFilter>) =>
+      await BookApi.getPage(
+        config.sort,
+        config.pageNumber + 1,
+        config.rowsPerPage,
+        config.filter?.name,
+        config.filter?.bookAuthors,
+        config.filter?.bookCategories,
+        config.filter?.bookStatuses,
+        config.filter?.readYears
+      ),
+    []
+  );
 
   return (
     <>
       <SchemaTable<Book, BookFilter>
         filterSchema={schemaContext.filter}
         schema={schemaContext.schema}
-        onFilter={handleOnFilter}
-        page={page}
-        onPage={setConfig}
-        config={config}
+        onPage={handleOnPage}
         title={schemaContext.title}
       />
     </>

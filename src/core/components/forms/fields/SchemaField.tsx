@@ -1,4 +1,4 @@
-import Reacti from "react";
+import React from "react";
 import {
   TextFieldSchema,
   SelectFieldSchema,

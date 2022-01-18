@@ -1,8 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useMemo } from "react";
 import withProvider from "../core/components/withProvider";
 import SchemaTable, {
-  PaginatedResult,
-  createSchemaTableConfig,
   SchemaTableConfig,
 } from "../core/components/tables/SchemaTable";
 import {
@@ -16,39 +14,30 @@ import { CryptoInvestment } from "../common/client";
 function CryptoInvestmentTable() {
   const schemaContext = useContext(CryptoSchemaContext);
 
-  const [page, setPage] = useState<PaginatedResult<CryptoInvestment>>({
-    items: [],
-    count: 0,
-  });
-  const [config, setConfig] = useState<SchemaTableConfig<CryptoFilter>>({
-    ...createSchemaTableConfig<CryptoFilter>(),
-    sort: "purchaseDate_desc",
-    orderBy: "purchaseDate",
-  });
+  const configOptions = useMemo<Partial<SchemaTableConfig<CryptoFilter>>>(
+    () => ({ sort: "purchaseDate_desc", orderBy: "purchaseDate" }),
+    []
+  );
 
-  useEffect(() => {
-    CryptoInvestmentApi.getPage(
-      config.sort,
-      config.pageNumber + 1,
-      config.rowsPerPage,
-      config.filter?.coins,
-      config.filter?.yearsSold,
-      config.filter?.status
-    ).then((result) => setPage({ ...result }));
-  }, [config]);
-
-  const handleOnFilter = (obj?: CryptoFilter) => {
-    setConfig({ ...config, pageNumber: 0, filter: obj });
-  };
+  const handleOnPage = useCallback(
+    async (config: SchemaTableConfig<CryptoFilter>) =>
+      await CryptoInvestmentApi.getPage(
+        config.sort,
+        config.pageNumber + 1,
+        config.rowsPerPage,
+        config.filter?.coins,
+        config.filter?.yearsSold,
+        config.filter?.status
+      ),
+    []
+  );
 
   return (
     <SchemaTable<CryptoInvestment, CryptoFilter>
       filterSchema={schemaContext.filter}
       schema={schemaContext.schema}
-      onFilter={handleOnFilter}
-      page={page}
-      onPage={setConfig}
-      config={config}
+      onPage={handleOnPage}
+      configOptions={configOptions}
       title={schemaContext.title}
     />
   );

@@ -54,11 +54,9 @@ export function createSchemaTableConfig<
 interface SchemaTableProps<T, F> {
   filterSchema?: FormSchema<F>;
   schema: FormSchema<T>;
-  page: PaginatedResult<T>;
   title: string;
-  onPage: (config: SchemaTableConfig<F>) => void;
-  onFilter?: (obj: F | undefined) => void;
-  config: SchemaTableConfig<F>;
+  onPage: (config: SchemaTableConfig<F>) => Promise<PaginatedResult<T>>;
+  configOptions?: Partial<SchemaTableConfig<F>>;
   onChange?: (
     schema: FormSchema<T>,
     obj: T,
@@ -68,32 +66,40 @@ interface SchemaTableProps<T, F> {
 
 function SchemaTable<T, F>({
   filterSchema,
-  onFilter,
   onPage,
   onChange,
   schema,
   title,
-  page,
-  config,
+  configOptions,
 }: SchemaTableProps<T, F>) {
   const reducer = schemaTableReducer<T>();
   const [state, dispatch] = useReducer(reducer, { rows: [], count: 0 });
   const [editSchema, setEditSchema] = useState<FormSchema<T>>(() => schema);
   const [editRow, setEditRow] = useState<T>({} as T);
   const [editState, setEditState] = useState<SchemaFormStates | undefined>();
+  const [config, setConfig] = useState<SchemaTableConfig<F>>(() => ({
+    ...createSchemaTableConfig<F>(),
+    ...configOptions,
+  }));
+  const [page, setPage] = useState<PaginatedResult<T> | undefined>();
 
   useEffect(() => setEditSchema(schema), [schema]);
+  useEffect(() => {
+    onPage(config).then(setPage);
+  }, [configOptions, config, onPage]);
 
   // table
   const [headRows, setHeadRows] = useState<HeadRow[]>([]);
 
-  useEffect(() => dispatch({ type: "LOAD", page: page }), [page]);
+  useEffect(() => {
+    if (page) dispatch({ type: "LOAD", page: page });
+  }, [page]);
 
   function handleChangePage(
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
   ) {
-    onPage({ ...config, pageNumber: newPage });
+    setConfig({ ...config, pageNumber: newPage });
   }
 
   function handleRequestSort(
@@ -102,7 +108,7 @@ function SchemaTable<T, F>({
   ) {
     const isDesc = config.orderBy === property && config.order === "desc";
     const newOrder = isDesc ? "asc" : "desc";
-    onPage({
+    setConfig({
       ...config,
       order: newOrder,
       orderBy: property,
@@ -110,6 +116,10 @@ function SchemaTable<T, F>({
       pageNumber: 0,
     });
   }
+
+  const handleOnFilter = (obj?: F) => {
+    setConfig({ ...config, pageNumber: 0, filter: obj });
+  };
 
   //editing
   const authContext = useContext(AuthContext);
@@ -208,7 +218,7 @@ function SchemaTable<T, F>({
           title={title}
           filterSchema={filterSchema}
           config={config}
-          onFilter={onFilter}
+          onFilter={handleOnFilter}
         />
         <Table sx={{ minWidth: 650 }}>
           <CoreTableHead

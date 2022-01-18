@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useCallback, useContext } from "react";
 import {
   CryptoSaleSchemaContext,
   CryptoSaleSchemaContextProvider,
@@ -6,42 +6,30 @@ import {
 import { CryptoSale } from "../common/client";
 import withProvider from "../core/components/withProvider";
 import SchemaTable, {
-  PaginatedResult,
-  createSchemaTableConfig,
   TableFilter,
+  SchemaTableConfig,
 } from "../core/components/tables/SchemaTable";
 import { CryptoSaleApi } from "../common/client/CryptoApi";
 
 function CryptoSales() {
   const schemaContext = useContext(CryptoSaleSchemaContext);
 
-  const [page, setPage] = useState<PaginatedResult<CryptoSale>>({
-    items: [],
-    count: 0,
-  });
-  const [config, setConfig] = useState(createSchemaTableConfig<TableFilter>());
-
-  useEffect(() => {
-    CryptoSaleApi.getPage(
-      config.sort,
-      config.pageNumber + 1,
-      config.rowsPerPage
-    ).then((result) => setPage(result));
-  }, [config]);
-
-  const handleOnFilter = (obj?: TableFilter) => {
-    setConfig({ ...config, pageNumber: 0, filter: obj });
-  };
+  const handleOnPage = useCallback(
+    async (config: SchemaTableConfig<TableFilter>) =>
+      CryptoSaleApi.getPage(
+        config.sort,
+        config.pageNumber + 1,
+        config.rowsPerPage
+      ),
+    []
+  );
 
   return (
     <>
       <SchemaTable<CryptoSale, TableFilter>
         filterSchema={schemaContext.filter}
         schema={schemaContext.schema}
-        onFilter={handleOnFilter}
-        page={page}
-        onPage={setConfig}
-        config={config}
+        onPage={handleOnPage}
         title={schemaContext.title}
       />
     </>

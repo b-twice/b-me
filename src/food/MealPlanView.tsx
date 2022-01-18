@@ -8,10 +8,10 @@ import MealPlanNoteList from "./MealPlanNoteList";
 import MealPlanRecipeList from "./MealPlanRecipeList";
 
 function MealPlanView() {
-  const params = useParams() as any;
+  const params = useParams();
   const [mealPlan, setMealPlan] = useState<MealPlan | undefined>(undefined);
   useEffect(() => {
-    MealPlanApi.get(params.mealPlanId).then((result) => setMealPlan(result));
+    MealPlanApi.get(+params.mealPlanId!).then((result) => setMealPlan(result));
   }, [params]);
   return (
     <>

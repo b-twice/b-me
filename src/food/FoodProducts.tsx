@@ -1,8 +1,7 @@
-import React, { useContext, useEffect } from "react";
+import React, { useCallback, useContext } from "react";
 import withProvider from "../core/components/withProvider";
 import SchemaTable, {
-  PaginatedResult,
-  createSchemaTableConfig,
+  SchemaTableConfig,
 } from "../core/components/tables/SchemaTable";
 import {
   FoodProductSchemaContextProvider,
@@ -15,38 +14,25 @@ import { FoodProductApi } from "../common/client/FoodApi";
 function FoodProducts() {
   const schemaContext = useContext(FoodProductSchemaContext);
 
-  const [page, setPage] = React.useState<PaginatedResult<FoodProduct>>({
-    items: [],
-    count: 0,
-  });
-  const [config, setConfig] = React.useState(
-    createSchemaTableConfig<FoodProductFilter>()
+  const handleOnPage = useCallback(
+    async (config: SchemaTableConfig<FoodProductFilter>) =>
+      await FoodProductApi.getPage(
+        config.sort,
+        config.pageNumber + 1,
+        config.rowsPerPage,
+        config.filter?.name,
+        config.filter?.foodCategories,
+        config.filter?.supermarkets
+      ),
+    []
   );
-
-  useEffect(() => {
-    FoodProductApi.getPage(
-      config.sort,
-      config.pageNumber + 1,
-      config.rowsPerPage,
-      config.filter?.name,
-      config.filter?.foodCategories,
-      config.filter?.supermarkets
-    ).then((result) => setPage(result));
-  }, [config]);
-
-  const handleOnFilter = (obj?: FoodProductFilter) => {
-    setConfig({ ...config, pageNumber: 0, filter: obj });
-  };
 
   return (
     <>
       <SchemaTable<FoodProduct, FoodProductFilter>
         filterSchema={schemaContext.filter}
         schema={schemaContext.schema}
-        onFilter={handleOnFilter}
-        page={page}
-        onPage={setConfig}
-        config={config}
+        onPage={handleOnPage}
         title={schemaContext.title}
       />
     </>
