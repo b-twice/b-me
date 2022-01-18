@@ -13,7 +13,7 @@ function WeatherCurrent({ current, day }: WeatherCurrentProps) {
     <>
       <Typography color="textSecondary" gutterBottom>
         {current.apparentTemperature && current.apparentTemperature.toFixed(0)}
-        &#176;&nbsp;{current.summary}
+        &#176; {current.summary}
       </Typography>
 
       <Grid
@@ -39,7 +39,7 @@ function WeatherCurrent({ current, day }: WeatherCurrentProps) {
                 fontWeight="medium"
                 variant="body2"
               >
-                Temp:&nbsp;
+                Temp:{" "}
               </Typography>
               <Typography display="inline-block" variant="body2">
                 {day.apparentTemperatureHigh &&
@@ -51,7 +51,8 @@ function WeatherCurrent({ current, day }: WeatherCurrentProps) {
                 variant="body2"
                 color="textSecondary"
               >
-                &nbsp;|&nbsp;
+                {" "}
+                |{" "}
                 {day.apparentTemperatureLow &&
                   day.apparentTemperatureLow.toFixed(0)}
                 &#176;
@@ -64,7 +65,7 @@ function WeatherCurrent({ current, day }: WeatherCurrentProps) {
                 fontWeight="medium"
                 variant="body2"
               >
-                Humidity:&nbsp;
+                Humidity:{" "}
               </Typography>
               <Typography display="inline-block" variant="body2">
                 {current.humidity && (current.humidity * 100).toFixed(0)}%
@@ -77,7 +78,7 @@ function WeatherCurrent({ current, day }: WeatherCurrentProps) {
                 fontWeight="medium"
                 variant="body2"
               >
-                Wind:&nbsp;
+                Wind:{" "}
               </Typography>
               <Typography display="inline-block" variant="body2">
                 {current.windSpeed && current.windSpeed.toFixed(0)} mph
@@ -90,7 +91,7 @@ function WeatherCurrent({ current, day }: WeatherCurrentProps) {
                 fontWeight="medium"
                 variant="body2"
               >
-                Rain:&nbsp;
+                Rain:{" "}
               </Typography>
               <Typography display="inline-block" variant="body2">
                 {day.precipProbability &&

@@ -64,7 +64,7 @@ export default function FormSelectMenu({
         disabled={disabled}
         error={!!error}
       >
-        {!required && <MenuItem value="">&nbsp;</MenuItem>}
+        {!required && <MenuItem value=""> </MenuItem>}
         {options.map((option) => (
           <MenuItem key={option.value} value={option.value}>
             {option.label}

@@ -86,7 +86,7 @@ function WeatherListDay({ day }: WeatherListDayProps) {
                   fontWeight="medium"
                   variant="body2"
                 >
-                  Humidity:&nbsp;
+                  Humidity:{" "}
                 </Typography>
                 <Typography display="inline-block" variant="body2">
                   {day.humidity && (day.humidity * 100).toFixed(0)}%
@@ -99,7 +99,7 @@ function WeatherListDay({ day }: WeatherListDayProps) {
                   fontWeight="medium"
                   variant="body2"
                 >
-                  Wind:&nbsp;
+                  Wind:{" "}
                 </Typography>
                 <Typography display="inline-block" variant="body2">
                   {day.windSpeed && day.windSpeed.toFixed(0)} mph
@@ -111,7 +111,7 @@ function WeatherListDay({ day }: WeatherListDayProps) {
                   fontWeight="medium"
                   variant="body2"
                 >
-                  Rain:&nbsp;
+                  Rain:{" "}
                 </Typography>
                 <Typography display="inline-block" variant="body2">
                   {day.precipProbability &&

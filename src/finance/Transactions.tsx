@@ -92,8 +92,7 @@ function Transactions() {
   return (
     <>
       <DisplayTotal>
-        <strong>Total:</strong>&nbsp;
-        {currencyFormatter.format(amountTotal ?? 0)}
+        <strong>Total:</strong> {currencyFormatter.format(amountTotal ?? 0)}
       </DisplayTotal>
       <SchemaTable<TransactionTableRecord, TransactionFilter>
         filterSchema={schemaContext.filter}

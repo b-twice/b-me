@@ -33,7 +33,7 @@ function RecipeView() {
         <span>, Serves {recipe?.servings}</span>
         {recipe?.makeCount && (
           <>
-            &nbsp;&nbsp;|&nbsp;&nbsp;
+            {"  "}|{"  "}
             <span>
               Made {recipe.makeCount} time{recipe.makeCount > 1 && "s"}
             </span>
