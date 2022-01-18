@@ -83,7 +83,7 @@ const SpendingModal = forwardRef(
           {isLoading ? (
             <AppSpinner />
           ) : (
-            <Fragment>
+            <>
               <List sx={{ overflowY: "auto" }}>
                 {items?.map((item) => (
                   <SpendingModalLineItem
@@ -103,7 +103,7 @@ const SpendingModal = forwardRef(
                   />
                 )}
               </List>
-            </Fragment>
+            </>
           )}
         </ModalPaper>
       </Modal>

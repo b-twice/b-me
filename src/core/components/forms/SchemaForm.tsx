@@ -294,7 +294,7 @@ export default function SchemaForm<T>({
   };
 
   return (
-    <Fragment>
+    <>
       <Root>
         <form onSubmit={handleSubmit} noValidate={true}>
           <FormAppBar
@@ -318,6 +318,6 @@ export default function SchemaForm<T>({
         </form>
       </Root>
       <AppSnackbar message={appMessage} onClose={() => setAppMessage("")} />
-    </Fragment>
+    </>
   );
 }

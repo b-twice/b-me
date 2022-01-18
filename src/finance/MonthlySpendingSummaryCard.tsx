@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -43,7 +43,7 @@ function FinanceMonthlySpendingSummaryCard({
   }, [year]);
 
   return (
-    <Fragment>
+    <>
       <Card sx={{ width: 300 }}>
         <CardContent>
           <Typography fontSize={14} color="textSecondary" gutterBottom>
@@ -57,7 +57,7 @@ function FinanceMonthlySpendingSummaryCard({
           {isLoading ? (
             <AppSpinner />
           ) : (
-            <Fragment>
+            <>
               <List sx={{ overflowY: "auto" }}>
                 {items?.map((item) => (
                   <MonthlySpendingLineItem
@@ -77,11 +77,11 @@ function FinanceMonthlySpendingSummaryCard({
                   right={currencyFormatter.format(average)}
                 />
               </List>
-            </Fragment>
+            </>
           )}
         </CardContent>
       </Card>
-    </Fragment>
+    </>
   );
 }
 

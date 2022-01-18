@@ -27,7 +27,7 @@ type TransactionSchemaContext = TableSchemaContextProps<
 
 export interface PaginatedFinanceResult
   extends PaginatedResult<TransactionTableRecord> {
-  amountTotal: number;
+  amountTotal?: number;
 }
 export const transactionUtility = {
   mapToTransactionRecord: (

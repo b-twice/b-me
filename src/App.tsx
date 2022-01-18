@@ -3,7 +3,6 @@ import { AuthProvider } from "./core/Auth";
 import { BlogProvider } from "./blog/BlogContext";
 import { CssBaseline } from "@mui/material";
 import Main from "./Main";
-import { Fragment } from "react";
 
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
@@ -23,14 +22,14 @@ const theme = createTheme({
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <Fragment>
+      <>
         <CssBaseline />
         <AuthProvider>
           <BlogProvider>
             <Main></Main>
           </BlogProvider>
         </AuthProvider>
-      </Fragment>
+      </>
     </ThemeProvider>
   );
 }

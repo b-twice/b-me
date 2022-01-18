@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   CryptoHoldingSchemaContext,
   CryptoHoldingSchemaContextProvider,
@@ -34,7 +34,7 @@ function CryptoHoldings() {
   };
 
   return (
-    <Fragment>
+    <>
       <SchemaTable<CryptoHolding, TableFilter>
         filterSchema={schemaContext.filter}
         schema={schemaContext.schema}
@@ -44,7 +44,7 @@ function CryptoHoldings() {
         config={config}
         title={schemaContext.title}
       />
-    </Fragment>
+    </>
   );
 }
 

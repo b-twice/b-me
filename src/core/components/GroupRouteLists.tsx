@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
@@ -61,14 +61,13 @@ function GroupRouteList({
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         {items.map((item) => (
-          <Fragment key={item.path}>
-            <ListItemLink
-              path={item.path}
-              name={item.title}
-              onClick={onClick}
-              nested={nested}
-            />
-          </Fragment>
+          <ListItemLink
+            key={item.path}
+            path={item.path}
+            name={item.title}
+            onClick={onClick}
+            nested={nested}
+          />
         ))}
       </Collapse>
     </List>

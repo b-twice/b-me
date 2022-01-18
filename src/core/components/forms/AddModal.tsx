@@ -1,4 +1,4 @@
-import React, { Fragment, useContext } from "react";
+import React, { useContext } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import { Fab } from "@mui/material";
 import { AuthContext } from "../../Auth";
@@ -11,7 +11,7 @@ export default function AddModal({ onAdd }: AddModalProps) {
   const authContext = useContext(AuthContext);
 
   return (
-    <Fragment>
+    <>
       {authContext.authenticated && (
         <Fab
           color="secondary"
@@ -26,6 +26,6 @@ export default function AddModal({ onAdd }: AddModalProps) {
           <AddIcon />
         </Fab>
       )}
-    </Fragment>
+    </>
   );
 }

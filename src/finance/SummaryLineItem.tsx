@@ -21,7 +21,7 @@ function FinancialSummaryLineItem({
   const handleClick = () => setOpen(!open);
 
   return (
-    <Fragment>
+    <>
       <TextListItem
         onClick={handleClick}
         button
@@ -42,7 +42,7 @@ function FinancialSummaryLineItem({
       <Collapse in={open} timeout="auto" unmountOnExit>
         {children}
       </Collapse>
-    </Fragment>
+    </>
   );
 }
 

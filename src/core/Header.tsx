@@ -86,7 +86,7 @@ function Header() {
   let location = useLocation();
 
   const drawer = (
-    <Fragment>
+    <>
       <Toolbar />
       <List component="div" sx={{ flex: 1 }}>
         {authContext.authenticated && (
@@ -143,11 +143,11 @@ function Header() {
           </ListItem>
         </AppLink>
       </List>
-    </Fragment>
+    </>
   );
 
   return (
-    <Fragment>
+    <>
       <ElevationScroll>
         <HeaderAppBar elevation={2}>
           <Toolbar>
@@ -204,7 +204,7 @@ function Header() {
           </HeaderDrawer>
         </Hidden>
       </Sidebar>
-    </Fragment>
+    </>
   );
 }
 

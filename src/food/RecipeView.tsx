@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Recipe } from "../common/client";
 import { RecipeApi } from "../common/client/FoodApi";
@@ -16,7 +16,7 @@ function RecipeView() {
   }, [params]);
 
   return (
-    <Fragment>
+    <>
       <Typography variant="h4" component="h4">
         {recipe?.url && (
           <Link color="secondary" href={recipe?.url} underline="hover">
@@ -32,17 +32,17 @@ function RecipeView() {
         )}
         <span>, Serves {recipe?.servings}</span>
         {recipe?.makeCount && (
-          <Fragment>
+          <>
             &nbsp;&nbsp;|&nbsp;&nbsp;
             <span>
               Made {recipe.makeCount} time{recipe.makeCount > 1 && "s"}
             </span>
-          </Fragment>
+          </>
         )}
         {recipe?.lastMade && (
-          <Fragment>
+          <>
             <span>, last on {recipe?.lastMade}</span>
-          </Fragment>
+          </>
         )}
       </Typography>
       <Grid direction="column" container spacing={4}>
@@ -53,7 +53,7 @@ function RecipeView() {
           <RecipeNoteList recipe={recipe} />
         </Grid>
       </Grid>
-    </Fragment>
+    </>
   );
 }
 

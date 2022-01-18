@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   BlogPostSchemaContext,
   BlogPostSchemaContextProvider,
@@ -37,7 +37,7 @@ function Posts() {
   };
 
   return (
-    <Fragment>
+    <>
       <SchemaTable<Post, PostFilter>
         filterSchema={schemaContext.filter}
         schema={schemaContext.schema}
@@ -47,7 +47,7 @@ function Posts() {
         config={config}
         title={schemaContext.title}
       />
-    </Fragment>
+    </>
   );
 }
 

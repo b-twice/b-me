@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   TransactionSchemaContext,
   TransactionFilter,
@@ -60,7 +60,7 @@ function Transactions() {
         items: result?.items?.map((i) =>
           transactionUtility.mapToTransactionTableRecord(i)
         ),
-      } as PaginatedFinanceResult)
+      })
     );
   }, [config]);
 
@@ -110,7 +110,7 @@ function Transactions() {
   };
 
   return (
-    <Fragment>
+    <>
       <DisplayTotal>
         <strong>Total:</strong>&nbsp;
         {currencyFormatter.format(page.amountTotal || 0)}
@@ -125,7 +125,7 @@ function Transactions() {
         config={config}
         title={schemaContext.title}
       />
-    </Fragment>
+    </>
   );
 }
 

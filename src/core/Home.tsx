@@ -6,7 +6,7 @@ import RecentRecipesCard from "../food/RecentRecipes";
 
 function Home() {
   return (
-    <Fragment>
+    <>
       <Typography
         color="textSecondary"
         variant="h5"
@@ -26,7 +26,7 @@ function Home() {
           <RecentRecipesCard />
         </Grid>
       </Grid>
-    </Fragment>
+    </>
   );
 }
 

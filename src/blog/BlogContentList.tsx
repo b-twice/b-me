@@ -1,20 +1,15 @@
-import { Fragment, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { PostGroup } from "../common/client";
 import { RouteItem } from "../core/components/GroupRouteLists";
 import LinkList from "../core/components/lists/LinkList";
 import { BlogContext } from "./BlogContext";
 
 function BlogContentList() {
-  const [groups, setGroups] = useState<PostGroup[]>([]);
   const blogContext = useContext(BlogContext);
 
-  useEffect(() => {
-    setGroups(blogContext.groups);
-  }, [blogContext]);
-
   return (
-    <Fragment>
-      {groups.map((g) => (
+    <>
+      {blogContext.groups.map((g) => (
         <LinkList
           key={g.id}
           title={g.name!}
@@ -28,7 +23,7 @@ function BlogContentList() {
           }
         />
       ))}
-    </Fragment>
+    </>
   );
 }
 

@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import { Grid } from "@mui/material";
 import FinanceSummaryCard from "./SummaryCard";
 import getLookupName from "../core/components/forms/lookups/getLookupName";
@@ -38,7 +38,7 @@ function FinanceDashboard() {
   const onFormChange = (obj: { [key: string]: any }) => setForm({ ...obj });
 
   return (
-    <Fragment>
+    <>
       <YearMenu>
         <SchemaFormField
           property={"year"}
@@ -64,7 +64,7 @@ function FinanceDashboard() {
           </Grid>
         </Grid>
       </Grid>
-    </Fragment>
+    </>
   );
 }
 

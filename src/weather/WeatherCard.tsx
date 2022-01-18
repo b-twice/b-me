@@ -94,7 +94,7 @@ function WeatherCard() {
         {isLoading ? (
           <AppSpinner />
         ) : (
-          <Fragment>
+          <>
             {weather &&
               weather.response &&
               weather.response.currently &&
@@ -105,7 +105,7 @@ function WeatherCard() {
                   day={weather.response.daily.data[0]}
                 />
               )}
-          </Fragment>
+          </>
         )}
       </CardContent>
       <Divider />
@@ -125,13 +125,13 @@ function WeatherCard() {
           weather.response &&
           weather.response.daily &&
           weather.response.daily.data && (
-            <Fragment>
+            <>
               <List component="ul" dense>
                 {weather.response.daily.data.map((day, idx) => (
                   <WeatherListDay key={idx} day={day} />
                 ))}
               </List>
-            </Fragment>
+            </>
           )}
       </Collapse>
     </Card>

@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { MealPlan, MealPlanNote } from "../common/client";
 import withProvider from "../core/components/withProvider";
 import { SchemaFormStates } from "../core/components/forms/SchemaForm";
@@ -25,14 +25,14 @@ function MealPlanNoteList({ mealPlan }: { mealPlan: MealPlan }) {
   }
 
   return (
-    <Fragment>
+    <>
       <SchemaList<MealPlanNote>
         title={schemaContext.title}
         schema={schemaContext.schema}
         rows={rows}
         onRowEdit={onRowEdit}
       />
-    </Fragment>
+    </>
   );
 }
 

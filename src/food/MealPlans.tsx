@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   MealPlanSchemaContext,
   MealPlanSchemaContextProvider,
@@ -41,7 +41,7 @@ function MealPlans() {
   };
 
   return (
-    <Fragment>
+    <>
       <SchemaTable<MealPlan, MealPlanFilter>
         filterSchema={schemaContext.filter}
         schema={schemaContext.schema}
@@ -51,7 +51,7 @@ function MealPlans() {
         config={config}
         title={schemaContext.title}
       />
-    </Fragment>
+    </>
   );
 }
 

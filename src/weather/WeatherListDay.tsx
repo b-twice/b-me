@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import {
   Typography,
   Grid,
@@ -35,7 +35,7 @@ function WeatherListDay({ day }: WeatherListDayProps) {
   };
 
   return (
-    <Fragment>
+    <>
       <ListItem button onClick={handleClick}>
         <ListItemAvatar>
           <WeatherIcon type={day.icon!} size="small" />
@@ -123,7 +123,7 @@ function WeatherListDay({ day }: WeatherListDayProps) {
           </ListItem>
         </List>
       </Collapse>
-    </Fragment>
+    </>
   );
 }
 

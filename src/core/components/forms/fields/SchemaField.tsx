@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import Reacti from "react";
 import {
   TextFieldSchema,
   SelectFieldSchema,
@@ -46,7 +46,7 @@ export default function SchemaFormField<T>(
     | SwitchFieldSchema
   >
 ) {
-  if (props.schema.visible === false) return <Fragment />;
+  if (props.schema.visible === false) return <></>;
   switch (props.schema.type) {
     case "text":
       return (

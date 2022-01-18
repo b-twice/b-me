@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Recipe, RecipeNote } from "../common/client";
 import withProvider from "../core/components/withProvider";
 import { SchemaFormStates } from "../core/components/forms/SchemaForm";
@@ -25,14 +25,14 @@ function RecipeNoteList({ recipe }: { recipe: Recipe }) {
   }
 
   return (
-    <Fragment>
+    <>
       <SchemaList<RecipeNote>
         title={schemaContext.title}
         schema={schemaContext.schema}
         rows={rows}
         onRowEdit={onRowEdit}
       />
-    </Fragment>
+    </>
   );
 }
 

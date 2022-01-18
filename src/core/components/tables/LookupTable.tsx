@@ -48,7 +48,7 @@ export default function LookupTable({
   };
 
   return (
-    <Fragment>
+    <>
       <SchemaTable<AppLookup, TableFilter>
         filterSchema={schemaContext.filter}
         schema={schemaContext.schema}
@@ -58,6 +58,6 @@ export default function LookupTable({
         config={config}
         title={schemaContext.title!}
       />
-    </Fragment>
+    </>
   );
 }

@@ -11,7 +11,7 @@ function LinkList({
   links: { path: string; title: string }[];
 }) {
   return (
-    <Fragment>
+    <>
       <Typography
         color="textSecondary"
         variant="h5"
@@ -30,7 +30,7 @@ function LinkList({
           </ListItem>
         ))}
       </List>
-    </Fragment>
+    </>
   );
 }
 

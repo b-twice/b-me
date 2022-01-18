@@ -10,7 +10,7 @@ interface WeatherCurrentProps {
 
 function WeatherCurrent({ current, day }: WeatherCurrentProps) {
   return (
-    <Fragment>
+    <>
       <Typography color="textSecondary" gutterBottom>
         {current.apparentTemperature && current.apparentTemperature.toFixed(0)}
         &#176;&nbsp;{current.summary}
@@ -101,7 +101,7 @@ function WeatherCurrent({ current, day }: WeatherCurrentProps) {
           </Grid>
         </Grid>
       </Grid>
-    </Fragment>
+    </>
   );
 }
 

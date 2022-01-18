@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useContext } from "react";
+import React, { useState, useContext } from "react";
 
 import {
   Input,
@@ -47,7 +47,7 @@ export default function Login(): JSX.Element {
   const authContext = useContext(AuthContext);
 
   return (
-    <Fragment>
+    <>
       {authContext.authenticated ? (
         <Navigate to={from} />
       ) : (
@@ -91,6 +91,6 @@ export default function Login(): JSX.Element {
           </Paper>
         </Container>
       )}
-    </Fragment>
+    </>
   );
 }

@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Recipe, RecipeIngredient } from "../common/client";
 import withProvider from "../core/components/withProvider";
 import {
@@ -80,7 +80,7 @@ function RecipeIngredientList({ recipe }: { recipe: Recipe }) {
   };
 
   return (
-    <Fragment>
+    <>
       <SchemaList<RecipeIngredient>
         title={schemaContext.title}
         schema={schemaContext.schema}
@@ -88,7 +88,7 @@ function RecipeIngredientList({ recipe }: { recipe: Recipe }) {
         onRowEdit={onRowEdit}
         onChange={handleOnChange}
       />
-    </Fragment>
+    </>
   );
 }
 

@@ -29,7 +29,7 @@ export default function EditMenu({ onDelete, onEdit }: EditMenuProps) {
   }
 
   return (
-    <Fragment>
+    <>
       <IconButton
         color="inherit"
         aria-label="more"
@@ -50,6 +50,6 @@ export default function EditMenu({ onDelete, onEdit }: EditMenuProps) {
         <MenuItem onClick={handleEdit}>Edit</MenuItem>
         <MenuItem onClick={handleDelete}>Delete</MenuItem>
       </Menu>
-    </Fragment>
+    </>
   );
 }

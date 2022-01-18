@@ -44,7 +44,7 @@ function SpendingModalLineItem({
   const [open, setOpen] = React.useState(false);
 
   return (
-    <Fragment>
+    <>
       <ButtonSplitTextListItem
         variant="subtitle2"
         left={tag?.name}
@@ -65,7 +65,7 @@ function SpendingModalLineItem({
           />
         ))}
       </Collapse>
-    </Fragment>
+    </>
   );
 }
 

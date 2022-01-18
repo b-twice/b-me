@@ -1,4 +1,4 @@
-import React, { useRef, Fragment, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Tooltip, IconButton, Stack } from "@mui/material";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -64,7 +64,7 @@ export default function CoreTableFilter<F>({
   }, [config.filter]);
 
   return (
-    <Fragment>
+    <>
       <Stack flexDirection="row">
         <Tooltip title="Filter list">
           <IconButton
@@ -96,6 +96,6 @@ export default function CoreTableFilter<F>({
         onSaveSuccess={handleFilterSave}
         saveText="Apply"
       />
-    </Fragment>
+    </>
   );
 }

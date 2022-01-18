@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -54,7 +54,7 @@ function FinanceSummaryCard({ year }: FinanceSummaryCardProps) {
         {isLoading ? (
           <AppSpinner />
         ) : (
-          <Fragment>
+          <>
             <Section>
               <Typography variant="h4" component="h5" gutterBottom>
                 {summary?.netWorth &&
@@ -173,7 +173,7 @@ function FinanceSummaryCard({ year }: FinanceSummaryCardProps) {
                 </FinancialSummaryLineItem>
               )}
             </List>
-          </Fragment>
+          </>
         )}
       </CardContent>
     </Card>

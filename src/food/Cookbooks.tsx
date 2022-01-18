@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import withProvider from "../core/components/withProvider";
 import SchemaTable, {
   PaginatedResult,
@@ -38,7 +38,7 @@ function Cookbooks() {
   };
 
   return (
-    <Fragment>
+    <>
       <SchemaTable<Cookbook, CookbookFilter>
         filterSchema={schemaContext.filter}
         schema={schemaContext.schema}
@@ -48,7 +48,7 @@ function Cookbooks() {
         config={config}
         title={schemaContext.title}
       />
-    </Fragment>
+    </>
   );
 }
 

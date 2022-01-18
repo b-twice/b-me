@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Card, CardContent, Typography, List } from "@mui/material";
 import { FinanceApi } from "../common/client/FinanceApi";
 import AppSpinner from "../core/components/AppSpinner";
@@ -53,7 +53,7 @@ function FinanceSpendingCard({ year }: FinanceSpendingCardProps) {
   };
 
   return (
-    <Fragment>
+    <>
       <Card sx={{ width: 300 }}>
         <CardContent>
           <Typography fontSize={14} color="textSecondary" gutterBottom>
@@ -67,7 +67,7 @@ function FinanceSpendingCard({ year }: FinanceSpendingCardProps) {
           {isLoading ? (
             <AppSpinner />
           ) : (
-            <Fragment>
+            <>
               <List sx={{ overflowY: "auto" }}>
                 {items?.map((item) => (
                   <ButtonSplitTextListItem
@@ -90,7 +90,7 @@ function FinanceSpendingCard({ year }: FinanceSpendingCardProps) {
                   right={currencyFormatter.format(total)}
                 />
               </List>
-            </Fragment>
+            </>
           )}
         </CardContent>
       </Card>
@@ -100,7 +100,7 @@ function FinanceSpendingCard({ year }: FinanceSpendingCardProps) {
         year={year}
         onClose={handleModalClose}
       />
-    </Fragment>
+    </>
   );
 }
 

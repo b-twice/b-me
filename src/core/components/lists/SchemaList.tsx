@@ -1,5 +1,4 @@
 import React, {
-  Fragment,
   useContext,
   useEffect,
   useReducer,
@@ -126,7 +125,7 @@ function SchemaList<T>({
   }
 
   return (
-    <Fragment>
+    <>
       <Typography color="textSecondary" variant="h6" gutterBottom={false}>
         {title}
       </Typography>
@@ -145,7 +144,7 @@ function SchemaList<T>({
                 {!display.path && display.name}
               </ListItemText>
               {authContext.authenticated && (
-                <Fragment>
+                <>
                   <IconButton
                     onClick={() => startEdit("EDIT", o).then()}
                     size="large"
@@ -155,7 +154,7 @@ function SchemaList<T>({
                   <IconButton onClick={() => handleDelete(o)} size="large">
                     <DeleteIcon color="inherit" />
                   </IconButton>
-                </Fragment>
+                </>
               )}
             </ListItem>
           ))}
@@ -179,7 +178,7 @@ function SchemaList<T>({
           Add
         </Button>
       )}
-    </Fragment>
+    </>
   );
 }
 

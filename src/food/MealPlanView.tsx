@@ -1,6 +1,6 @@
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { MealPlan } from "../common/client";
 import { MealPlanApi } from "../common/client/FoodApi";
@@ -14,7 +14,7 @@ function MealPlanView() {
     MealPlanApi.get(params.mealPlanId).then((result) => setMealPlan(result));
   }, [params]);
   return (
-    <Fragment>
+    <>
       <Typography variant="h4" component="h4">
         {mealPlan?.name}
       </Typography>
@@ -31,7 +31,7 @@ function MealPlanView() {
           <MealPlanNoteList mealPlan={mealPlan} />
         </Grid>
       </Grid>
-    </Fragment>
+    </>
   );
 }
 

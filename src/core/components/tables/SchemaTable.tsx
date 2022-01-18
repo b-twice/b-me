@@ -2,7 +2,6 @@ import React, {
   useState,
   useEffect,
   useContext,
-  Fragment,
   useRef,
   useReducer,
 } from "react";
@@ -203,7 +202,7 @@ function SchemaTable<T, F>({
   }
 
   return (
-    <Fragment>
+    <>
       <Paper sx={{ width: "100%", marginTop: 3, overflowX: "auto" }}>
         <CoreTableToolbar<F>
           title={title}
@@ -270,7 +269,7 @@ function SchemaTable<T, F>({
       {schema.readonly !== true && (
         <AddModal onAdd={() => startEdit("ADD").then()} />
       )}
-    </Fragment>
+    </>
   );
 }
 

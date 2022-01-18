@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import withProvider from "../core/components/withProvider";
 import SchemaTable, {
   PaginatedResult,
@@ -39,7 +39,7 @@ function FoodProducts() {
   };
 
   return (
-    <Fragment>
+    <>
       <SchemaTable<FoodProduct, FoodProductFilter>
         filterSchema={schemaContext.filter}
         schema={schemaContext.schema}
@@ -49,7 +49,7 @@ function FoodProducts() {
         config={config}
         title={schemaContext.title}
       />
-    </Fragment>
+    </>
   );
 }
 

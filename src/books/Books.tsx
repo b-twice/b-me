@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   BookSchemaContext,
   BookSchemaContextProvider,
@@ -39,7 +39,7 @@ function Books() {
   };
 
   return (
-    <Fragment>
+    <>
       <SchemaTable<Book, BookFilter>
         filterSchema={schemaContext.filter}
         schema={schemaContext.schema}
@@ -49,7 +49,7 @@ function Books() {
         config={config}
         title={schemaContext.title}
       />
-    </Fragment>
+    </>
   );
 }
 

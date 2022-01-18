@@ -36,7 +36,7 @@ function MonthlySpendingLineItem({
   };
 
   return (
-    <Fragment>
+    <>
       <ButtonSplitTextListItem
         variant="subtitle2"
         left={formatMonth(total?.name)}
@@ -56,7 +56,7 @@ function MonthlySpendingLineItem({
           />
         ))}
       </Collapse>
-    </Fragment>
+    </>
   );
 }
 
