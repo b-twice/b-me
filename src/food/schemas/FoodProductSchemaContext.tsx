@@ -92,7 +92,6 @@ function FoodProductSchemaContextProvider({
       foodUnitId: FieldConstructor.select({
         title: "Unit",
         options: foodUnits,
-        required: true,
         getVal: (v: number, o: FoodProduct) => o.foodUnit?.name,
       }),
       dirty: FieldConstructor.switch({

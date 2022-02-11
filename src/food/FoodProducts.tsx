@@ -9,7 +9,12 @@ import {
   FoodProductFilter,
 } from "./schemas/FoodProductSchemaContext";
 import { FoodProduct } from "../common/client";
-import { FoodProductApi } from "../common/client/FoodApi";
+import { FoodProductApi, FoodQuantityTypeApi } from "../common/client/FoodApi";
+import {
+  FieldConstructor,
+  FormSchema,
+  SelectFieldSchema,
+} from "../core/components/forms/SchemaForm";
 
 function FoodProducts() {
   const schemaContext = useContext(FoodProductSchemaContext);
@@ -27,6 +32,31 @@ function FoodProducts() {
     []
   );
 
+  const handleOnChange = async (
+    schema: FormSchema<FoodProduct>,
+    obj: FoodProduct,
+    changeObj: Partial<FoodProduct>
+  ): Promise<FormSchema<FoodProduct> | undefined> => {
+    if (changeObj.foodQuantityTypeId) {
+      const { name } = await FoodQuantityTypeApi.get(
+        changeObj.foodQuantityTypeId
+      );
+      let newSchema: FormSchema<FoodProduct> = {
+        ...schema,
+        properties: {
+          ...schema.properties,
+          foodUnitId: FieldConstructor.select({
+            ...(schema.properties.foodUnitId as SelectFieldSchema),
+            required: name === "Weight",
+            visible: name === "Weight",
+          }),
+        },
+      };
+      return newSchema;
+    }
+    return undefined;
+  };
+
   return (
     <>
       <SchemaTable<FoodProduct, FoodProductFilter>
@@ -34,6 +64,7 @@ function FoodProducts() {
         schema={schemaContext.schema}
         onPage={handleOnPage}
         title={schemaContext.title}
+        onChange={handleOnChange}
       />
     </>
   );

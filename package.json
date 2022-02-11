@@ -1,6 +1,6 @@
 {
   "name": "b-me",
-  "version": "5.0.4",
+  "version": "5.0.5",
   "private": true,
   "homepage": "/me",
   "dependencies": {
