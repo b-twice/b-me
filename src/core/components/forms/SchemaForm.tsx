@@ -268,6 +268,7 @@ export default function SchemaForm<T>({
         ) {
           errors[prop] = `${fieldSchema.title} is required.`;
         } else if (
+          fieldSchema.required &&
           (fieldSchema.type === "currency" || fieldSchema.type === "number") &&
           !!isNaN(op[prop] - parseFloat(op[prop]))
         ) {
