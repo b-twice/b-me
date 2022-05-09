@@ -24,7 +24,7 @@ jobs:
 
       # Push to Github Container Registry
       - name: Push to Github Container Registry
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           context: .
           file: ./Dockerfile.test
